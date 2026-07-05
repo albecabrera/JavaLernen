@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #08090B; }
+  ::selection { background: rgba(52,211,153,0.28); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #565C6455; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+  @keyframes jl-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes jl-glow { 0%,100% { box-shadow: 0 0 0 0 var(--glow-c, rgba(52,211,153,0.35)); } 50% { box-shadow: 0 0 0 6px transparent; } }
+  @keyframes jl-dash { from { stroke-dashoffset: var(--from,0); } }
+  @keyframes jl-pop { from { opacity: 0; transform: translateY(12px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+</helmet>
+<div style="--bg:#08090B; --sidebar:#0C0E11; --panel:#0E1114; --panel2:#0B0E10; --inset:#08090B; --elev:#1C2228; --elev-border:#2A3038; --border:#191D22; --border2:#1C2126; --border3:#22272D; --divider:#161A1F; --code-border:#1B2025; --code-hd:#16191D; --text:#E8EAED; --text2:#C8CDD3; --text3:#C2C7CD; --sub:#B4BAC1; --mut:#8B9199; --mut2:#828A93; --faint:#7E858E; --dis:#787F88; --lock:#3A4046; --dot:#2A3038; --accent:#34D399; --accent2:#10B981; --on-accent:#06231A; --accent-bg:rgba(52,211,153,0.10); --accent-bg2:rgba(52,211,153,0.14); --accent-border:rgba(52,211,153,0.2); --accent-border2:rgba(52,211,153,0.28); --accent-shadow:rgba(52,211,153,0.26); --accent-radial:rgba(52,211,153,0.13); --glow-c:rgba(52,211,153,0.35); --card-a:#12171A; --card-b:#0D1013; --card-border:#1E242A; --topbar:rgba(10,12,14,0.7); --code-kw:#C4A0FF; --code-type:#5CC8FF; --code-fn:#7DD3FC; --code-str:#98D387; --code-num:#E3B778; --code-op:#89DDFF; --code-text:#C9CDD3; --code-ln:#3D444B; --chip-bg:#0E1518; --false-bg:#1A0F10; --false-t:#F87171; --warn:#F59E0B; --warn-t:#F5C97A; --warn-b:#B7A876; --warn-sub:#8A7B54; --warn-bg:rgba(245,158,11,0.05); --warn-bg2:rgba(245,158,11,0.06); --warn-border:rgba(245,158,11,0.18); --warn-chip:rgba(245,158,11,0.12); --err:#F87171; --err-t:#F0A8A8; --err-bg:rgba(248,113,113,0.14); --err-row:rgba(248,113,113,0.06); --ok-row:rgba(52,211,153,0.06); --info:#7DD3FC; --info-t:#A9DEF9; --info-b:#9FB4C0; --info-bg:rgba(125,211,252,0.05); --info-border:rgba(125,211,252,0.18); --info-chip:rgba(125,211,252,0.12); --tip:#C4A0FF; --tip-t:#C9B3F0; --tip-b:#9F93B8; --tip-bg:rgba(196,160,255,0.05); --tip-border:rgba(196,160,255,0.16); --avatar-a:#2A3038; --avatar-b:#171B1F; --avatar-border:#262B31; --pop-shadow:0 24px 60px rgba(0,0,0,0.55); --rise:jl-rise .35s ease; --glow:jl-glow 2.4s ease-in-out infinite; --dash:jl-dash 1s ease; --code-size:13.5px;">
+<div style="{{ ov }}">
+<div style="display:flex; height:100vh; width:100%; background:var(--bg); font-family:'Geist',-apple-system,system-ui,sans-serif; color:var(--text); -webkit-font-smoothing:antialiased; overflow:hidden;">
+
+  <!-- ============ SIDEBAR ============ -->
+  <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ true }}">
+  <aside data-screen-label="Sidebar" style="width:284px; flex:none; background:var(--sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column;">
+    <div style="padding:22px 20px 18px; display:flex; align-items:center; gap:11px;">
+      <div style="width:32px; height:32px; border-radius:9px; background:linear-gradient(150deg,#34D399,#10B981); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12" stroke="#08090B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div style="font-size:15px; font-weight:700; letter-spacing:-0.2px;">JavaLernen</div>
+        <div style="font-size:11px; color:var(--faint); letter-spacing:0.3px;">{{ t.subBrand }}</div>
+      </div>
+    </div>
+
+    <div style="padding:6px 14px 4px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 8px 6px;">
+        <span style="font-size:11px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.6px;">{{ t.phaseEF }}</span>
+        <span style="font-size:11px; color:var(--accent); font-weight:600;">EF</span>
+      </div>
+    </div>
+
+    <nav style="flex:1; overflow-y:auto; padding:0 12px 12px; display:flex; flex-direction:column; gap:2px;">
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; color:var(--mut);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span style="font-size:13.5px; font-weight:500;">{{ t.s1 }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; color:var(--mut);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span style="font-size:13.5px; font-weight:500;">{{ t.s2 }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; background:var(--accent-bg); border:1px solid var(--accent-border);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; animation:var(--glow);">
+          <span style="width:6px; height:6px; border-radius:50%; background:var(--accent);"></span>
+        </span>
+        <div style="flex:1;">
+          <div style="font-size:13.5px; font-weight:600; color:var(--text);">{{ t.s3 }}</div>
+          <div style="height:3px; margin-top:6px; border-radius:3px; background:var(--dot); overflow:hidden;"><div style="width:60%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; color:var(--dis);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; border:1.5px solid var(--border3); display:flex; align-items:center; justify-content:center;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--dis)" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--dis)" stroke-width="2"/></svg>
+        </span>
+        <span style="font-size:13.5px; font-weight:500;">{{ t.s4 }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; color:var(--dis);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; border:1.5px solid var(--border3); display:flex; align-items:center; justify-content:center;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--dis)" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--dis)" stroke-width="2"/></svg>
+        </span>
+        <span style="font-size:13.5px; font-weight:500;">{{ t.s5 }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; color:var(--dis);">
+        <span style="width:20px; height:20px; flex:none; border-radius:50%; border:1.5px solid var(--border3); display:flex; align-items:center; justify-content:center;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5L12 3z" stroke="var(--dis)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <span style="font-size:13.5px; font-weight:500;">{{ t.s6 }}</span>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:12px 6px;"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 10px;">
+        <span style="font-size:11px; font-weight:600; color:var(--dis); text-transform:uppercase; letter-spacing:0.6px;">{{ t.q1 }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--lock)" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--lock)" stroke-width="2"/></svg>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 10px;">
+        <span style="font-size:11px; font-weight:600; color:var(--dis); text-transform:uppercase; letter-spacing:0.6px;">{{ t.q2 }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--lock)" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--lock)" stroke-width="2"/></svg>
+      </div>
+    </nav>
+
+    <div style="padding:12px 14px; border-top:1px solid var(--border);">
+      <sc-if value="{{ online }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ toggleNet }}" style="width:100%; display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:9px; background:var(--panel2); border:1px solid var(--border2); cursor:pointer; text-align:left; font-family:inherit;">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent-shadow); flex:none;"></span>
+          <div style="flex:1;">
+            <div style="font-size:12px; font-weight:600; color:var(--text2);">{{ t.onT }}</div>
+            <div style="font-size:10.5px; color:var(--faint);">{{ t.onS }}</div>
+          </div>
+        </button>
+      </sc-if>
+      <sc-if value="{{ offline }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ toggleNet }}" style="width:100%; display:flex; align-items:center; gap:9px; padding:9px 11px; border-radius:9px; background:var(--warn-bg2); border:1px solid var(--warn-border); cursor:pointer; text-align:left; font-family:inherit;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex:none;"><path d="M2 4l18 18M8.5 16.5a5 5 0 017 0M5 13a10 10 0 0110-1.5M2 9.5a15 15 0 015-2.8M12 20h.01" stroke="var(--warn)" stroke-width="2" stroke-linecap="round"/></svg>
+          <div style="flex:1;">
+            <div style="font-size:12px; font-weight:600; color:var(--warn-t);">{{ t.offT }}</div>
+            <div style="font-size:10.5px; color:var(--warn-sub);">{{ t.offS }}</div>
+          </div>
+        </button>
+      </sc-if>
+    </div>
+  </aside>
+  </sc-if>
+
+  <!-- ============ MAIN ============ -->
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+
+    <header style="height:60px; flex:none; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 24px; background:var(--topbar); backdrop-filter:blur(8px);">
+      <div style="display:flex; align-items:center; gap:6px; background:var(--panel); padding:4px; border-radius:11px; border:1px solid var(--border);">
+        <button onClick="{{ goDash }}" style="{{ tabDash }}">{{ t.tDash }}</button>
+        <button onClick="{{ goLesson }}" style="{{ tabLesson }}">{{ t.tLesson }}</button>
+        <button onClick="{{ goEx }}" style="{{ tabEx }}">{{ t.tEx }}</button>
+        <button onClick="{{ goProj }}" style="{{ tabProj }}">{{ t.tProj }}</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex; align-items:center; gap:7px; padding:6px 11px; border-radius:9px; background:var(--panel); border:1px solid var(--border);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-1 4-1 6a3 3 0 006 0c0-1 0-2-1-3 3 2 5 5 5 9a8 8 0 01-16 0c0-3 2-5 4-7 1 2 2 2 3 3 0-3-1-5 1-8z" fill="#F59E0B" opacity="0.9"/></svg>
+          <span style="font-size:13px; font-weight:600;">12</span>
+          <span style="font-size:11.5px; color:var(--mut2);">{{ t.tDays }}</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:7px; padding:6px 11px; border-radius:9px; background:var(--panel); border:1px solid var(--border);">
+          <span style="font-size:13px; font-weight:700; color:var(--accent); white-space:nowrap;">{{ t.xpVal }}</span>
+          <span style="font-size:11.5px; color:var(--mut2);">XP</span>
+        </div>
+        <button onClick="{{ openInvite }}" style="display:flex; align-items:center; gap:7px; padding:0 13px; height:34px; border-radius:9px; background:var(--accent-bg); border:1px solid var(--accent-border2); color:var(--accent); font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 19v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1M8.5 10a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {{ t.invBtn }}
+        </button>
+        <div style="position:relative;">
+          <button onClick="{{ toggleSettings }}" style="{{ gearStyle }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.8l1 2.4a7 7 0 012.4 1l2.5-.8 1.7 3-1.6 2a7 7 0 010 2.8l1.6 2-1.7 3-2.5-.8a7 7 0 01-2.4 1l-1 2.4h-2l-1-2.4a7 7 0 01-2.4-1l-2.5.8-1.7-3 1.6-2a7 7 0 010-2.8l-1.6-2 1.7-3 2.5.8a7 7 0 012.4-1l1-2.4h2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ closeSettings }}" style="position:fixed; inset:0; z-index:40;"></div>
+            <div data-screen-label="Einstellungen" style="position:absolute; top:44px; right:0; width:272px; z-index:50; border-radius:14px; background:var(--panel); border:1px solid var(--border3); box-shadow:var(--pop-shadow); padding:16px; animation:var(--rise);">
+              <div style="font-size:13px; font-weight:700; margin-bottom:14px;">{{ t.setT }}</div>
+
+              <div style="font-size:10.5px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:7px;">{{ t.appear }}</div>
+              <div style="display:flex; gap:4px; background:var(--inset); border:1px solid var(--border2); border-radius:9px; padding:3px; margin-bottom:14px;">
+                <button onClick="{{ setDark }}" style="{{ segDark }}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="margin-right:5px; vertical-align:-1px;"><path d="M20 13A8 8 0 1111 4a6.5 6.5 0 009 9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>{{ t.darkW }}</button>
+                <button onClick="{{ setLight }}" style="{{ segLight }}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="margin-right:5px; vertical-align:-1px;"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>{{ t.lightW }}</button>
+              </div>
+
+              <div style="font-size:10.5px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:7px;">{{ t.langL }}</div>
+              <div style="display:flex; gap:4px; background:var(--inset); border:1px solid var(--border2); border-radius:9px; padding:3px; margin-bottom:16px;">
+                <button onClick="{{ setDe }}" style="{{ segDe }}">Deutsch</button>
+                <button onClick="{{ setEn }}" style="{{ segEn }}">English</button>
+                <button onClick="{{ setEs }}" style="{{ segEs }}">Español</button>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-top:1px solid var(--divider);">
+                <span style="font-size:13px; font-weight:500; color:var(--text2);">{{ t.animL }}</span>
+                <button onClick="{{ toggleAnim }}" style="{{ animTrack }}"><span style="{{ animKnob }}"></span></button>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-top:1px solid var(--divider);">
+                <div><div style="font-size:13px; font-weight:500; color:var(--text2);">{{ t.focusL }}</div><div style="font-size:11px; color:var(--mut2);">{{ t.focusS }}</div></div>
+                <button onClick="{{ toggleFocus }}" style="{{ focusTrack }}"><span style="{{ focusKnob }}"></span></button>
+              </div>
+
+              <div style="font-size:10.5px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin:10px 0 7px; padding-top:10px; border-top:1px solid var(--divider);">{{ t.edSize }}</div>
+              <div style="display:flex; gap:4px; background:var(--inset); border:1px solid var(--border2); border-radius:9px; padding:3px;">
+                <button onClick="{{ sizeS }}" style="{{ segS }}">S</button>
+                <button onClick="{{ sizeM }}" style="{{ segM }}">M</button>
+                <button onClick="{{ sizeL }}" style="{{ segL }}">L</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(150deg,var(--avatar-a),var(--avatar-b)); border:1px solid var(--avatar-border); display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:600; color:var(--text2);">AL</div>
+      </div>
+    </header>
+
+    <div style="flex:1; overflow-y:auto;">
+
+      <!-- ============ DASHBOARD ============ -->
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="Dashboard" style="max-width:1120px; margin:0 auto; padding:34px 40px 60px; animation:var(--rise);">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:26px;">
+            <div>
+              <div style="font-size:12.5px; color:var(--mut2); font-weight:500; margin-bottom:5px;">{{ t.date }} · {{ t.phaseEF }}</div>
+              <h1 style="font-size:27px; font-weight:700; letter-spacing:-0.6px;">{{ t.greet }}</h1>
+            </div>
+            <button onClick="{{ goLesson }}" style="display:flex; align-items:center; gap:8px; padding:10px 17px; border-radius:10px; background:var(--accent); color:var(--on-accent); font-size:13.5px; font-weight:600; border:none; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px var(--accent-shadow);">
+              {{ t.contBtn }}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start;">
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <div style="border-radius:16px; padding:24px; background:linear-gradient(150deg,var(--card-a),var(--card-b)); border:1px solid var(--card-border); position:relative; overflow:hidden;">
+                <div style="position:absolute; top:-40px; right:-30px; width:180px; height:180px; background:radial-gradient(circle,var(--accent-radial),transparent 70%);"></div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                  <span style="font-size:11px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.6px;">{{ t.resume }}</span>
+                  <span style="width:4px; height:4px; border-radius:50%; background:var(--lock);"></span>
+                  <span style="font-size:11px; color:var(--mut2);">{{ t.ch3 }}</span>
+                </div>
+                <h2 style="font-size:20px; font-weight:700; letter-spacing:-0.3px; margin-bottom:6px;">{{ t.l33 }}</h2>
+                <p style="font-size:13.5px; color:var(--mut); line-height:1.55; max-width:440px; margin-bottom:20px;">{{ t.ldA }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--code-fn); background:var(--chip-bg); padding:1px 6px; border-radius:5px;">for</code>{{ t.ldB }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--code-fn); background:var(--chip-bg); padding:1px 6px; border-radius:5px;">while</code>{{ t.ldC }}</p>
+                <div style="display:flex; align-items:center; gap:16px;">
+                  <button onClick="{{ goLesson }}" style="display:flex; align-items:center; gap:8px; padding:9px 16px; border-radius:9px; background:var(--elev); color:var(--text); font-size:13px; font-weight:600; border:1px solid var(--elev-border); cursor:pointer; font-family:inherit;">
+                    {{ t.openLesson }}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between; font-size:11.5px; color:var(--mut2); margin-bottom:6px;"><span>{{ t.chProg }}</span><span style="color:var(--mut);">{{ t.lCount }}</span></div>
+                    <div style="height:6px; border-radius:4px; background:var(--dot); overflow:hidden;"><div style="width:60%; height:100%; background:linear-gradient(90deg,var(--accent2),var(--accent)); border-radius:4px;"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+                <div style="border-radius:14px; padding:18px; background:var(--panel); border:1px solid var(--border);">
+                  <div style="font-size:11px; color:var(--mut2); font-weight:500; margin-bottom:10px;">{{ t.streakL }}</div>
+                  <div style="display:flex; align-items:baseline; gap:6px;"><span style="font-size:26px; font-weight:700; letter-spacing:-0.5px;">12</span><span style="font-size:12px; color:var(--mut);">{{ t.daysL }}</span></div>
+                  <div style="display:flex; gap:4px; margin-top:12px;">
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--accent2);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--accent2);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--accent2);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--accent2);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--accent2);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--dot);"></span>
+                    <span style="flex:1; height:5px; border-radius:3px; background:var(--dot);"></span>
+                  </div>
+                </div>
+                <div style="border-radius:14px; padding:18px; background:var(--panel); border:1px solid var(--border);">
+                  <div style="font-size:11px; color:var(--mut2); font-weight:500; margin-bottom:10px;">{{ t.xpL }}</div>
+                  <div style="display:flex; align-items:baseline; gap:6px;"><span style="font-size:26px; font-weight:700; letter-spacing:-0.5px; color:var(--accent); white-space:nowrap;">{{ t.xpVal }}</span><span style="font-size:12px; color:var(--mut);">XP</span></div>
+                  <div style="font-size:11.5px; color:var(--mut2); margin-top:12px;">{{ t.lvlA }}<span style="color:var(--mut);">{{ t.lvlB }}</span></div>
+                </div>
+                <div style="border-radius:14px; padding:18px; background:var(--panel); border:1px solid var(--border);">
+                  <div style="font-size:11px; color:var(--mut2); font-weight:500; margin-bottom:10px;">{{ t.badgesL }}</div>
+                  <div style="display:flex; align-items:baseline; gap:6px;"><span style="font-size:26px; font-weight:700; letter-spacing:-0.5px;">9</span><span style="font-size:12px; color:var(--mut);">{{ t.badgesOf }}</span></div>
+                  <div style="display:flex; gap:5px; margin-top:11px;">
+                    <span style="width:22px; height:22px; border-radius:7px; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5L12 3z" fill="var(--accent)"/></svg></span>
+                    <span style="width:22px; height:22px; border-radius:7px; background:var(--info-chip); display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3" stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span style="width:22px; height:22px; border-radius:7px; background:var(--warn-chip); display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-1 4-1 6a3 3 0 006 0c0-1 0-2-1-3 3 2 5 5 5 9a8 8 0 01-16 0c0-4 3-6 4-8z" fill="var(--warn)"/></svg></span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="border-radius:16px; padding:22px 24px; background:var(--panel); border:1px solid var(--border);">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+                  <h3 style="font-size:15px; font-weight:600;">{{ t.pathT }}</h3>
+                  <span style="font-size:12px; color:var(--mut2);">{{ t.pathSub }}</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                  <div style="display:flex; align-items:center; gap:14px; padding:11px 4px;">
+                    <span style="width:26px; height:26px; flex:none; border-radius:8px; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div style="flex:1;"><div style="font-size:13.5px; font-weight:500; color:var(--text2);">{{ t.n1 }}</div></div>
+                    <span style="font-size:12px; color:var(--accent); font-weight:600;">100%</span>
+                  </div>
+                  <div style="height:1px; background:var(--divider);"></div>
+                  <div style="display:flex; align-items:center; gap:14px; padding:11px 4px;">
+                    <span style="width:26px; height:26px; flex:none; border-radius:8px; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div style="flex:1;"><div style="font-size:13.5px; font-weight:500; color:var(--text2);">{{ t.n2 }}</div></div>
+                    <span style="font-size:12px; color:var(--accent); font-weight:600;">100%</span>
+                  </div>
+                  <div style="height:1px; background:var(--divider);"></div>
+                  <div style="display:flex; align-items:center; gap:14px; padding:11px 4px;">
+                    <span style="width:26px; height:26px; flex:none; border-radius:8px; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;"><span style="width:7px; height:7px; border-radius:50%; background:var(--accent);"></span></span>
+                    <div style="flex:1;"><div style="font-size:13.5px; font-weight:600; color:var(--text);">{{ t.n3 }}</div><div style="height:4px; margin-top:6px; width:180px; border-radius:3px; background:var(--dot); overflow:hidden;"><div style="width:60%; height:100%; background:var(--accent2);"></div></div></div>
+                    <span style="font-size:12px; color:var(--mut); font-weight:600;">60%</span>
+                  </div>
+                  <div style="height:1px; background:var(--divider);"></div>
+                  <div style="display:flex; align-items:center; gap:14px; padding:11px 4px; opacity:0.55;">
+                    <span style="width:26px; height:26px; flex:none; border-radius:8px; border:1.5px solid var(--border3); display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--dis)" stroke-width="2"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--dis)" stroke-width="2"/></svg></span>
+                    <div style="flex:1;"><div style="font-size:13.5px; font-weight:500; color:var(--mut);">{{ t.n4 }}</div></div>
+                    <span style="font-size:12px; color:var(--dis);">{{ t.locked }}</span>
+                  </div>
+                  <div style="height:1px; background:var(--divider);"></div>
+                  <div style="display:flex; align-items:center; gap:14px; padding:11px 4px; opacity:0.55;">
+                    <span style="width:26px; height:26px; flex:none; border-radius:8px; border:1.5px solid var(--border3); display:flex; align-items:center; justify-content:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5L12 3z" stroke="var(--dis)" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+                    <div style="flex:1;"><div style="font-size:13.5px; font-weight:500; color:var(--mut);">{{ t.nProj }}</div></div>
+                    <span style="font-size:12px; color:var(--dis);">{{ t.locked }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <div style="border-radius:16px; padding:22px; background:var(--panel); border:1px solid var(--border);">
+                <h3 style="font-size:14px; font-weight:600; margin-bottom:18px;">{{ t.railLvlT }}</h3>
+                <div style="display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+                  <div style="position:relative; width:132px; height:132px;">
+                    <svg width="132" height="132" viewBox="0 0 132 132" style="transform:rotate(-90deg);">
+                      <circle cx="66" cy="66" r="56" fill="none" stroke="var(--dot)" stroke-width="10"/>
+                      <circle cx="66" cy="66" r="56" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="123" style="--from:351.9; animation:var(--dash);"/>
+                    </svg>
+                    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                      <span style="font-size:30px; font-weight:700; letter-spacing:-0.5px;">6</span>
+                      <span style="font-size:10.5px; color:var(--mut2); text-transform:uppercase; letter-spacing:0.6px;">{{ t.lvlWord }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align:center; font-size:12px; color:var(--mut);">{{ t.railXp }}</div>
+              </div>
+
+              <div style="border-radius:16px; padding:22px; background:var(--panel); border:1px solid var(--border);">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;"><h3 style="font-size:14px; font-weight:600;">{{ t.recentT }}</h3></div>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="width:38px; height:38px; flex:none; border-radius:11px; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5L12 3z" fill="var(--accent)"/></svg></span>
+                    <div><div style="font-size:13px; font-weight:600;">{{ t.b1T }}</div><div style="font-size:11.5px; color:var(--mut2);">{{ t.b1S }}</div></div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="width:38px; height:38px; flex:none; border-radius:11px; background:var(--warn-chip); display:flex; align-items:center; justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-1 4-1 6a3 3 0 006 0c0-1 0-2-1-3 3 2 5 5 5 9a8 8 0 01-16 0c0-4 3-6 4-8z" fill="var(--warn)"/></svg></span>
+                    <div><div style="font-size:13px; font-weight:600;">{{ t.b2T }}</div><div style="font-size:11.5px; color:var(--mut2);">{{ t.b2S }}</div></div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="width:38px; height:38px; flex:none; border-radius:11px; background:var(--info-chip); display:flex; align-items:center; justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12" stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <div><div style="font-size:13px; font-weight:600;">{{ t.b3T }}</div><div style="font-size:11.5px; color:var(--mut2);">{{ t.b3S }}</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ LEKTION ============ -->
+      <sc-if value="{{ isLesson }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Lektion" style="max-width:820px; margin:0 auto; padding:34px 40px 80px; animation:var(--rise);">
+          <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--mut2); margin-bottom:16px;">
+            <span>{{ t.phaseEF }}</span><span style="color:var(--lock);">/</span><span>{{ t.bcCh }}</span><span style="color:var(--lock);">/</span><span style="color:var(--accent);">{{ t.bcLes }}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <span style="font-size:11px; font-weight:600; color:var(--info); background:var(--info-chip); padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px;">{{ t.theory }}</span>
+            <span style="font-size:12px; color:var(--mut2);">{{ t.readTime }}</span>
+          </div>
+          <h1 style="font-size:30px; font-weight:700; letter-spacing:-0.7px; margin-bottom:18px;">{{ t.lesTitle }}<span style="font-family:'JetBrains Mono',monospace; font-size:25px; color:var(--code-kw);">if / else</span></h1>
+
+          <p style="font-size:15.5px; line-height:1.72; color:var(--text3); margin-bottom:20px;">{{ t.p1a }}<em style="color:var(--text); font-style:normal; font-weight:500;">{{ t.p1em }}</em>{{ t.p1b }}<strong style="color:var(--text); font-weight:600;">{{ t.p1st }}</strong>{{ t.p1c }}</p>
+
+          <h2 style="font-size:19px; font-weight:600; letter-spacing:-0.3px; margin:34px 0 12px;">{{ t.h2a }}</h2>
+          <p style="font-size:15.5px; line-height:1.72; color:var(--text3); margin-bottom:20px;">{{ t.p2a }}<code style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--accent); background:var(--chip-bg); padding:1px 6px; border-radius:5px;">true</code>{{ t.p2b }}<code style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--false-t); background:var(--false-bg); padding:1px 6px; border-radius:5px;">false</code>{{ t.p2c }}<code style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--accent); background:var(--chip-bg); padding:1px 6px; border-radius:5px;">true</code>{{ t.p2d }}</p>
+
+          <div style="border-radius:12px; border:1px solid var(--code-border); overflow:hidden; margin-bottom:24px; background:var(--panel2);">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:9px 14px; border-bottom:1px solid var(--code-border); background:var(--panel);">
+              <div style="display:flex; align-items:center; gap:7px;"><span style="width:11px; height:11px; border-radius:50%; background:var(--dot);"></span><span style="width:11px; height:11px; border-radius:50%; background:var(--dot);"></span><span style="width:11px; height:11px; border-radius:50%; background:var(--dot);"></span></div>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--faint);">Volljaehrig.java</span>
+            </div>
+            <pre style="margin:0; padding:16px 18px; font-family:'JetBrains Mono',monospace; font-size:var(--code-size); line-height:1.75; color:var(--code-text); overflow-x:auto;"><span style="color:var(--code-kw);">int</span> alter = <span style="color:var(--code-num);">18</span>;
+
+<span style="color:var(--code-kw);">if</span> (alter <span style="color:var(--code-op);">&gt;=</span> <span style="color:var(--code-num);">18</span>) {
+    <span style="color:var(--code-type);">System</span>.out.<span style="color:var(--code-fn);">println</span>(<span style="color:var(--code-str);">"{{ t.codeAdult }}"</span>);
+} <span style="color:var(--code-kw);">else</span> {
+    <span style="color:var(--code-type);">System</span>.out.<span style="color:var(--code-fn);">println</span>(<span style="color:var(--code-str);">"{{ t.codeMinor }}"</span>);
+}</pre>
+          </div>
+
+          <div style="display:flex; gap:13px; border-radius:12px; padding:16px 18px; background:var(--info-bg); border:1px solid var(--info-border); margin-bottom:26px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex:none; margin-top:1px;"><circle cx="12" cy="12" r="9" stroke="var(--info)" stroke-width="1.8"/><path d="M12 11v5M12 8h.01" stroke="var(--info)" stroke-width="2" stroke-linecap="round"/></svg>
+            <div><div style="font-size:13px; font-weight:600; color:var(--info-t); margin-bottom:3px;">{{ t.calloutT }}</div><p style="font-size:13.5px; line-height:1.6; color:var(--info-b);">{{ t.coA }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--code-kw);">else</code>{{ t.coB }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px;">false</code>{{ t.coC }}</p></div>
+          </div>
+
+          <h2 style="font-size:19px; font-weight:600; letter-spacing:-0.3px; margin:34px 0 12px;">{{ t.h2b }}</h2>
+          <p style="font-size:15.5px; line-height:1.72; color:var(--text3); margin-bottom:18px;">{{ t.p3 }}</p>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:30px;">
+            <div style="border-radius:10px; padding:13px 15px; background:var(--panel); border:1px solid var(--border);"><div style="font-family:'JetBrains Mono',monospace; font-size:15px; color:var(--code-op); margin-bottom:4px;">==</div><div style="font-size:12px; color:var(--mut);">{{ t.opEq }}</div></div>
+            <div style="border-radius:10px; padding:13px 15px; background:var(--panel); border:1px solid var(--border);"><div style="font-family:'JetBrains Mono',monospace; font-size:15px; color:var(--code-op); margin-bottom:4px;">!=</div><div style="font-size:12px; color:var(--mut);">{{ t.opNeq }}</div></div>
+            <div style="border-radius:10px; padding:13px 15px; background:var(--panel); border:1px solid var(--border);"><div style="font-family:'JetBrains Mono',monospace; font-size:15px; color:var(--code-op); margin-bottom:4px;">&gt;=  &lt;=</div><div style="font-size:12px; color:var(--mut);">{{ t.opGte }}</div></div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; padding-top:26px; border-top:1px solid var(--border);">
+            <button style="display:flex; align-items:center; gap:8px; padding:10px 16px; border-radius:9px; background:transparent; color:var(--mut); font-size:13px; font-weight:500; border:1px solid var(--border3); cursor:pointer; font-family:inherit;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ t.prevBtn }}
+            </button>
+            <button onClick="{{ goEx }}" style="display:flex; align-items:center; gap:8px; padding:11px 18px; border-radius:9px; background:var(--accent); color:var(--on-accent); font-size:13.5px; font-weight:600; border:none; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px var(--accent-shadow);">
+              {{ t.toExBtn }}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ ÜBUNG ============ -->
+      <sc-if value="{{ isExercise }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Übung" style="height:100%; display:grid; grid-template-columns:400px 1fr; grid-template-rows:minmax(0,1fr); animation:var(--rise);">
+          <div style="border-right:1px solid var(--border); padding:30px 30px 40px; overflow-y:auto; min-height:0;">
+            <div style="display:flex; align-items:center; gap:9px; margin-bottom:14px;">
+              <span style="font-size:11px; font-weight:600; color:var(--accent); background:var(--accent-bg); padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.5px;">{{ t.exTag }}</span>
+              <div style="display:flex; gap:3px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent);"></span><span style="width:6px; height:6px; border-radius:50%; background:var(--accent);"></span><span style="width:6px; height:6px; border-radius:50%; background:var(--dot);"></span></div>
+              <span style="font-size:11.5px; color:var(--mut2);">{{ t.diffMid }}</span>
+            </div>
+            <h1 style="font-size:22px; font-weight:700; letter-spacing:-0.4px; margin-bottom:14px;">{{ t.exTitle }}</h1>
+            <p style="font-size:14px; line-height:1.68; color:var(--sub); margin-bottom:16px;">{{ t.exA }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--code-fn); background:var(--chip-bg); padding:1px 5px; border-radius:4px;">zahl</code>{{ t.exB }}<strong style="color:var(--text); font-weight:600;">{{ t.exEven }}</strong>{{ t.exOr }}<strong style="color:var(--text); font-weight:600;">{{ t.exOdd }}</strong>{{ t.exC }}</p>
+            <div style="border-radius:11px; padding:15px 16px; background:var(--panel); border:1px solid var(--border); margin-bottom:16px;">
+              <div style="font-size:11px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:9px;">{{ t.expL }}</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--code-str);">{{ t.expOut }}</div>
+            </div>
+            <div style="display:flex; gap:11px; border-radius:11px; padding:14px 16px; background:var(--tip-bg); border:1px solid var(--tip-border);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex:none; margin-top:1px;"><path d="M9 18h6M10 21h4M12 3a6 6 0 013.5 10.9c-.5.4-.5.8-.5 1.1H9c0-.3 0-.7-.5-1.1A6 6 0 0112 3z" stroke="var(--tip)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><div style="font-size:12.5px; font-weight:600; color:var(--tip-t); margin-bottom:3px;">{{ t.tipT }}</div><p style="font-size:13px; line-height:1.55; color:var(--tip-b);">{{ t.tipA }}<code style="font-family:'JetBrains Mono',monospace; color:var(--tip);">%</code>{{ t.tipB }}<code style="font-family:'JetBrains Mono',monospace; color:var(--tip);">zahl % 2 == 0</code>{{ t.tipC }}<code style="font-family:'JetBrains Mono',monospace;">zahl</code>{{ t.tipD }}</p></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; min-width:0; min-height:0; background:var(--panel2);">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:11px 18px; border-bottom:1px solid var(--border); background:var(--panel);">
+              <div style="display:flex; align-items:center; gap:9px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 3v5h5" stroke="var(--mut2)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3H6a1 1 0 00-1 1v16a1 1 0 001 1h12a1 1 0 001-1V8l-5-5z" stroke="var(--mut2)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--sub);">Main.java</span>
+              </div>
+              <button onClick="{{ run }}" style="display:flex; align-items:center; gap:7px; padding:7px 15px; border-radius:8px; background:var(--accent); color:var(--on-accent); font-size:12.5px; font-weight:600; border:none; cursor:pointer; font-family:inherit;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8V4z"/></svg>
+                {{ t.run }}
+              </button>
+            </div>
+
+            <div style="flex:1; display:flex; min-height:0; overflow:auto;">
+              <div style="flex:none; padding:16px 0; text-align:right; user-select:none;">
+                <div style="font-family:'JetBrains Mono',monospace; font-size:var(--code-size); line-height:1.75; color:var(--code-ln); padding:0 14px;">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11</div>
+              </div>
+              <pre style="flex:1; margin:0; padding:16px 18px 16px 4px; font-family:'JetBrains Mono',monospace; font-size:var(--code-size); line-height:1.75; color:var(--code-text);"><span style="color:var(--code-kw);">public class</span> <span style="color:var(--code-type);">Main</span> {
+    <span style="color:var(--code-kw);">public static void</span> <span style="color:var(--code-fn);">main</span>(<span style="color:var(--code-type);">String</span>[] args) {
+        <span style="color:var(--code-kw);">int</span> zahl = <span style="color:var(--code-num);">7</span>;
+
+        <span style="color:var(--code-kw);">if</span> (zahl <span style="color:var(--code-op);">%</span> <span style="color:var(--code-num);">2</span> <span style="color:var(--code-op);">==</span> <span style="color:var(--code-num);">0</span>) {
+            <span style="color:var(--code-type);">System</span>.out.<span style="color:var(--code-fn);">println</span>(zahl <span style="color:var(--code-op);">+</span> <span style="color:var(--code-str);">"{{ t.strOdd }}"</span>);
+        } <span style="color:var(--code-kw);">else</span> {
+            <span style="color:var(--code-type);">System</span>.out.<span style="color:var(--code-fn);">println</span>(zahl <span style="color:var(--code-op);">+</span> <span style="color:var(--code-str);">"{{ t.strEven }}"</span>);
+        }
+    }
+}</pre>
+            </div>
+
+            <sc-if value="{{ notRan }}" hint-placeholder-val="{{ true }}">
+              <div style="flex:none; padding:16px 18px; border-top:1px solid var(--border); background:var(--sidebar); display:flex; align-items:center; gap:10px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 4l14 8-14 8V4z" stroke="var(--dis)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                <span style="font-size:12.5px; color:var(--mut2);">{{ t.hintRun }}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ ran }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:none; max-height:44%; overflow-y:auto; border-top:1px solid var(--border); background:var(--sidebar); animation:var(--rise);">
+                <div style="padding:14px 18px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--divider);">
+                  <div style="display:flex; align-items:center; gap:9px;">
+                    <span style="width:18px; height:18px; border-radius:50%; background:var(--accent-bg2); display:flex; align-items:center; justify-content:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="var(--accent)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span style="font-size:12.5px; font-weight:600; color:var(--text2);">{{ t.compiled }}</span>
+                  </div>
+                  <button onClick="{{ reset }}" style="font-size:11.5px; color:var(--mut2); background:transparent; border:none; cursor:pointer; font-family:inherit;">{{ t.resetL }}</button>
+                </div>
+
+                <div style="padding:14px 18px 4px;">
+                  <div style="font-size:10.5px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">{{ t.consoleL }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--code-text); background:var(--inset); border:1px solid var(--code-hd); border-radius:8px; padding:11px 13px;">{{ t.outActual }}</div>
+                </div>
+
+                <div style="padding:14px 18px 4px;">
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:9px;">
+                    <span style="width:16px; height:16px; border-radius:50%; background:var(--err-bg); display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="var(--err)" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+                    <span style="font-size:12.5px; font-weight:600; color:var(--err-t);">{{ t.diffT }}</span>
+                  </div>
+                  <div style="border-radius:8px; overflow:hidden; border:1px solid var(--code-hd); font-family:'JetBrains Mono',monospace; font-size:12.5px;">
+                    <div style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--ok-row);"><span style="color:var(--accent); font-weight:600;">＋</span><span style="color:var(--mut2); width:78px;">{{ t.expWord }}</span><span style="color:var(--code-str);">{{ t.expOut }}</span></div>
+                    <div style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--err-row); border-top:1px solid var(--code-hd);"><span style="color:var(--err); font-weight:600;">－</span><span style="color:var(--mut2); width:78px;">{{ t.gotWord }}</span><span style="color:var(--err-t);">{{ t.outActual }}</span></div>
+                  </div>
+                </div>
+
+                <div style="padding:14px 18px 18px;">
+                  <div style="display:flex; gap:11px; border-radius:10px; padding:13px 15px; background:var(--warn-bg); border:1px solid var(--warn-border);">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="flex:none; margin-top:1px;"><path d="M12 9v4M12 17h.01M10.3 4.3l-7 12A2 2 0 005 19.5h14a2 2 0 001.7-3.2l-7-12a2 2 0 00-3.4 0z" stroke="var(--warn)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <div><div style="font-size:12.5px; font-weight:600; color:var(--warn-t); margin-bottom:3px;">{{ t.anaT }}</div><p style="font-size:13px; line-height:1.6; color:var(--warn-b);">{{ t.anaA }}<code style="font-family:'JetBrains Mono',monospace; color:var(--warn-t);">zahl % 2 == 0</code>{{ t.anaB }}<em style="font-style:normal; color:var(--warn-t);">{{ t.exEven }}</em>{{ t.anaC }}</p></div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ PROJEKT ============ -->
+      <sc-if value="{{ isProject }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Projekt" style="max-width:760px; margin:0 auto; padding:48px 40px 80px; text-align:center; animation:var(--rise);">
+          <div style="display:inline-flex; align-items:center; justify-content:center; width:88px; height:88px; border-radius:24px; background:linear-gradient(150deg,var(--accent-bg2),var(--accent-bg)); border:1px solid var(--accent-border2); margin-bottom:24px; animation:var(--glow);">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-2.8L7 19l1-6-4-4 5.5-.5L12 3z" fill="var(--accent)"/></svg>
+          </div>
+          <div style="font-size:12px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">{{ t.doneTag }}</div>
+          <h1 style="font-size:30px; font-weight:700; letter-spacing:-0.7px; margin-bottom:12px;">{{ t.prTitle }}</h1>
+          <p style="font-size:15px; line-height:1.65; color:var(--mut); max-width:480px; margin:0 auto 30px;">{{ t.prSub }}</p>
+
+          <div style="display:flex; justify-content:center; gap:14px; margin-bottom:34px;">
+            <div style="border-radius:14px; padding:16px 22px; background:var(--panel); border:1px solid var(--border); min-width:110px;"><div style="font-size:24px; font-weight:700; color:var(--accent); letter-spacing:-0.5px;">+180</div><div style="font-size:11.5px; color:var(--mut2); margin-top:2px;">{{ t.xpEarned }}</div></div>
+            <div style="border-radius:14px; padding:16px 22px; background:var(--panel); border:1px solid var(--border); min-width:110px;"><div style="font-size:24px; font-weight:700; letter-spacing:-0.5px;">5 / 5</div><div style="font-size:11.5px; color:var(--mut2); margin-top:2px;">{{ t.lessonsW }}</div></div>
+            <div style="border-radius:14px; padding:16px 22px; background:var(--panel); border:1px solid var(--border); min-width:110px;"><div style="font-size:24px; font-weight:700; letter-spacing:-0.5px;">98%</div><div style="font-size:11.5px; color:var(--mut2); margin-top:2px;">{{ t.accW }}</div></div>
+          </div>
+
+          <div style="text-align:left; border-radius:16px; padding:26px; background:linear-gradient(150deg,var(--card-a),var(--card-b)); border:1px solid var(--card-border); position:relative; overflow:hidden;">
+            <div style="position:absolute; top:-30px; right:-20px; width:160px; height:160px; background:radial-gradient(circle,var(--accent-radial),transparent 70%);"></div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font-size:11px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.6px;">{{ t.prCardTag }}</span>
+              <span style="font-size:11px; color:var(--mut2);">{{ t.unlockedW }}</span>
+            </div>
+            <h2 style="font-size:20px; font-weight:700; letter-spacing:-0.3px; margin-bottom:8px;">{{ t.prName }}</h2>
+            <p style="font-size:14px; line-height:1.6; color:var(--mut); max-width:520px; margin-bottom:20px;">{{ t.prDescA }}<code style="font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--code-kw);">if/else</code>{{ t.prDescB }}</p>
+            <div style="display:flex; align-items:center; gap:16px;">
+              <button style="display:flex; align-items:center; gap:8px; padding:11px 18px; border-radius:9px; background:var(--accent); color:var(--on-accent); font-size:13.5px; font-weight:600; border:none; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px var(--accent-shadow);">
+                {{ t.startPr }}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div style="display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--mut2);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--mut2)" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="var(--mut2)" stroke-width="1.8" stroke-linecap="round"/></svg>
+                {{ t.dur }}
+              </div>
+            </div>
+          </div>
+
+          <button onClick="{{ goDash }}" style="margin-top:24px; font-size:13px; color:var(--mut); background:transparent; border:none; cursor:pointer; font-family:inherit; text-decoration:underline; text-underline-offset:3px;">{{ t.later }}</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <!-- ============ INVITE MODAL ============ -->
+  <sc-if value="{{ inviteOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeInvite }}" style="position:fixed; inset:0; z-index:60; background:rgba(6,8,10,0.62); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stop }}" data-screen-label="Einladen" style="width:560px; max-width:100%; border-radius:20px; background:var(--panel); border:1px solid var(--border3); box-shadow:var(--pop-shadow); overflow:hidden; animation:jl-pop .28s ease;">
+        <div style="display:flex; align-items:flex-start; gap:14px; padding:24px 24px 20px; border-bottom:1px solid var(--divider); position:relative;">
+          <div style="width:44px; height:44px; flex:none; border-radius:13px; background:var(--accent-bg2); border:1px solid var(--accent-border); display:flex; align-items:center; justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 19v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1M8.5 10a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM19 8v6M22 11h-6" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1; padding-right:28px;">
+            <h2 style="font-size:18px; font-weight:700; letter-spacing:-0.3px; margin-bottom:4px;">{{ t.invTitle }}</h2>
+            <p style="font-size:13px; line-height:1.5; color:var(--mut);">{{ t.invSub }}</p>
+          </div>
+          <button onClick="{{ closeInvite }}" style="position:absolute; top:20px; right:20px; width:28px; height:28px; border-radius:8px; background:var(--inset); border:1px solid var(--border2); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--mut2);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:172px 1fr; gap:22px; padding:24px;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:11px;">
+            <div style="width:172px; height:172px; border-radius:14px; background:#FFFFFF; border:1px solid var(--border2); padding:12px; box-shadow:0 4px 16px rgba(0,0,0,0.18);">{{ qrSvg }}</div>
+            <span style="font-size:11.5px; color:var(--mut2); font-weight:500;">{{ t.invScan }}</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px; min-width:0;">
+            <div>
+              <div style="font-size:11px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">{{ t.invLinkL }}</div>
+              <div style="display:flex; gap:8px;">
+                <div style="flex:1; min-width:0; display:flex; align-items:center; padding:0 12px; height:38px; border-radius:9px; background:var(--inset); border:1px solid var(--border2); font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">javalernen.app/join/JAVA-EF-7K2</div>
+                <button onClick="{{ copyLink }}" style="{{ copyStyle }}">
+                  <sc-if value="{{ notCopied }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px; margin-right:5px;"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.9"/><path d="M5 15V5a2 2 0 012-2h8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>{{ t.invCopy }}</sc-if>
+                  <sc-if value="{{ copied }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px; margin-right:5px;"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ t.invCopied }}</sc-if>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:12px;">
+              <div style="flex:1;">
+                <div style="font-size:11px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">{{ t.invCodeL }}</div>
+                <div style="display:flex; align-items:center; justify-content:center; height:38px; border-radius:9px; background:var(--accent-bg); border:1px solid var(--accent-border); font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:600; letter-spacing:2px; color:var(--accent);">JAVA-EF-7K2</div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:11px; font-weight:600; color:var(--mut2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">{{ t.invClassL }}</div>
+                <div style="display:flex; align-items:center; padding:0 12px; height:38px; border-radius:9px; background:var(--inset); border:1px solid var(--border2); font-size:12.5px; font-weight:500; color:var(--text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ t.invClassName }}</div>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--mut2); line-height:1.5;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex:none;"><circle cx="12" cy="12" r="9" stroke="var(--mut2)" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="var(--mut2)" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>{{ t.invNote }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-top:1px solid var(--divider); background:var(--panel2);">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="display:flex;">
+              <span style="width:26px; height:26px; border-radius:50%; background:var(--accent-bg2); border:2px solid var(--panel2); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:var(--accent);">LM</span>
+              <span style="width:26px; height:26px; border-radius:50%; background:var(--info-chip); border:2px solid var(--panel2); margin-left:-8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:var(--info);">St</span>
+              <span style="width:26px; height:26px; border-radius:50%; background:var(--warn-chip); border:2px solid var(--panel2); margin-left:-8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:var(--warn);">JK</span>
+            </div>
+            <span style="font-size:12px; color:var(--mut);">{{ t.invMembers }}</span>
+          </div>
+          <div style="display:flex; gap:9px;">
+            <button style="display:flex; align-items:center; gap:7px; padding:9px 14px; border-radius:9px; background:transparent; border:1px solid var(--border3); color:var(--text2); font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 7l8 5 8-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {{ t.invEmail }}
+            </button>
+            <button onClick="{{ closeInvite }}" style="padding:9px 18px; border-radius:9px; background:var(--accent); border:none; color:var(--on-accent); font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit;">{{ t.invClose }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:840},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;,&quot;section&quot;:&quot;Darstellung&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;de&quot;,&quot;en&quot;,&quot;es&quot;],&quot;default&quot;:&quot;de&quot;,&quot;tsType&quot;:&quot;'de'|'en'|'es'&quot;,&quot;section&quot;:&quot;Darstellung&quot;}}">
+class Component extends DCLogic {
+  state = { view: 'dashboard', online: true, ran: false, settingsOpen: false, anim: true, focus: false, codeSize: 'm', theme: null, lang: null, inviteOpen: false, copied: false, qrReady: false };
+
+  inviteUrl = 'https://javalernen.app/join/JAVA-EF-7K2';
+
+  i18n = {
+    de: {
+      subBrand: 'Informatik · Oberstufe', phaseEF: 'Einführungsphase',
+      s1: '1 · Klassen & Objekte', s2: '2 · Attribute & Methoden', s3: '3 · Kontrollstrukturen', s4: '4 · Objektbeziehungen', s5: '5 · Vererbung', s6: 'Kapitel-Projekt',
+      q1: 'Q1 · Datenstrukturen', q2: 'Q2 · Rekursion & SQL',
+      onT: 'Synchronisiert', onS: 'Alle Inhalte lokal · aktuell', offT: 'Offline-Modus', offS: 'Lokal gespeichert · Sync ausstehend',
+      tDash: 'Dashboard', tLesson: 'Lektion', tEx: 'Übung', tProj: 'Projekt', tDays: 'Tage',
+      date: 'Samstag, 4. Juli', greet: 'Guten Abend, Alberto', contBtn: 'Weiter lernen', resume: 'Fortsetzen',
+      ch3: 'Kapitel 3 · Kontrollstrukturen', l33: 'Lektion 3.3 — Schleifen',
+      ldA: 'Wiederhole Anweisungen mit ', ldB: '- und ', ldC: '-Schleifen — und lerne, Endlosschleifen zu vermeiden.',
+      openLesson: 'Lektion öffnen', chProg: 'Kapitel-Fortschritt', lCount: '3 / 5 Lektionen',
+      streakL: 'Aktueller Streak', daysL: 'Tage', xpL: 'Erfahrung', xpVal: '2 480', lvlA: 'Level 6 · ', lvlB: '320 XP bis Level 7',
+      badgesL: 'Abzeichen', badgesOf: 'von 24',
+      pathT: 'Lernpfad · Einführungsphase', pathSub: '2 von 6 Kapiteln abgeschlossen', locked: 'Gesperrt',
+      n1: 'Klassen & Objekte', n2: 'Attribute & Methoden', n3: 'Kontrollstrukturen', n4: 'Objektbeziehungen', nProj: 'Kapitel-Projekt · Bankkonto',
+      railLvlT: 'Level-Fortschritt', lvlWord: 'Level', railXp: '680 / 1000 XP · noch 320',
+      recentT: 'Zuletzt verdient', b1T: 'Perfektes Kapitel', b1S: 'Alle Übungen ohne Fehler', b2T: '10-Tage-Streak', b2S: 'Zehn Tage in Folge gelernt', b3T: 'Erste Klasse', b3S: 'Erstes eigenes Objekt erzeugt',
+      bcCh: 'Kapitel 3', bcLes: 'Lektion 3.1', theory: 'Theorie', readTime: '≈ 8 Min. Lesezeit', lesTitle: 'Verzweigungen mit ',
+      p1a: 'Bisher wurde jede Anweisung deiner Programme genau einmal ausgeführt, von oben nach unten. In echten Programmen müssen Entscheidungen getroffen werden: ', p1em: 'Nur wenn', p1b: ' eine bestimmte Bedingung zutrifft, soll ein Codeblock laufen. Genau das leisten ', p1st: 'Verzweigungen', p1c: '.',
+      h2a: 'Die if-Anweisung',
+      p2a: 'Eine Bedingung ist ein Ausdruck, der entweder ', p2b: ' oder ', p2c: ' ergibt. Der Block in den geschweiften Klammern läuft nur, wenn die Bedingung ', p2d: ' ist.',
+      codeAdult: 'Volljährig', codeMinor: 'Minderjährig',
+      calloutT: 'Gut zu wissen', coA: 'Der ', coB: '-Zweig ist optional. Er fängt alle Fälle ab, in denen die Bedingung ', coC: ' ist.',
+      h2b: 'Vergleichsoperatoren', p3: 'Diese Operatoren liefern einen Wahrheitswert und bilden das Herz jeder Bedingung:',
+      opEq: 'gleich', opNeq: 'ungleich', opGte: 'größer/kleiner gleich', prevBtn: 'Vorherige', toExBtn: 'Zur Übung',
+      exTag: 'Übung 3.2', diffMid: 'Mittel', exTitle: 'Gerade oder ungerade?',
+      exA: 'Das Programm soll für die Zahl in ', exB: ' ausgeben, ob sie ', exEven: 'gerade', exOr: ' oder ', exOdd: 'ungerade', exC: ' ist.',
+      expL: 'Erwartete Ausgabe', expOut: '7 ist ungerade',
+      tipT: 'Tipp', tipA: 'Mit dem Modulo-Operator ', tipB: ' erhältst du den Rest einer Division. ', tipC: ' ist genau dann wahr, wenn ', tipD: ' gerade ist.',
+      run: 'Ausführen', strOdd: ' ist ungerade', strEven: ' ist gerade',
+      hintRun: 'Führe deinen Code aus, um Compiler-Feedback und Testergebnisse zu erhalten.',
+      compiled: 'Kompiliert · in 0,4 s ausgeführt', resetL: 'zurücksetzen', consoleL: 'Konsole', outActual: '7 ist gerade',
+      diffT: 'Ausgabe weicht ab — 1 Unterschied', expWord: 'erwartet', gotWord: 'erhalten',
+      anaT: 'Fast! Deine Ausgaben sind vertauscht', anaA: 'Wenn ', anaB: ' zutrifft, ist die Zahl ', anaC: ' — nicht ungerade. Tausche die Texte in Zeile 6 und 8, dann stimmt die Ausgabe.',
+      doneTag: 'Kapitel 3 abgeschlossen', prTitle: 'Kontrollstrukturen gemeistert',
+      prSub: 'Du beherrschst jetzt Verzweigungen und Schleifen. Zeit, das Gelernte in einem echten Projekt anzuwenden.',
+      xpEarned: 'XP verdient', lessonsW: 'Lektionen', accW: 'Genauigkeit',
+      prCardTag: 'Kapitel-Projekt', unlockedW: '· jetzt freigeschaltet', prName: 'Kontoauszug-Generator',
+      prDescA: 'Baue ein Programm, das eine Liste von Buchungen durchläuft, Ein- und Auszahlungen unterscheidet und am Ende einen formatierten Kontostand ausgibt — mit allem, was du über ', prDescB: ' und Schleifen gelernt hast.',
+      startPr: 'Projekt starten', dur: '≈ 40 Min.', later: 'Später — zurück zum Dashboard',
+      setT: 'Einstellungen', appear: 'Erscheinungsbild', lightW: 'Hell', darkW: 'Dunkel', langL: 'Sprache',
+      animL: 'Animationen', focusL: 'Fokus-Modus', focusS: 'Seitenleiste ausblenden', edSize: 'Editor-Schriftgröße',
+      invBtn: 'Einladen', invTitle: 'Schüler einladen',
+      invSub: 'Teile Link oder QR-Code — deine Schüler treten direkt der Klasse bei und starten sofort die Übungen.',
+      invScan: 'Zum Beitreten scannen', invLinkL: 'Einladungslink', invCopy: 'Kopieren', invCopied: 'Kopiert!',
+      invCodeL: 'Klassencode', invClassL: 'Klasse', invClassName: 'Informatik EF · Kurs 7',
+      invNote: 'Der Link ist 30 Tage gültig und lässt sich jederzeit zurücksetzen.',
+      invEmail: 'Per E-Mail', invClose: 'Fertig', invMembers: '3 Schüler beigetreten'
+    },
+    en: {
+      subBrand: 'Computer science · Upper school', phaseEF: 'Introductory phase',
+      s1: '1 · Classes & Objects', s2: '2 · Attributes & Methods', s3: '3 · Control Structures', s4: '4 · Object Relationships', s5: '5 · Inheritance', s6: 'Chapter Project',
+      q1: 'Q1 · Data structures', q2: 'Q2 · Recursion & SQL',
+      onT: 'Synced', onS: 'All content local · up to date', offT: 'Offline mode', offS: 'Saved locally · sync pending',
+      tDash: 'Dashboard', tLesson: 'Lesson', tEx: 'Exercise', tProj: 'Project', tDays: 'days',
+      date: 'Saturday, July 4', greet: 'Good evening, Alberto', contBtn: 'Continue learning', resume: 'Resume',
+      ch3: 'Chapter 3 · Control structures', l33: 'Lesson 3.3 — Loops',
+      ldA: 'Repeat statements with ', ldB: ' and ', ldC: ' loops — and learn how to avoid infinite loops.',
+      openLesson: 'Open lesson', chProg: 'Chapter progress', lCount: '3 / 5 lessons',
+      streakL: 'Current streak', daysL: 'days', xpL: 'Experience', xpVal: '2,480', lvlA: 'Level 6 · ', lvlB: '320 XP to level 7',
+      badgesL: 'Badges', badgesOf: 'of 24',
+      pathT: 'Learning path · Introductory phase', pathSub: '2 of 6 chapters complete', locked: 'Locked',
+      n1: 'Classes & Objects', n2: 'Attributes & Methods', n3: 'Control Structures', n4: 'Object Relationships', nProj: 'Chapter project · Bank account',
+      railLvlT: 'Level progress', lvlWord: 'Level', railXp: '680 / 1,000 XP · 320 to go',
+      recentT: 'Recently earned', b1T: 'Perfect chapter', b1S: 'All exercises without errors', b2T: '10-day streak', b2S: 'Studied ten days in a row', b3T: 'First class', b3S: 'Created your first object',
+      bcCh: 'Chapter 3', bcLes: 'Lesson 3.1', theory: 'Theory', readTime: '≈ 8 min read', lesTitle: 'Branching with ',
+      p1a: 'So far, every statement in your programs ran exactly once, top to bottom. Real programs need to make decisions: ', p1em: 'only if', p1b: ' a certain condition holds should a block of code run. That is exactly what ', p1st: 'branches', p1c: ' do.',
+      h2a: 'The if statement',
+      p2a: 'A condition is an expression that evaluates to either ', p2b: ' or ', p2c: '. The block inside the curly braces only runs if the condition is ', p2d: '.',
+      codeAdult: 'Of age', codeMinor: 'Minor',
+      calloutT: 'Good to know', coA: 'The ', coB: ' branch is optional. It catches every case where the condition is ', coC: '.',
+      h2b: 'Comparison operators', p3: 'These operators produce a truth value and form the heart of every condition:',
+      opEq: 'equal', opNeq: 'not equal', opGte: 'greater/less or equal', prevBtn: 'Previous', toExBtn: 'To the exercise',
+      exTag: 'Exercise 3.2', diffMid: 'Medium', exTitle: 'Even or odd?',
+      exA: 'The program should print whether the number in ', exB: ' is ', exEven: 'even', exOr: ' or ', exOdd: 'odd', exC: '.',
+      expL: 'Expected output', expOut: '7 is odd',
+      tipT: 'Tip', tipA: 'The modulo operator ', tipB: ' gives you the remainder of a division. ', tipC: ' is true exactly when ', tipD: ' is even.',
+      run: 'Run', strOdd: ' is odd', strEven: ' is even',
+      hintRun: 'Run your code to get compiler feedback and test results.',
+      compiled: 'Compiled · ran in 0.4 s', resetL: 'reset', consoleL: 'Console', outActual: '7 is even',
+      diffT: 'Output differs — 1 difference', expWord: 'expected', gotWord: 'received',
+      anaT: 'Almost! Your outputs are swapped', anaA: 'When ', anaB: ' is true, the number is ', anaC: ' — not odd. Swap the texts on lines 6 and 8 and the output will match.',
+      doneTag: 'Chapter 3 complete', prTitle: 'Control structures mastered',
+      prSub: 'You now master branching and loops. Time to apply what you learned in a real project.',
+      xpEarned: 'XP earned', lessonsW: 'Lessons', accW: 'Accuracy',
+      prCardTag: 'Chapter project', unlockedW: '· now unlocked', prName: 'Bank statement generator',
+      prDescA: 'Build a program that loops through a list of transactions, distinguishes deposits from withdrawals and prints a formatted balance — using everything you learned about ', prDescB: ' and loops.',
+      startPr: 'Start project', dur: '≈ 40 min', later: 'Later — back to dashboard',
+      setT: 'Settings', appear: 'Appearance', lightW: 'Light', darkW: 'Dark', langL: 'Language',
+      animL: 'Animations', focusL: 'Focus mode', focusS: 'Hide sidebar', edSize: 'Editor font size',
+      invBtn: 'Invite', invTitle: 'Invite students',
+      invSub: 'Share a link or QR code — your students join the class directly and start the exercises right away.',
+      invScan: 'Scan to join', invLinkL: 'Invitation link', invCopy: 'Copy', invCopied: 'Copied!',
+      invCodeL: 'Class code', invClassL: 'Class', invClassName: 'Computer Science EF · Group 7',
+      invNote: 'The link is valid for 30 days and can be reset at any time.',
+      invEmail: 'By email', invClose: 'Done', invMembers: '3 students joined'
+    },
+    es: {
+      subBrand: 'Informática · Bachillerato', phaseEF: 'Fase de introducción',
+      s1: '1 · Clases y objetos', s2: '2 · Atributos y métodos', s3: '3 · Estructuras de control', s4: '4 · Relaciones entre objetos', s5: '5 · Herencia', s6: 'Proyecto del capítulo',
+      q1: 'Q1 · Estructuras de datos', q2: 'Q2 · Recursión y SQL',
+      onT: 'Sincronizado', onS: 'Todo el contenido local · al día', offT: 'Modo sin conexión', offS: 'Guardado local · sync pendiente',
+      tDash: 'Panel', tLesson: 'Lección', tEx: 'Ejercicio', tProj: 'Proyecto', tDays: 'días',
+      date: 'Sábado, 4 de julio', greet: 'Buenas tardes, Alberto', contBtn: 'Seguir aprendiendo', resume: 'Continuar',
+      ch3: 'Capítulo 3 · Estructuras de control', l33: 'Lección 3.3 — Bucles',
+      ldA: 'Repite instrucciones con bucles ', ldB: ' y ', ldC: ' — y aprende a evitar bucles infinitos.',
+      openLesson: 'Abrir lección', chProg: 'Progreso del capítulo', lCount: '3 / 5 lecciones',
+      streakL: 'Racha actual', daysL: 'días', xpL: 'Experiencia', xpVal: '2.480', lvlA: 'Nivel 6 · ', lvlB: '320 XP para nivel 7',
+      badgesL: 'Insignias', badgesOf: 'de 24',
+      pathT: 'Ruta de aprendizaje · Fase EF', pathSub: '2 de 6 capítulos completados', locked: 'Bloqueado',
+      n1: 'Clases y objetos', n2: 'Atributos y métodos', n3: 'Estructuras de control', n4: 'Relaciones entre objetos', nProj: 'Proyecto · Cuenta bancaria',
+      railLvlT: 'Progreso de nivel', lvlWord: 'Nivel', railXp: '680 / 1000 XP · faltan 320',
+      recentT: 'Ganado recientemente', b1T: 'Capítulo perfecto', b1S: 'Todos los ejercicios sin errores', b2T: 'Racha de 10 días', b2S: 'Diez días seguidos aprendiendo', b3T: 'Primera clase', b3S: 'Creaste tu primer objeto',
+      bcCh: 'Capítulo 3', bcLes: 'Lección 3.1', theory: 'Teoría', readTime: '≈ 8 min de lectura', lesTitle: 'Ramificación con ',
+      p1a: 'Hasta ahora, cada instrucción de tus programas se ejecutaba exactamente una vez, de arriba abajo. Los programas reales necesitan tomar decisiones: ', p1em: 'solo si', p1b: ' se cumple una condición debe ejecutarse un bloque de código. Eso es exactamente lo que hacen las ', p1st: 'ramificaciones', p1c: '.',
+      h2a: 'La instrucción if',
+      p2a: 'Una condición es una expresión que da como resultado ', p2b: ' o ', p2c: '. El bloque entre llaves solo se ejecuta si la condición es ', p2d: '.',
+      codeAdult: 'Mayor de edad', codeMinor: 'Menor de edad',
+      calloutT: 'Bueno saberlo', coA: 'La rama ', coB: ' es opcional. Cubre todos los casos en los que la condición es ', coC: '.',
+      h2b: 'Operadores de comparación', p3: 'Estos operadores producen un valor de verdad y son el corazón de toda condición:',
+      opEq: 'igual', opNeq: 'distinto', opGte: 'mayor/menor o igual', prevBtn: 'Anterior', toExBtn: 'Al ejercicio',
+      exTag: 'Ejercicio 3.2', diffMid: 'Media', exTitle: '¿Par o impar?',
+      exA: 'El programa debe indicar si el número en ', exB: ' es ', exEven: 'par', exOr: ' o ', exOdd: 'impar', exC: '.',
+      expL: 'Salida esperada', expOut: '7 es impar',
+      tipT: 'Consejo', tipA: 'El operador módulo ', tipB: ' te da el resto de una división. ', tipC: ' es verdadero exactamente cuando ', tipD: ' es par.',
+      run: 'Ejecutar', strOdd: ' es impar', strEven: ' es par',
+      hintRun: 'Ejecuta tu código para recibir feedback del compilador y resultados de las pruebas.',
+      compiled: 'Compilado · ejecutado en 0,4 s', resetL: 'restablecer', consoleL: 'Consola', outActual: '7 es par',
+      diffT: 'La salida difiere — 1 diferencia', expWord: 'esperado', gotWord: 'recibido',
+      anaT: '¡Casi! Tus salidas están intercambiadas', anaA: 'Cuando ', anaB: ' se cumple, el número es ', anaC: ' — no impar. Intercambia los textos de las líneas 6 y 8 y la salida coincidirá.',
+      doneTag: 'Capítulo 3 completado', prTitle: 'Estructuras de control dominadas',
+      prSub: 'Ya dominas las ramificaciones y los bucles. Es hora de aplicar lo aprendido en un proyecto real.',
+      xpEarned: 'XP ganados', lessonsW: 'Lecciones', accW: 'Precisión',
+      prCardTag: 'Proyecto del capítulo', unlockedW: '· desbloqueado', prName: 'Generador de extractos',
+      prDescA: 'Crea un programa que recorra una lista de movimientos, distinga ingresos de retiros e imprima un saldo formateado — con todo lo que aprendiste sobre ', prDescB: ' y bucles.',
+      startPr: 'Iniciar proyecto', dur: '≈ 40 min', later: 'Más tarde — volver al panel',
+      setT: 'Ajustes', appear: 'Apariencia', lightW: 'Claro', darkW: 'Oscuro', langL: 'Idioma',
+      animL: 'Animaciones', focusL: 'Modo enfoque', focusS: 'Ocultar barra lateral', edSize: 'Tamaño de fuente del editor',
+      invBtn: 'Invitar', invTitle: 'Invitar alumnos',
+      invSub: 'Comparte un enlace o código QR — tus alumnos entran directamente a la clase y empiezan los ejercicios al instante.',
+      invScan: 'Escanea para entrar', invLinkL: 'Enlace de invitación', invCopy: 'Copiar', invCopied: '¡Copiado!',
+      invCodeL: 'Código de clase', invClassL: 'Clase', invClassName: 'Informática EF · Grupo 7',
+      invNote: 'El enlace es válido 30 días y puede restablecerse en cualquier momento.',
+      invEmail: 'Por correo', invClose: 'Listo', invMembers: '3 alumnos se han unido'
+    }
+  };
+
+  lightVars = {
+    '--bg': '#F4F5F6', '--sidebar': '#FBFBFC', '--panel': '#FFFFFF', '--panel2': '#FAFAFB', '--inset': '#F1F2F4',
+    '--elev': '#EEF0F2', '--elev-border': '#DCE0E5', '--border': '#E6E8EC', '--border2': '#E6E8EC', '--border3': '#DCE0E5',
+    '--divider': '#EFF1F3', '--code-border': '#E6E8EC', '--code-hd': '#E6E8EC',
+    '--text': '#191C1F', '--text2': '#34393F', '--text3': '#3F454C', '--sub': '#4A5158', '--mut': '#667079',
+    '--mut2': '#79828B', '--faint': '#8B939B', '--dis': '#9CA3AB', '--lock': '#C4CAD1', '--dot': '#DFE3E8',
+    '--accent': '#0E9F6E', '--accent2': '#047857', '--on-accent': '#FFFFFF',
+    '--accent-bg': 'rgba(14,159,110,0.10)', '--accent-bg2': 'rgba(14,159,110,0.13)',
+    '--accent-border': 'rgba(14,159,110,0.25)', '--accent-border2': 'rgba(14,159,110,0.32)',
+    '--accent-shadow': 'rgba(14,159,110,0.25)', '--accent-radial': 'rgba(14,159,110,0.10)', '--glow-c': 'rgba(14,159,110,0.28)',
+    '--card-a': '#FFFFFF', '--card-b': '#F7F8F9', '--card-border': '#E2E5E9', '--topbar': 'rgba(255,255,255,0.75)',
+    '--code-kw': '#7C3AED', '--code-type': '#0967A6', '--code-fn': '#0284C7', '--code-str': '#157F3C',
+    '--code-num': '#B45309', '--code-op': '#0E7490', '--code-text': '#24292F', '--code-ln': '#B8BFC7',
+    '--chip-bg': '#EEF2F5', '--false-bg': '#FBEDED', '--false-t': '#DC2626',
+    '--warn': '#B45309', '--warn-t': '#92610C', '--warn-b': '#7C6118', '--warn-sub': '#9A7B2F',
+    '--warn-bg': 'rgba(180,83,9,0.06)', '--warn-bg2': 'rgba(180,83,9,0.07)', '--warn-border': 'rgba(180,83,9,0.25)', '--warn-chip': 'rgba(180,83,9,0.12)',
+    '--err': '#DC2626', '--err-t': '#B91C1C', '--err-bg': 'rgba(220,38,38,0.10)', '--err-row': 'rgba(220,38,38,0.05)',
+    '--ok-row': 'rgba(14,159,110,0.05)',
+    '--info': '#0284C7', '--info-t': '#075985', '--info-b': '#35586B',
+    '--info-bg': 'rgba(2,132,199,0.05)', '--info-border': 'rgba(2,132,199,0.2)', '--info-chip': 'rgba(2,132,199,0.10)',
+    '--tip': '#7C3AED', '--tip-t': '#6D28D9', '--tip-b': '#5F5378', '--tip-bg': 'rgba(124,58,237,0.05)', '--tip-border': 'rgba(124,58,237,0.18)',
+    '--avatar-a': '#E8EAEE', '--avatar-b': '#D8DCE2', '--avatar-border': '#D5D9DF',
+    '--pop-shadow': '0 24px 60px rgba(20,24,28,0.16)'
+  };
+
+  getTheme() { return this.state.theme ?? this.props.theme ?? 'dark'; }
+  getLang() { return this.state.lang ?? this.props.language ?? 'de'; }
+
+  syncBody() {
+    document.body.style.background = this.getTheme() === 'light' ? '#F4F5F6' : '#08090B';
+  }
+  componentDidMount() { this.syncBody(); this.ensureQr(); }
+  componentDidUpdate() { this.syncBody(); }
+  componentWillUnmount() { if (this._qrTimer) clearInterval(this._qrTimer); }
+
+  ensureQr() {
+    if (typeof window.qrcode !== 'undefined') { this.setState({ qrReady: true }); return; }
+    this._qrTimer = setInterval(() => {
+      if (typeof window.qrcode !== 'undefined') { clearInterval(this._qrTimer); this._qrTimer = null; this.setState({ qrReady: true }); }
+    }, 120);
+  }
+
+  buildQr() {
+    if (typeof window.qrcode === 'undefined') {
+      return React.createElement('div', { style: { width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AB', fontSize: '11px', fontFamily: 'inherit' } }, 'QR …');
+    }
+    const qr = window.qrcode(0, 'M');
+    qr.addData(this.inviteUrl);
+    qr.make();
+    const n = qr.getModuleCount();
+    const cells = [];
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) cells.push(React.createElement('rect', { key: r + '-' + c, x: c, y: r, width: 1.04, height: 1.04, fill: '#0B0E10' }));
+      }
+    }
+    return React.createElement('svg', { viewBox: '0 0 ' + n + ' ' + n, width: '100%', height: '100%', shapeRendering: 'crispEdges' }, cells);
+  }
+
+  set(view) { this.setState({ view, ran: false }); }
+
+  renderVals() {
+    const v = this.state.view;
+    const theme = this.getTheme();
+    const lang = this.getLang();
+    const t = this.i18n[lang] || this.i18n.de;
+
+    const tab = (active) => ({
+      display: 'flex', alignItems: 'center', gap: '7px', padding: '7px 14px', borderRadius: '8px',
+      fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s',
+      border: active ? '1px solid var(--accent-border2)' : '1px solid transparent',
+      background: active ? 'var(--accent-bg)' : 'transparent',
+      color: active ? 'var(--accent)' : 'var(--mut)'
+    });
+    const seg = (active) => ({
+      flex: 1, padding: '7px 0', textAlign: 'center', borderRadius: '7px', fontSize: '12.5px', fontWeight: 600,
+      cursor: 'pointer', fontFamily: 'inherit', border: 'none', transition: 'all .15s',
+      background: active ? 'var(--elev)' : 'transparent',
+      color: active ? 'var(--text)' : 'var(--mut2)',
+      boxShadow: active ? '0 1px 3px rgba(0,0,0,0.2)' : 'none'
+    });
+    const track = (on) => ({
+      width: '36px', height: '21px', borderRadius: '11px', border: 'none', position: 'relative',
+      background: on ? 'var(--accent)' : 'var(--dot)', cursor: 'pointer', transition: 'background .18s', flex: 'none'
+    });
+    const knob = (on) => ({
+      position: 'absolute', top: '2px', left: on ? '17px' : '2px', width: '17px', height: '17px',
+      borderRadius: '50%', background: '#FFFFFF', transition: 'left .18s', boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+    });
+
+    const ov = { display: 'contents' };
+    const overrides = {};
+    if (theme === 'light') Object.assign(overrides, this.lightVars);
+    if (!this.state.anim) Object.assign(overrides, { '--rise': 'none', '--glow': 'none', '--dash': 'none' });
+    if (this.state.codeSize === 's') overrides['--code-size'] = '12px';
+    if (this.state.codeSize === 'l') overrides['--code-size'] = '15px';
+    Object.assign(ov, overrides);
+
+    return {
+      t, ov,
+      isDashboard: v === 'dashboard', isLesson: v === 'lesson', isExercise: v === 'exercise', isProject: v === 'project',
+      tabDash: tab(v === 'dashboard'), tabLesson: tab(v === 'lesson'), tabEx: tab(v === 'exercise'), tabProj: tab(v === 'project'),
+      goDash: () => this.set('dashboard'), goLesson: () => this.set('lesson'), goEx: () => this.set('exercise'), goProj: () => this.set('project'),
+      online: this.state.online, offline: !this.state.online,
+      toggleNet: () => this.setState((s) => ({ online: !s.online })),
+      ran: this.state.ran, notRan: !this.state.ran,
+      run: () => this.setState({ ran: true }), reset: () => this.setState({ ran: false }),
+      settingsOpen: this.state.settingsOpen,
+      toggleSettings: () => this.setState((s) => ({ settingsOpen: !s.settingsOpen })),
+      closeSettings: () => this.setState({ settingsOpen: false }),
+      gearStyle: {
+        width: '34px', height: '34px', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s',
+        background: this.state.settingsOpen ? 'var(--elev)' : 'var(--panel)',
+        border: '1px solid var(--border)',
+        color: this.state.settingsOpen ? 'var(--text)' : 'var(--mut2)'
+      },
+      segDark: seg(theme === 'dark'), segLight: seg(theme === 'light'),
+      setDark: () => this.setState({ theme: 'dark' }), setLight: () => this.setState({ theme: 'light' }),
+      segDe: seg(lang === 'de'), segEn: seg(lang === 'en'), segEs: seg(lang === 'es'),
+      setDe: () => this.setState({ lang: 'de' }), setEn: () => this.setState({ lang: 'en' }), setEs: () => this.setState({ lang: 'es' }),
+      animTrack: track(this.state.anim), animKnob: knob(this.state.anim),
+      toggleAnim: () => this.setState((s) => ({ anim: !s.anim })),
+      focusTrack: track(this.state.focus), focusKnob: knob(this.state.focus),
+      toggleFocus: () => this.setState((s) => ({ focus: !s.focus })),
+      showSidebar: !this.state.focus,
+      segS: seg(this.state.codeSize === 's'), segM: seg(this.state.codeSize === 'm'), segL: seg(this.state.codeSize === 'l'),
+      sizeS: () => this.setState({ codeSize: 's' }), sizeM: () => this.setState({ codeSize: 'm' }), sizeL: () => this.setState({ codeSize: 'l' }),
+      inviteOpen: this.state.inviteOpen,
+      openInvite: () => this.setState({ inviteOpen: true, settingsOpen: false, copied: false }),
+      closeInvite: () => this.setState({ inviteOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      qrSvg: this.buildQr(),
+      copied: this.state.copied, notCopied: !this.state.copied,
+      copyLink: () => {
+        try { navigator.clipboard.writeText(this.inviteUrl); } catch (e) {}
+        this.setState({ copied: true });
+        clearTimeout(this._copyTimer);
+        this._copyTimer = setTimeout(() => this.setState({ copied: false }), 1700);
+      },
+      copyStyle: {
+        display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 'none', padding: '0 15px', height: '38px',
+        borderRadius: '9px', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '12.5px', fontWeight: 600,
+        whiteSpace: 'nowrap', transition: 'all .15s',
+        background: this.state.copied ? 'var(--accent-bg)' : 'var(--accent)',
+        color: this.state.copied ? 'var(--accent)' : 'var(--on-accent)',
+        boxShadow: this.state.copied ? 'inset 0 0 0 1px var(--accent-border2)' : 'none'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

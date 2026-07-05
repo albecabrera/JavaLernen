@@ -1,0 +1,75 @@
+/* ============================================================
+   JavaLernen — Design Tokens
+   Paleta auditada WCAG AA (ver check de contraste).
+   Los "muted" fueron corregidos: mut2/faint/dis ahora pasan AA
+   sobre el fondo #08090B a tamaños de 10.5–12.5px.
+   ============================================================ */
+
+:root {
+  /* superficies */
+  --bg:        #08090B;
+  --sidebar:   #0C0E11;
+  --panel:     #0E1114;
+  --panel2:    #0B0E10;
+  --inset:     #08090B;
+  --elev:      #1C2228;
+  --elev-border:#2A3038;
+
+  /* bordes / divisores */
+  --border:    #191D22;
+  --border2:   #1C2126;
+  --border3:   #22272D;
+  --divider:   #161A1F;
+
+  /* texto — todos AA sobre --bg */
+  --text:      #E8EAED; /* 16.5:1 */
+  --text2:     #C8CDD3; /* 12.4  */
+  --text3:     #C2C7CD; /* 11.7  */
+  --sub:       #B4BAC1; /* 10.2  */
+  --mut:       #8B9199; /*  6.3  */
+  --mut2:      #828A93; /*  5.7  (era 6B727A 3.9 → FALLABA) */
+  --faint:     #7E858E; /*  5.3  (era 5F666E 3.4 → FALLABA) */
+  --dis:       #787F88; /*  4.9  (era 565C64 2.8 → FALLABA) */
+  --lock:      #5A616A; /*  íconos de candado (era 3A4046 1.9) */
+
+  /* acento — verde "acción" (neón) vs "progreso" (profundo) */
+  --accent:    #34D399; /* acción / CTA / hero — 10.4:1 */
+  --accent2:   #10B981; /* progreso / status — 7.9:1, calmo */
+  --on-accent: #06231A;
+  --accent-bg:   rgba(52,211,153,0.10);
+  --accent-bg2:  rgba(52,211,153,0.14);
+  --accent-border: rgba(52,211,153,0.20);
+  --accent-border2:rgba(52,211,153,0.28);
+  --accent-shadow: rgba(52,211,153,0.26);
+  --accent-radial: rgba(52,211,153,0.13);
+  --glow-c:      rgba(52,211,153,0.35);
+
+  /* semánticos */
+  --info:  #7DD3FC; --info-t:#A9DEF9; --info-b:#9FB4C0;
+  --info-bg:rgba(125,211,252,0.05); --info-border:rgba(125,211,252,0.18); --info-chip:rgba(125,211,252,0.12);
+  --warn:  #F59E0B; --warn-t:#F5C97A; --warn-b:#B7A876;
+  --warn-bg:rgba(245,158,11,0.05); --warn-bg2:rgba(245,158,11,0.06); --warn-border:rgba(245,158,11,0.18);
+  --err:   #F87171; --err-t:#F0A8A8;
+  --err-bg:rgba(248,113,113,0.14); --err-row:rgba(248,113,113,0.06); --ok-row:rgba(52,211,153,0.06);
+  --tip:   #C4A0FF; --tip-t:#C9B3F0; --tip-b:#9F93B8;
+  --tip-bg:rgba(196,160,255,0.05); --tip-border:rgba(196,160,255,0.16);
+  --false-bg:#1A0F10; --false-t:#F87171;
+
+  /* código */
+  --code-border:#1B2025; --code-hd:#16191D; --chip-bg:#0E1518;
+  --code-kw:#C4A0FF; --code-type:#5CC8FF; --code-fn:#7DD3FC; --code-str:#98D387;
+  --code-num:#E3B778; --code-op:#89DDFF; --code-text:#C9CDD3;
+  --code-ln:#6B727A; /* números de línea legibles (era 3D444B 1.9) */
+  --code-size:13.5px;
+
+  /* misc */
+  --dot:#2A3038; --topbar:rgba(10,12,14,0.7);
+  --card-a:#12171A; --card-b:#0D1013; --card-border:#1E242A;
+  --avatar-a:#2A3038; --avatar-b:#171B1F; --avatar-border:#262B31;
+  --pop-shadow:0 24px 60px rgba(0,0,0,0.55);
+  --focus-ring:#5CC8FF; /* anillo de foco visible, distinto del acento */
+
+  --r-sm:8px; --r-md:11px; --r-lg:14px; --r-xl:20px;
+  --ff:'Geist',-apple-system,system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',ui-monospace,monospace;
+}

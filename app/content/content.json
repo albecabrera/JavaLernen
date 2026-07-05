@@ -1,0 +1,628 @@
+{
+  "meta": {
+    "curriculum": "Kernlehrplan Informatik NRW · Gymnasiale Oberstufe (GK)",
+    "note": "Seed-Inhalte. Reihenfolge/Feinstruktur mit schulinternem Lehrplan abgleichen."
+  },
+  "modules": [
+    {
+      "id": "m1", "nr": "1", "title": "Einführung in Java", "weeks": 4, "status": "partial",
+      "description": "Grundlagen der Java-Programmierung und Verwendung verschiedener Entwicklungsumgebungen.",
+      "topics": ["Java-Syntax und Grundkonzepte", "Entwicklungsumgebungen (Eclipse, IntelliJ, BlueJ)", "Erste Programme und Debugging", "Didaktische Konzepte für den Einstieg"],
+      "coverage": ["ef-0"]
+    },
+    {
+      "id": "m2", "nr": "2", "title": "Grundlagen der Programmierung", "weeks": 6, "status": "partial",
+      "description": "Objekte, Klassen, Vererbung, Eigenschaften, Operationen, Kontrollstrukturen, Schnittstellen.",
+      "topics": ["Objekte und Klassen", "Vererbung und Polymorphie", "Kontrollstrukturen und Schleifen", "Schnittstellen und abstrakte Klassen", "Unterrichtskonzepte zur OOP"],
+      "coverage": ["ef-1", "ef-2", "ef-3", "ef-5"]
+    },
+    {
+      "id": "m3", "nr": "3", "title": "Algorithmik", "weeks": 5, "status": "partial",
+      "description": "Suchen, Sortieren, Aufwand, Terminierung, Rekursion.",
+      "topics": ["Suchalgorithmen (linear, binär)", "Sortieralgorithmen (Bubble, Selection, Insertion, Merge)", "Komplexität und Laufzeitanalyse", "Rekursive Algorithmen"],
+      "coverage": ["q1-1", "q2-1"]
+    },
+    {
+      "id": "m4", "nr": "4", "title": "Objektorientierte Analyse und Modellierung", "weeks": 4, "status": "partial",
+      "description": "Objektorientierte Analyse, Modellierung und Implementation.",
+      "topics": ["UML-Diagramme", "Vom Modell zum Code", "Entwurfsmuster: Model-View-Controller", "Didaktische Umsetzung im Unterricht"],
+      "coverage": ["ef-6"]
+    },
+    {
+      "id": "m5", "nr": "5", "title": "Datenstrukturen", "weeks": 5, "status": "full",
+      "description": "Arrays, Liste, Schlange, Stapel, Baum, Graphen.",
+      "topics": ["Arrays und dynamische Datenstrukturen", "Listen, Stacks und Queues", "Bäume und Graphen", "Implementierung und Anwendung"],
+      "coverage": ["ef-4", "q1-1"]
+    },
+    {
+      "id": "m6", "nr": "6", "title": "Weitere Themen", "weeks": 8, "status": "full",
+      "description": "Kryptographie, Datenbanken, Netzwerke, Automaten und gesellschaftliche Aspekte.",
+      "topics": ["Kryptographie und Datensicherheit", "Datenbanken und SQL", "Netzwerke und Client-Server-Modell", "Endliche Automaten und formale Sprachen", "Informatik, Mensch und Gesellschaft"],
+      "coverage": ["q2-1", "q2-2"]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ef-0", "phase": "EF", "nr": "0", "title": "Einführung in Java",
+      "status": "done", "progress": 100,
+      "lessons": [
+        {
+          "id": "ef-0-1", "num": "0.1", "title": "Java-Syntax und Grundkonzepte", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Jedes Java-Programm braucht ein festes Grundgerüst: eine <strong>Klasse</strong> als Container, darin eine <code>main</code>-Methode als Startpunkt — hier beginnt die Ausführung." },
+            { "type": "code", "file": "Main.java", "code": "public class Main {\n    public static void main(String[] args) {\n        // hier steht dein Code\n    }\n}" },
+            { "type": "h2", "text": "Variablen und Typen" },
+            { "type": "p", "html": "Eine <strong>Variable</strong> speichert einen Wert unter einem Namen. Java ist <strong>statisch typisiert</strong> — der Typ steht bei der Deklaration fest und ändert sich nie." },
+            { "type": "code", "file": "Main.java", "code": "int alter = 16;\ndouble preis = 4.50;\nString name = \"Alberto\";\nboolean istWach = true;" },
+            { "type": "h2", "text": "Ausgabe und Kommentare" },
+            { "type": "code", "file": "Main.java", "code": "// Das ist ein einzeiliger Kommentar\n/* Das ist ein\n   mehrzeiliger Kommentar */\nSystem.out.println(\"Hallo, \" + name + \"!\");" },
+            { "type": "callout", "variant": "info", "title": "Semikolon nicht vergessen", "html": "Jede Anweisung endet mit <code>;</code>. Ein fehlendes Semikolon ist der häufigste Anfängerfehler — der Compiler zeigt dir genau die Zeile, wo er es erwartet hätte." }
+          ]
+        },
+        {
+          "id": "ef-0-2", "num": "0.2", "title": "Entwicklungsumgebungen", "readTime": "≈ 6 Min.",
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>IDE</strong> (Integrated Development Environment) bündelt Editor, Compiler und Debugger in einem Werkzeug. Die drei gängigsten für Java im Unterricht:" },
+            { "type": "h2", "text": "BlueJ" },
+            { "type": "p", "html": "Speziell für den <strong>Einstieg</strong> entwickelt: zeigt Klassen als Kästen, Objekte lassen sich per Rechtsklick erzeugen und Methoden direkt aufrufen — ohne eine Zeile <code>main</code>. Ideal für die ersten Wochen." },
+            { "type": "h2", "text": "Eclipse" },
+            { "type": "p", "html": "Kostenlos, quelloffen, an vielen Schulen und Hochschulen im Einsatz. Umfangreich, aber mit entsprechend mehr Einstiegshürden für Anfänger." },
+            { "type": "h2", "text": "IntelliJ IDEA" },
+            { "type": "p", "html": "Von JetBrains, in der Profi-Praxis weit verbreitet. Die Community Edition ist kostenlos. Sehr gute Code-Vervollständigung und Fehlerhinweise in Echtzeit." },
+            { "type": "callout", "variant": "tip", "title": "Für den Unterricht", "html": "Ein sinnvoller Weg: mit BlueJ die Konzepte (Klasse, Objekt, Methode) greifbar machen, danach zu Eclipse oder IntelliJ wechseln, sobald <code>main</code>-Methoden und Projektstrukturen vertraut sind." }
+          ]
+        },
+        {
+          "id": "ef-0-3", "num": "0.3", "title": "Erste Programme und Debugging", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Compilerfehler</strong> ist keine Katastrophe — er ist eine präzise Fehlermeldung mit Zeilennummer. Java-Fehlermeldungen folgen einem festen Muster: Datei, Zeile, Fehlerbeschreibung, oft mit einem <code>^</code> an der genauen Stelle." },
+            { "type": "code", "file": "Fehlermeldung.txt", "code": "Main.java:3: Fehler: ';' erwartet\n        int alter = 16\n                      ^\n1 Fehler" },
+            { "type": "callout", "variant": "info", "title": "Lies von oben nach unten", "html": "Bei mehreren Fehlermeldungen zuerst die <strong>erste</strong> beheben und neu kompilieren — Folgefehler verschwinden oft von selbst, weil sie nur Folge des ersten Fehlers waren." },
+            { "type": "h2", "text": "Print-Debugging" },
+            { "type": "p", "html": "Die einfachste Debugging-Technik: zusätzliche <code>System.out.println(...)</code>-Zeilen einbauen, um zu sehen, welchen Wert eine Variable an einer bestimmten Stelle im Programm hat." },
+            { "type": "code", "file": "Debug.java", "code": "int summe = 0;\nfor (int i = 0; i < 5; i++) {\n    summe += i;\n    System.out.println(\"i=\" + i + \" summe=\" + summe); // Debug-Ausgabe\n}" },
+            { "type": "callout", "variant": "warn", "title": "Häufiger Laufzeitfehler", "html": "Eine <code>NullPointerException</code> bedeutet: du hast versucht, auf ein Attribut oder eine Methode eines Objekts zuzugreifen, das <code>null</code> ist — also noch gar nicht mit <code>new</code> erzeugt wurde." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-0-e1", "title": "Deine erste Ausgabe", "difficulty": "leicht",
+          "prompt_html": "Gib mithilfe der Variable <code>name</code> den Gruß <code>\"Hallo, Alberto!\"</code> aus.",
+          "expected": "Hallo, Alberto!",
+          "tip_html": "Strings verbindest du mit <code>+</code>: <code>\"Hallo, \" + name + \"!\"</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        String name = \"Alberto\";\n        // TODO: \"Hallo, Alberto!\" ausgeben\n    }\n}"
+        },
+        {
+          "id": "ef-0-e2", "title": "Fehler finden", "difficulty": "leicht",
+          "prompt_html": "Der Code hat einen <strong>Compilerfehler</strong>. Lies die Fehlermeldung nach dem Ausführen genau — sie zeigt dir die Zeile und die Stelle.",
+          "expected": "Du bist 16 Jahre alt",
+          "tip_html": "Jede Anweisung muss mit einem Semikolon <code>;</code> enden.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        int alter = 16\n        System.out.println(\"Du bist \" + alter + \" Jahre alt\");\n    }\n}"
+        }
+      ]
+    },
+    {
+      "id": "ef-1", "phase": "EF", "nr": "1", "title": "Klassen & Objekte",
+      "status": "done", "progress": 100,
+      "lessons": [
+        {
+          "id": "ef-1-1", "num": "1.1", "title": "Klassen und Objekte", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Die objektorientierte Programmierung modelliert die Welt als <strong>Objekte</strong>, die Daten und Verhalten bündeln. Eine <strong>Klasse</strong> ist der Bauplan; ein <strong>Objekt</strong> ist ein konkretes Exemplar dieses Bauplans." },
+            { "type": "p", "html": "Beispiel: <code>Auto</code> ist eine Klasse. Dein rotes Auto und mein blaues Auto sind zwei verschiedene <em>Objekte</em> derselben Klasse." },
+            { "type": "h2", "text": "Eine Klasse definieren" },
+            { "type": "code", "file": "Auto.java", "code": "public class Auto {\n    String farbe;\n\n    void hupen() {\n        System.out.println(\"Tuut! Ich bin \" + farbe);\n    }\n}" },
+            { "type": "h2", "text": "Ein Objekt erzeugen" },
+            { "type": "p", "html": "Mit dem Schlüsselwort <code>new</code> erzeugst du ein Objekt (eine <em>Instanz</em>) der Klasse:" },
+            { "type": "code", "file": "Main.java", "code": "Auto meinAuto = new Auto();\nmeinAuto.farbe = \"rot\";\nmeinAuto.hupen();" },
+            { "type": "callout", "variant": "info", "title": "Merke", "html": "Die Klasse schreibst du <em>einmal</em>. Objekte kannst du beliebig viele davon erzeugen — jedes mit eigenen Werten." }
+          ]
+        },
+        {
+          "id": "ef-1-2", "num": "1.2", "title": "Konstruktoren", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Bisher musstest du jedes Attribut nach dem Erzeugen einzeln setzen — leicht zu vergessen. Ein <strong>Konstruktor</strong> initialisiert ein Objekt direkt beim Erzeugen mit <code>new</code>." },
+            { "type": "h2", "text": "Konstruktor definieren" },
+            { "type": "p", "html": "Ein Konstruktor heißt genauso wie die Klasse und hat <em>keinen</em> Rückgabetyp:" },
+            { "type": "code", "file": "Auto.java", "code": "public class Auto {\n    String farbe;\n\n    Auto(String farbe) {\n        this.farbe = farbe;\n    }\n}" },
+            { "type": "callout", "variant": "info", "title": "this", "html": "<code>this.farbe</code> meint das Attribut des Objekts, <code>farbe</code> (ohne <code>this</code>) meint den Parameter. Ohne <code>this</code> wüsste Java nicht, welches der beiden gemeint ist." },
+            { "type": "h2", "text": "Objekt mit Konstruktor erzeugen" },
+            { "type": "code", "file": "Main.java", "code": "Auto meinAuto = new Auto(\"rot\");\nAuto deinAuto = new Auto(\"blau\");" },
+            { "type": "callout", "variant": "tip", "title": "Gut zu wissen", "html": "Definierst du keinen eigenen Konstruktor, erzeugt Java automatisch einen leeren <strong>Standardkonstruktor</strong> (<code>Auto()</code> ohne Parameter)." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-1-e1", "title": "Dein erstes Objekt", "difficulty": "leicht",
+          "prompt_html": "Erzeuge in <code>main</code> ein Objekt der Klasse <code>Hund</code>, setze den Namen auf <code>\"Rex\"</code> und rufe <code>bellen()</code> auf.",
+          "expected": "Rex sagt: Wuff!",
+          "tip_html": "Ein Objekt erzeugst du mit <code>new Hund()</code>. Auf ein Attribut greifst du mit dem Punkt zu: <code>h.name = \"Rex\";</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        // 1. Objekt erzeugen\n        // 2. Namen setzen\n        // 3. bellen() aufrufen\n    }\n}\n\nclass Hund {\n    String name;\n    void bellen() {\n        System.out.println(name + \" sagt: Wuff!\");\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-2", "phase": "EF", "nr": "2", "title": "Attribute & Methoden",
+      "status": "done", "progress": 100,
+      "lessons": [
+        {
+          "id": "ef-2-1", "num": "2.1", "title": "Zustand und Verhalten", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein Objekt hat <strong>Attribute</strong> (seinen Zustand — was es <em>weiß</em>) und <strong>Methoden</strong> (sein Verhalten — was es <em>kann</em>)." },
+            { "type": "h2", "text": "Attribute" },
+            { "type": "p", "html": "Attribute sind Variablen, die zu jedem Objekt gehören. Jedes Objekt hat eigene Werte." },
+            { "type": "code", "file": "Konto.java", "code": "public class Konto {\n    String inhaber;\n    double stand;   // Attribut: Kontostand\n}" },
+            { "type": "h2", "text": "Methoden mit Parametern" },
+            { "type": "p", "html": "Eine Methode kann Werte über <strong>Parameter</strong> entgegennehmen und Attribute verändern:" },
+            { "type": "code", "file": "Konto.java", "code": "void einzahlen(double betrag) {\n    stand = stand + betrag;\n    System.out.println(\"Neuer Stand: \" + stand);\n}" },
+            { "type": "callout", "variant": "tip", "title": "Gut zu wissen", "html": "Methoden, die etwas zurückgeben, brauchen einen Rückgabetyp (z. B. <code>double</code>) und <code>return</code>. Methoden ohne Rückgabe haben den Typ <code>void</code>." }
+          ]
+        },
+        {
+          "id": "ef-2-2", "num": "2.2", "title": "Rückgabewerte mit return", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Eine Methode mit Rückgabetyp <code>void</code> kann nichts an den Aufrufer zurückgeben. Soll ein Ergebnis weiterverwendet werden, braucht die Methode einen <strong>Rückgabetyp</strong> und ein <code>return</code>." },
+            { "type": "code", "file": "Konto.java", "code": "double kontostand() {\n    return stand;\n}" },
+            { "type": "h2", "text": "Den Rückgabewert verwenden" },
+            { "type": "p", "html": "Der Aufruf einer solchen Methode ist selbst ein Ausdruck — er kann in einer Variable gespeichert oder direkt weiterverwendet werden:" },
+            { "type": "code", "file": "Main.java", "code": "Konto k = new Konto();\nk.einzahlen(100.0);\ndouble s = k.kontostand();\nSystem.out.println(\"Aktuell: \" + s);" },
+            { "type": "callout", "variant": "warn", "title": "Achtung", "html": "Sobald <code>return</code> ausgeführt wird, endet die Methode sofort — Code danach im selben Block wird nicht mehr erreicht." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-2-e1", "title": "Konto führen", "difficulty": "leicht",
+          "prompt_html": "Zahle <code>50.0</code> auf das Konto ein und danach nochmal <code>30.0</code>. Jede Einzahlung gibt den neuen Stand aus.",
+          "expected": "Stand: 50.0\nStand: 80.0",
+          "tip_html": "Rufe <code>einzahlen(...)</code> zweimal auf. Die Methode addiert jeweils auf <code>stand</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        // zwei Einzahlungen\n    }\n}\n\nclass Konto {\n    double stand;\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n        System.out.println(\"Stand: \" + stand);\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-3", "phase": "EF", "nr": "3", "title": "Kontrollstrukturen",
+      "status": "current", "progress": 60, "resumeLessonIndex": 2,
+      "lessons": [
+        {
+          "id": "ef-3-1", "num": "3.1", "title": "Verzweigungen mit if / else", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Bisher wurde jede Anweisung genau einmal ausgeführt, von oben nach unten. <em>Nur wenn</em> eine Bedingung zutrifft, soll ein Codeblock laufen — das leisten <strong>Verzweigungen</strong>." },
+            { "type": "h2", "text": "Die if-Anweisung" },
+            { "type": "p", "html": "Eine Bedingung ergibt <code>true</code> oder <code>false</code>. Der Block läuft nur, wenn sie <code>true</code> ist." },
+            { "type": "code", "file": "Volljaehrig.java", "code": "int alter = 18;\n\nif (alter >= 18) {\n    System.out.println(\"Volljährig\");\n} else {\n    System.out.println(\"Minderjährig\");\n}" },
+            { "type": "callout", "variant": "info", "title": "Gut zu wissen", "html": "Der <code>else</code>-Zweig ist optional. Er fängt alle Fälle ab, in denen die Bedingung <code>false</code> ist." },
+            { "type": "grid", "items": [
+              { "code": "==", "label": "gleich" },
+              { "code": "!=", "label": "ungleich" },
+              { "code": ">=  <=", "label": "größer/kleiner gleich" }
+            ]}
+          ]
+        },
+        {
+          "id": "ef-3-2", "num": "3.2", "title": "Logische Operatoren", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Oft hängt eine Entscheidung von <strong>mehreren</strong> Bedingungen ab. Logische Operatoren verknüpfen Wahrheitswerte zu einer neuen Bedingung." },
+            { "type": "grid", "items": [
+              { "code": "&&", "label": "und (beide wahr)" },
+              { "code": "||", "label": "oder (mind. eine wahr)" },
+              { "code": "!", "label": "nicht (kehrt um)" }
+            ]},
+            { "type": "code", "file": "Eintritt.java", "code": "int alter = 16;\nboolean begleitet = true;\n\nif (alter >= 18 || (alter >= 16 && begleitet)) {\n    System.out.println(\"Eintritt erlaubt\");\n} else {\n    System.out.println(\"Kein Eintritt\");\n}" },
+            { "type": "callout", "variant": "tip", "title": "Kurzschlussauswertung", "html": "Bei <code>&&</code> prüft Java die rechte Seite nur, wenn die linke <code>true</code> ist. Bei <code>||</code> nur, wenn die linke <code>false</code> ist — das spart Rechenzeit und vermeidet Fehler." }
+          ]
+        },
+        {
+          "id": "ef-3-3", "num": "3.3", "title": "for-Schleifen", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>Schleife</strong> wiederholt einen Codeblock. Die <code>for</code>-Schleife eignet sich, wenn die Anzahl der Wiederholungen im Voraus bekannt ist." },
+            { "type": "code", "file": "Zaehlen.java", "code": "for (int i = 1; i <= 5; i++) {\n    System.out.println(\"Durchlauf \" + i);\n}" },
+            { "type": "h2", "text": "Die drei Teile" },
+            { "type": "p", "html": "<code>int i = 1</code> läuft einmal vor der Schleife (Start). <code>i <= 5</code> wird vor jedem Durchlauf geprüft (Bedingung). <code>i++</code> läuft nach jedem Durchlauf (Schritt)." },
+            { "type": "callout", "variant": "info", "title": "Gut zu wissen", "html": "<code>i++</code> ist die Kurzform für <code>i = i + 1</code>. Genauso gibt es <code>i--</code> für <code>i = i - 1</code>." }
+          ]
+        },
+        {
+          "id": "ef-3-4", "num": "3.4", "title": "while-Schleifen", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ist die Anzahl der Wiederholungen <em>nicht</em> im Voraus bekannt — z. B. \"bis der Nutzer aufhört\" — passt eine <code>while</code>-Schleife besser." },
+            { "type": "code", "file": "Verdoppeln.java", "code": "int wert = 1;\nwhile (wert < 100) {\n    wert = wert * 2;\n    System.out.println(wert);\n}" },
+            { "type": "callout", "variant": "warn", "title": "Vorsicht: Endlosschleife", "html": "Ändert sich die Bedingung nie zu <code>false</code>, läuft die Schleife für immer. Stelle sicher, dass sich im Schleifenkörper etwas verändert, das die Bedingung irgendwann falsch macht." },
+            { "type": "h2", "text": "for vs. while" },
+            { "type": "p", "html": "Jede <code>for</code>-Schleife lässt sich als <code>while</code>-Schleife schreiben und umgekehrt. Faustregel: <code>for</code> bei fester Anzahl, <code>while</code> bei einer Bedingung." }
+          ]
+        },
+        {
+          "id": "ef-3-5", "num": "3.5", "title": "break und continue", "readTime": "≈ 6 Min.",
+          "blocks": [
+            { "type": "p", "html": "Manchmal soll eine Schleife vorzeitig beendet oder ein einzelner Durchlauf übersprungen werden — dafür gibt es <code>break</code> und <code>continue</code>." },
+            { "type": "code", "file": "Suche.java", "code": "for (int i = 1; i <= 10; i++) {\n    if (i == 6) {\n        break;       // beendet die ganze Schleife\n    }\n    System.out.println(i);\n}" },
+            { "type": "code", "file": "Ueberspringen.java", "code": "for (int i = 1; i <= 5; i++) {\n    if (i % 2 == 0) {\n        continue;    // überspringt nur diesen Durchlauf\n    }\n    System.out.println(i);\n}" },
+            { "type": "callout", "variant": "tip", "title": "Merke", "html": "<code>break</code> verlässt die Schleife komplett. <code>continue</code> springt nur zum nächsten Durchlauf." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-3-e1", "title": "Gerade oder ungerade?", "difficulty": "mittel",
+          "prompt_html": "Das Programm soll für die Zahl in <code>zahl</code> ausgeben, ob sie <strong>gerade</strong> oder <strong>ungerade</strong> ist.",
+          "expected": "7 ist ungerade",
+          "tip_html": "Mit dem Modulo-Operator <code>%</code> erhältst du den Rest. <code>zahl % 2 == 0</code> ist wahr, wenn <code>zahl</code> gerade ist.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        int zahl = 7;\n\n        if (zahl % 2 == 0) {\n            System.out.println(zahl + \" ist ungerade\");\n        } else {\n            System.out.println(zahl + \" ist gerade\");\n        }\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-4", "phase": "EF", "nr": "4", "title": "Objektbeziehungen",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "ef-4-1", "num": "4.1", "title": "Objekte, die Objekte kennen", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "Objekte existieren selten allein. Ein <code>Schüler</code> hat eine <code>Adresse</code>, ein <code>Auto</code> hat einen <code>Motor</code>. Solche <strong>Hat-ein</strong>-Beziehungen nennt man <strong>Assoziation</strong>." },
+            { "type": "h2", "text": "Ein Objekt als Attribut" },
+            { "type": "p", "html": "Ein Attribut kann selbst ein Objekt sein. So verweist ein Objekt auf ein anderes:" },
+            { "type": "code", "file": "Schueler.java", "code": "public class Schueler {\n    String name;\n    Adresse adresse;   // Beziehung: Schüler HAT eine Adresse\n}\n\nclass Adresse {\n    String stadt;\n}" },
+            { "type": "callout", "variant": "warn", "title": "Achtung: null", "html": "Solange keine Adresse zugewiesen wurde, ist <code>adresse</code> gleich <code>null</code>. Ein Zugriff darauf führt zu einer <code>NullPointerException</code>." }
+          ]
+        },
+        {
+          "id": "ef-4-2", "num": "4.2", "title": "Listen von Objekten", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein Objekt kann nicht nur eines, sondern <strong>mehrere</strong> andere Objekte kennen — z. B. eine Klasse mit vielen Schülern. Dafür verwendest du eine <code>ArrayList</code>." },
+            { "type": "code", "file": "Klasse.java", "code": "import java.util.ArrayList;\n\npublic class Klasse {\n    ArrayList<Schueler> schueler = new ArrayList<>();\n\n    void aufnehmen(Schueler s) {\n        schueler.add(s);\n    }\n}" },
+            { "type": "h2", "text": "Über eine Liste iterieren" },
+            { "type": "code", "file": "Main.java", "code": "for (Schueler s : klasse.schueler) {\n    System.out.println(s.name);\n}" },
+            { "type": "callout", "variant": "info", "title": "for-each", "html": "Diese Schreibweise <code>for (Typ variable : liste)</code> heißt <strong>erweiterte for-Schleife</strong> — sie durchläuft jedes Element, ohne einen Index selbst zu verwalten." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-4-e1", "title": "Wohnort ausgeben", "difficulty": "mittel",
+          "prompt_html": "Erzeuge einen <code>Schueler</code> namens <code>\"Mara\"</code>, gib ihm eine <code>Adresse</code> mit Stadt <code>\"Bonn\"</code> und gib den Satz aus.",
+          "expected": "Mara wohnt in Bonn",
+          "tip_html": "Erst die Adresse erzeugen und die Stadt setzen, dann dem Schüler zuweisen: <code>s.adresse = a;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Schueler s = new Schueler();\n        s.name = \"Mara\";\n        // Adresse erzeugen, Stadt setzen, zuweisen\n        System.out.println(s.name + \" wohnt in \" + s.adresse.stadt);\n    }\n}\n\nclass Schueler { String name; Adresse adresse; }\nclass Adresse { String stadt; }"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-5", "phase": "EF", "nr": "5", "title": "Vererbung",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "ef-5-1", "num": "5.1", "title": "Gemeinsames auslagern: Vererbung", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <code>Hund</code> und eine <code>Katze</code> sind beide <code>Tier</code>e: sie haben einen Namen und können fressen. Statt das doppelt zu schreiben, definierst du es einmal in einer <strong>Oberklasse</strong> und <strong>erbst</strong> es." },
+            { "type": "h2", "text": "extends" },
+            { "type": "code", "file": "Tier.java", "code": "public class Tier {\n    String name;\n    void lautGeben() {\n        System.out.println(name + \" macht ein Geräusch\");\n    }\n}\n\nclass Hund extends Tier {\n    // erbt name und lautGeben()\n}" },
+            { "type": "h2", "text": "Methoden überschreiben" },
+            { "type": "p", "html": "Die Unterklasse kann eine geerbte Methode <strong>überschreiben</strong>, um sie zu spezialisieren:" },
+            { "type": "code", "file": "Hund.java", "code": "class Hund extends Tier {\n    @Override\n    void lautGeben() {\n        System.out.println(name + \" bellt: Wuff!\");\n    }\n}" },
+            { "type": "callout", "variant": "tip", "title": "is-a", "html": "Vererbung modelliert eine <strong>Ist-ein</strong>-Beziehung: ein Hund <em>ist ein</em> Tier. Frag dich das immer, bevor du <code>extends</code> benutzt." }
+          ]
+        },
+        {
+          "id": "ef-5-2", "num": "5.2", "title": "Polymorphie", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "<strong>Polymorphie</strong> (\"Vielgestaltigkeit\") bedeutet: eine Variable vom Typ der Oberklasse kann ein Objekt jeder Unterklasse aufnehmen — und beim Methodenaufruf entscheidet Java automatisch, welche überschriebene Version läuft." },
+            { "type": "code", "file": "Main.java", "code": "Tier t = new Hund();   // Oberklassen-Typ, Unterklassen-Objekt\nt.lautGeben();         // ruft Hund.lautGeben() auf, nicht Tier.lautGeben()" },
+            { "type": "callout", "variant": "info", "title": "Warum das nützlich ist", "html": "Eine Methode kann einen Parameter vom Typ <code>Tier</code> annehmen und funktioniert automatisch für <code>Hund</code>, <code>Katze</code> und jede zukünftige Unterklasse — ohne Änderungen." },
+            { "type": "code", "file": "Tierarzt.java", "code": "void untersuchen(Tier t) {\n    t.lautGeben();   // funktioniert für JEDE Tier-Unterklasse\n}" }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-5-e1", "title": "Der Hund bellt", "difficulty": "mittel",
+          "prompt_html": "<code>Hund</code> erbt von <code>Tier</code> und überschreibt <code>lautGeben()</code>. Setze den Namen auf <code>\"Rex\"</code> und rufe die Methode auf.",
+          "expected": "Rex bellt: Wuff!",
+          "tip_html": "<code>name</code> wird geerbt — du kannst es direkt setzen. Die überschriebene Methode wird automatisch statt der geerbten aufgerufen.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Hund h = new Hund();\n        h.name = \"Rex\";\n        h.lautGeben();\n    }\n}\n\nclass Tier {\n    String name;\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}\n\nclass Hund extends Tier {\n    @Override\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-6", "phase": "EF", "nr": "6", "title": "Modellierung: UML & Entwurfsmuster",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "ef-6-1", "num": "6.1", "title": "Klassendiagramme (UML)", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "Bevor du eine Klasse programmierst, lohnt es sich, sie erst zu <strong>zeichnen</strong>. <strong>UML</strong> (Unified Modeling Language) ist eine genormte Notation, um Klassen und ihre Beziehungen unabhängig von der Programmiersprache darzustellen." },
+            { "type": "h2", "text": "Die Klassenbox" },
+            { "type": "p", "html": "Ein UML-Klassendiagramm zeigt jede Klasse als Box mit drei Feldern: Name, Attribute, Methoden." },
+            { "type": "code", "file": "Konto.uml", "code": "┌──────────────────────────────┐\n│             Konto             │\n├──────────────────────────────┤\n│ - kontostand: double          │\n├──────────────────────────────┤\n│ + einzahlen(betrag: double)   │\n│ + getKontostand(): double     │\n└──────────────────────────────┘" },
+            { "type": "h2", "text": "Sichtbarkeit" },
+            { "type": "grid", "items": [
+              { "code": "+", "label": "public" },
+              { "code": "-", "label": "private" },
+              { "code": "#", "label": "protected" }
+            ]},
+            { "type": "h2", "text": "Beziehungen" },
+            { "type": "p", "html": "Eine einfache Linie zwischen zwei Klassen zeigt eine <strong>Assoziation</strong> (\"kennt\"). Eine Linie mit <strong>hohlem Dreieck</strong> an der Oberklasse zeigt <strong>Vererbung</strong> (\"ist ein\") — genau die Beziehungen, die du in den Kapiteln 4 und 5 schon in Code geschrieben hast." },
+            { "type": "callout", "variant": "info", "title": "Warum modellieren?", "html": "Ein Klassendiagramm zwingt dich, die Struktur <em>vor</em> dem Programmieren zu durchdenken — Fehler im Entwurf sind billiger zu korrigieren als Fehler im fertigen Code." }
+          ]
+        },
+        {
+          "id": "ef-6-2", "num": "6.2", "title": "Vom Modell zum Code", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Die Übersetzung von UML nach Java folgt festen Regeln — ist das Diagramm einmal fertig, ist der Code fast mechanisch ableitbar." },
+            { "type": "grid", "items": [
+              { "code": "- x: T", "label": "private T x;" },
+              { "code": "+ m(): T", "label": "public T m() {…}" },
+              { "code": "▷ Vererbung", "label": "extends" }
+            ]},
+            { "type": "h2", "text": "Beispiel: Konto" },
+            { "type": "p", "html": "Aus der UML-Box von Lektion 6.1 wird direkt diese Klasse:" },
+            { "type": "code", "file": "Konto.java", "code": "public class Konto {\n    private double kontostand;\n\n    public void einzahlen(double betrag) {\n        kontostand = kontostand + betrag;\n    }\n\n    public double getKontostand() {\n        return kontostand;\n    }\n}" },
+            { "type": "callout", "variant": "tip", "title": "Kapselung", "html": "<code>kontostand</code> ist <code>private</code> — von außen nicht direkt erreichbar. Zugriff läuft nur über die <code>public</code>-Methoden. Das nennt man <strong>Kapselung</strong> und schützt das Objekt vor ungültigen Zuständen (z. B. einem negativen Kontostand ohne Prüfung)." }
+          ]
+        },
+        {
+          "id": "ef-6-3", "num": "6.3", "title": "Entwurfsmuster: Model-View-Controller", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Entwurfsmuster</strong> (Design Pattern) ist eine bewährte Lösung für ein wiederkehrendes Strukturproblem. <strong>Model-View-Controller</strong> (MVC) trennt eine Anwendung in drei Rollen." },
+            { "type": "grid", "items": [
+              { "code": "Model", "label": "Daten & Logik" },
+              { "code": "View", "label": "Darstellung" },
+              { "code": "Controller", "label": "Vermittler" }
+            ]},
+            { "type": "p", "html": "Das <strong>Model</strong> kennt nur seine Daten, nicht wie sie angezeigt werden. Die <strong>View</strong> zeigt Daten an, ändert sie nie selbst. Der <strong>Controller</strong> nimmt Aktionen entgegen, ändert das Model und veranlasst die View, sich zu aktualisieren." },
+            { "type": "code", "file": "MVC-Skizze.java", "code": "class AufgabenModel {\n    private List<String> aufgaben = new ArrayList<>();\n    void hinzufuegen(String titel) { aufgaben.add(titel); }\n    List<String> getAufgaben() { return aufgaben; }\n}\n\nclass AufgabenView {\n    void render(List<String> aufgaben) {\n        for (String a : aufgaben) System.out.println(\"- \" + a);\n    }\n}\n\nclass AufgabenController {\n    private AufgabenModel model = new AufgabenModel();\n    private AufgabenView view = new AufgabenView();\n\n    void neueAufgabe(String titel) { model.hinzufuegen(titel); }\n    void anzeigen() { view.render(model.getAufgaben()); }\n}" },
+            { "type": "callout", "variant": "warn", "title": "Die Regel", "html": "Aufrufercode (z. B. <code>main</code>) spricht nur mit dem <strong>Controller</strong> — nie direkt mit Model oder View. Das hält die drei Rollen entkoppelt: du kannst die View austauschen (Konsole → Fenster → Web), ohne Model oder Controller anzufassen." },
+            { "type": "callout", "variant": "info", "title": "Und diese App?", "html": "JavaLernen selbst folgt grob demselben Muster: <code>content.json</code> ist das Model (Daten), <code>index.html</code>/<code>app.css</code> sind die View (Darstellung), <code>app.js</code> ist der Controller (liest Model, aktualisiert View)." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-6-e1", "title": "Kapselung: privates Attribut, öffentlicher Zugriff", "difficulty": "mittel",
+          "prompt_html": "<code>kontostand</code> soll <code>private</code> sein. Vervollständige <code>getKontostand()</code>, damit der Wert von außen lesbar ist — passend zur UML-Sichtbarkeit <code>+ getKontostand(): double</code>.",
+          "expected": "Kontostand: 100.0",
+          "tip_html": "Ein Getter gibt einfach das private Attribut zurück: <code>return kontostand;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        System.out.println(\"Kontostand: \" + k.getKontostand());\n    }\n}\n\nclass Konto {\n    private double kontostand;\n\n    void einzahlen(double betrag) {\n        kontostand += betrag;\n    }\n\n    double getKontostand() {\n        // TODO: kontostand zurückgeben\n    }\n}"
+        },
+        {
+          "id": "ef-6-e2", "title": "MVC: Controller verbindet Model und View", "difficulty": "mittel",
+          "prompt_html": "<code>Main</code> darf nur mit dem <code>AufgabenController</code> sprechen — nie direkt mit Model oder View. Vervollständige <code>anzeigen()</code>, sodass es die View mit den aktuellen Daten des Models aufruft.",
+          "expected": "- Hausaufgaben\n- Java lernen",
+          "tip_html": "Der Controller kennt <code>model</code> und <code>view</code> als eigene Attribute: <code>view.render(model.getAufgaben());</code>",
+          "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        AufgabenController controller = new AufgabenController();\n        controller.neueAufgabe(\"Hausaufgaben\");\n        controller.neueAufgabe(\"Java lernen\");\n        controller.anzeigen();\n    }\n}\n\nclass AufgabenModel {\n    private List<String> aufgaben = new ArrayList<>();\n    void hinzufuegen(String titel) { aufgaben.add(titel); }\n    List<String> getAufgaben() { return aufgaben; }\n}\n\nclass AufgabenView {\n    void render(List<String> aufgaben) {\n        for (String a : aufgaben) System.out.println(\"- \" + a);\n    }\n}\n\nclass AufgabenController {\n    private AufgabenModel model = new AufgabenModel();\n    private AufgabenView view = new AufgabenView();\n\n    void neueAufgabe(String titel) {\n        model.hinzufuegen(titel);\n    }\n\n    void anzeigen() {\n        // TODO: view soll die aktuelle Aufgabenliste aus dem model rendern\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "ef-proj", "phase": "EF", "nr": "P", "title": "Kapitel-Projekt · Bankkonto",
+      "status": "locked", "progress": 0, "isProject": true,
+      "project": {
+        "tag": "Kapitel-Projekt",
+        "title": "Kontoauszug-Generator",
+        "intro": "Du beherrschst jetzt Klassen, Attribute, Methoden, Verzweigungen und Vererbung. Zeit, alles in einem echten Projekt zu verbinden.",
+        "description_html": "Baue eine Klasse <code>Konto</code> mit <code>einzahlen</code>, <code>abheben</code> (mit <code>if</code>-Prüfung auf Deckung) und einer Methode <code>auszug()</code>, die den aktuellen Stand ausgibt. Erzeuge ein Sparkonto, das von <code>Konto</code> erbt und Zinsen berechnet.",
+        "duration": "≈ 40 Min.",
+        "reward_xp": 180,
+        "stats": [
+          { "value": "+180", "label": "XP verdient" },
+          { "value": "5 / 5", "label": "Lektionen" },
+          { "value": "—", "label": "Genauigkeit" }
+        ]
+      },
+      "lessons": [], "exercises": []
+    },
+
+    {
+      "id": "q1-1", "phase": "Q1", "nr": "1", "title": "Datenstrukturen & Algorithmen",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "q1-1-1", "num": "1.1", "title": "Arrays und Listen", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Array</strong> speichert mehrere Werte desselben Typs unter einem Namen, mit festem Umfang. Der Zugriff erfolgt über einen <strong>Index</strong>, der bei <code>0</code> beginnt." },
+            { "type": "code", "file": "Arrays.java", "code": "int[] zahlen = { 4, 8, 15, 16, 23, 42 };\nSystem.out.println(zahlen[0]);       // 4\nSystem.out.println(zahlen.length);   // 6" },
+            { "type": "h2", "text": "Durchlaufen mit einer Schleife" },
+            { "type": "code", "file": "Summe.java", "code": "int summe = 0;\nfor (int i = 0; i < zahlen.length; i++) {\n    summe += zahlen[i];\n}" },
+            { "type": "callout", "variant": "info", "title": "Array vs. Liste", "html": "Ein Array hat feste Größe. Eine <code>ArrayList</code> wächst dynamisch — dafür wird sie in Q1 später eingeführt." }
+          ]
+        },
+        {
+          "id": "q1-1-2", "num": "1.2", "title": "Suchen und Sortieren", "readTime": "≈ 12 Min.",
+          "blocks": [
+            { "type": "p", "html": "Zwei Grundprobleme ziehen sich durch die gesamte Informatik: ein Element <strong>finden</strong> und eine Reihenfolge <strong>herstellen</strong>." },
+            { "type": "h2", "text": "Lineare Suche" },
+            { "type": "p", "html": "Die einfachste Suche prüft jedes Element der Reihe nach, bis es gefunden wird:" },
+            { "type": "code", "file": "Suche.java", "code": "int gesucht = 16;\nint index = -1;\nfor (int i = 0; i < zahlen.length; i++) {\n    if (zahlen[i] == gesucht) {\n        index = i;\n        break;\n    }\n}" },
+            { "type": "h2", "text": "Bubble Sort" },
+            { "type": "p", "html": "Ein einfacher Sortieralgorithmus vergleicht benachbarte Elemente und vertauscht sie, wenn sie in falscher Reihenfolge stehen — wiederholt, bis alles sortiert ist:" },
+            { "type": "code", "file": "BubbleSort.java", "code": "for (int i = 0; i < zahlen.length - 1; i++) {\n    for (int j = 0; j < zahlen.length - 1 - i; j++) {\n        if (zahlen[j] > zahlen[j + 1]) {\n            int tmp = zahlen[j];\n            zahlen[j] = zahlen[j + 1];\n            zahlen[j + 1] = tmp;\n        }\n    }\n}" },
+            { "type": "callout", "variant": "tip", "title": "Effizienz", "html": "Lineare Suche und Bubble Sort sind einfach zu verstehen, aber nicht die schnellsten Verfahren. Effizientere Algorithmen (binäre Suche, Quicksort) folgen später im Kernlehrplan." }
+          ]
+        },
+        {
+          "id": "q1-1-3", "num": "1.3", "title": "Stacks und Queues", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Stack</strong> (Stapel) und eine <strong>Queue</strong> (Schlange) speichern Elemente in einer festen Reihenfolge — sie unterscheiden sich nur darin, <em>welches</em> Element du als Nächstes herausnimmst." },
+            { "type": "h2", "text": "Stack: LIFO" },
+            { "type": "p", "html": "Ein Stack funktioniert wie ein Stapel Teller: Das <strong>zuletzt</strong> hinzugefügte Element kommt <strong>zuerst</strong> wieder herunter — <em>Last In, First Out</em>." },
+            { "type": "code", "file": "StackDemo.java", "code": "Deque<Integer> stack = new ArrayDeque<>();\nstack.push(1);\nstack.push(2);\nstack.push(3);\nSystem.out.println(stack.pop());   // 3 — zuletzt rein, zuerst raus" },
+            { "type": "h2", "text": "Queue: FIFO" },
+            { "type": "p", "html": "Eine Queue funktioniert wie eine Warteschlange: Das <strong>zuerst</strong> hinzugefügte Element wird auch <strong>zuerst</strong> bedient — <em>First In, First Out</em>." },
+            { "type": "code", "file": "QueueDemo.java", "code": "Deque<Integer> queue = new ArrayDeque<>();\nqueue.offer(1);\nqueue.offer(2);\nqueue.offer(3);\nSystem.out.println(queue.poll());   // 1 — zuerst rein, zuerst raus" },
+            { "type": "callout", "variant": "info", "title": "Java-Klasse", "html": "Java hat keine eigene <code>Stack</code>-Klasse mehr empfohlen — <code>ArrayDeque</code> (aus <code>java.util</code>) implementiert beides: <code>push</code>/<code>pop</code> für Stack-Verhalten, <code>offer</code>/<code>poll</code> für Queue-Verhalten." },
+            { "type": "callout", "variant": "tip", "title": "Anwendungsbeispiel", "html": "Der \"Rückgängig\"-Button (Undo) in Editoren ist ein klassischer Stack: die letzte Aktion wird zuerst rückgängig gemacht. Eine Warteschlange am Drucker ist eine klassische Queue." }
+          ]
+        },
+        {
+          "id": "q1-1-4", "num": "1.4", "title": "Bäume", "readTime": "≈ 11 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Baum</strong> ist eine hierarchische Datenstruktur: jeder <strong>Knoten</strong> hat höchstens einen Vorgänger (Elternknoten) und beliebig viele Nachfolger (Kindknoten). Ein <strong>Binärbaum</strong> erlaubt maximal zwei Kinder pro Knoten." },
+            { "type": "code", "file": "Knoten.java", "code": "class Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}" },
+            { "type": "h2", "text": "Suchbaum: sortiert einfügen" },
+            { "type": "p", "html": "In einem <strong>binären Suchbaum</strong> (BST) ist jeder linke Nachfolger <em>kleiner</em>, jeder rechte Nachfolger <em>größer</em> als sein Elternknoten. Das macht Suchen sehr schnell." },
+            { "type": "code", "file": "Baum.java", "code": "Knoten einfuegenRek(Knoten k, int wert) {\n    if (k == null) return new Knoten(wert);\n    if (wert < k.wert) {\n        k.links = einfuegenRek(k.links, wert);\n    } else {\n        k.rechts = einfuegenRek(k.rechts, wert);\n    }\n    return k;\n}" },
+            { "type": "h2", "text": "Durchlaufen: inorder" },
+            { "type": "p", "html": "Ein <strong>inorder</strong>-Durchlauf (links, Knoten, rechts) besucht einen Suchbaum in <strong>sortierter Reihenfolge</strong> — ein Nebeneffekt der Struktur, kein Zufall:" },
+            { "type": "code", "file": "Baum.java", "code": "void inorder(Knoten k) {\n    if (k == null) return;\n    inorder(k.links);\n    System.out.print(k.wert + \" \");\n    inorder(k.rechts);\n}" },
+            { "type": "callout", "variant": "warn", "title": "Unbalanciert", "html": "Fügst du Werte bereits sortiert ein (1, 2, 3, 4…), entartet der Baum zu einer Liste — jeder Knoten hat nur ein Kind. Suchen wird dann so langsam wie bei einem Array. Balancierte Bäume (AVL, Rot-Schwarz) lösen dieses Problem." }
+          ]
+        },
+        {
+          "id": "q1-1-5", "num": "1.5", "title": "Graphen", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Graph</strong> verallgemeinert einen Baum: <strong>Knoten</strong> (Punkte) werden durch <strong>Kanten</strong> (Verbindungen) verbunden — ohne die Einschränkung, dass jeder Knoten nur einen Vorgänger hat. Freundschaftsnetzwerke, Straßenkarten und das Internet sind Graphen." },
+            { "type": "h2", "text": "Darstellung: Adjazenzliste" },
+            { "type": "p", "html": "Die gebräuchlichste Darstellung speichert für jeden Knoten die Liste seiner <strong>Nachbarn</strong>:" },
+            { "type": "code", "file": "Graph.java", "code": "Map<String, List<String>> graph = new HashMap<>();\ngraph.put(\"A\", Arrays.asList(\"B\", \"C\"));\ngraph.put(\"B\", Arrays.asList(\"A\", \"D\"));" },
+            { "type": "h2", "text": "Traversierung: BFS und DFS" },
+            { "type": "p", "html": "<strong>Breitensuche</strong> (BFS) besucht zuerst alle direkten Nachbarn, dann deren Nachbarn — mit einer <strong>Queue</strong>. <strong>Tiefensuche</strong> (DFS) folgt einem Pfad so weit wie möglich, bevor sie zurückgeht — mit einem <strong>Stack</strong> (oder Rekursion)." },
+            { "type": "callout", "variant": "info", "title": "Bäume sind Graphen", "html": "Ein Baum ist ein Spezialfall eines Graphen: zusammenhängend, ohne Zyklen, mit genau einem Pfad zwischen je zwei Knoten. Jeder Algorithmus für Bäume lässt sich auf diesen Sonderfall zurückführen." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "q1-1-e1", "title": "Array-Summe", "difficulty": "leicht",
+          "prompt_html": "Berechne die Summe aller Zahlen im Array und gib sie aus.",
+          "expected": "Summe: 108",
+          "tip_html": "Initialisiere <code>summe = 0</code> und addiere in einer <code>for</code>-Schleife jedes Element hinzu.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 4, 8, 15, 16, 23, 42 };\n        int summe = 0;\n        // Schleife über alle Elemente\n        System.out.println(\"Summe: \" + summe);\n    }\n}"
+        },
+        {
+          "id": "q1-1-e2", "title": "Klammern prüfen", "difficulty": "mittel",
+          "prompt_html": "Prüfe mit einem <code>Stack</code> (<code>Deque</code>), ob die Klammern in <code>text</code> ausgeglichen sind: jede öffnende <code>(</code> braucht eine passende schließende <code>)</code>.",
+          "expected": "Ausgeglichen",
+          "tip_html": "Bei <code>(</code>: <code>stack.push(c)</code>. Bei <code>)</code>: wenn der Stack leer ist, ist es nicht ausgeglichen — sonst <code>stack.pop()</code>.",
+          "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"(()())\";\n        Deque<Character> stack = new ArrayDeque<>();\n        boolean ok = true;\n\n        for (char c : text.toCharArray()) {\n            if (c == '(') {\n                stack.push(c);\n            } else if (c == ')') {\n                // TODO: Stack leer? -> nicht ausgeglichen. Sonst: pop()\n            }\n        }\n        if (!stack.isEmpty()) ok = false;\n\n        System.out.println(ok ? \"Ausgeglichen\" : \"Nicht ausgeglichen\");\n    }\n}"
+        },
+        {
+          "id": "q1-1-e3", "title": "Binärbaum einfügen und ausgeben", "difficulty": "schwer",
+          "prompt_html": "Vervollständige <code>einfuegenRek</code>, sodass die Werte als binärer Suchbaum eingefügt werden. Der <code>inorder</code>-Durchlauf gibt sie dann sortiert aus.",
+          "expected": "1 3 4 5 8",
+          "tip_html": "Ist <code>wert</code> kleiner als <code>k.wert</code>, geht es links weiter: <code>k.links = einfuegenRek(k.links, wert);</code> — sonst rechts.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        b.inorder(b.wurzel);\n        System.out.println();\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) {\n        wurzel = einfuegenRek(wurzel, wert);\n    }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        // TODO: wert < k.wert -> links einfügen, sonst -> rechts einfügen\n        return k;\n    }\n    void inorder(Knoten k) {\n        if (k == null) return;\n        inorder(k.links);\n        System.out.print(k.wert + \" \");\n        inorder(k.rechts);\n    }\n}"
+        },
+        {
+          "id": "q1-1-e4", "title": "Nachbarn ausgeben", "difficulty": "mittel",
+          "prompt_html": "Gib die Nachbarn des Knotens in <code>start</code> aus, getrennt durch <code>\", \"</code>.",
+          "expected": "B, C",
+          "tip_html": "<code>graph.get(start)</code> liefert die Liste der Nachbarn. Mit <code>String.join(\", \", liste)</code> verbindest du sie zu einem String.",
+          "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, List<String>> graph = new HashMap<>();\n        graph.put(\"A\", Arrays.asList(\"B\", \"C\"));\n        graph.put(\"B\", Arrays.asList(\"A\", \"D\"));\n        graph.put(\"C\", Arrays.asList(\"A\"));\n        graph.put(\"D\", Arrays.asList(\"B\"));\n\n        String start = \"A\";\n        // TODO: Nachbarn von 'start' ausgeben, getrennt durch \", \"\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "q2-1", "phase": "Q2", "nr": "1", "title": "Rekursion & SQL",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "q2-1-1", "num": "1.1", "title": "Rekursion: Methoden, die sich selbst aufrufen", "readTime": "≈ 11 Min.",
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>rekursive</strong> Methode ruft sich selbst auf, mit einem kleineren Teilproblem — bis ein <strong>Basisfall</strong> erreicht ist, der die Rekursion beendet." },
+            { "type": "code", "file": "Fakultaet.java", "code": "int fakultaet(int n) {\n    if (n <= 1) return 1;          // Basisfall\n    return n * fakultaet(n - 1);   // Rekursion\n}" },
+            { "type": "callout", "variant": "warn", "title": "Basisfall nicht vergessen", "html": "Ohne Basisfall ruft sich die Methode endlos auf → <code>StackOverflowError</code>. Jeder rekursive Aufruf muss dem Basisfall näher kommen." },
+            { "type": "h2", "text": "Rekursion vs. Iteration" },
+            { "type": "p", "html": "Alles, was rekursiv lösbar ist, lässt sich auch iterativ (mit einer Schleife) lösen. Rekursion passt besonders gut zu Problemen, die sich natürlich in kleinere, gleichartige Teilprobleme zerlegen — z. B. Bäume oder das Durchsuchen verschachtelter Strukturen." }
+          ]
+        },
+        {
+          "id": "q2-1-2", "num": "1.2", "title": "Relationale Datenbanken und SQL", "readTime": "≈ 12 Min.",
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>relationale Datenbank</strong> speichert Daten in <strong>Tabellen</strong> aus Zeilen und Spalten. Tabellen können über gemeinsame Spalten (Schlüssel) miteinander verknüpft werden." },
+            { "type": "h2", "text": "Daten abfragen: SELECT" },
+            { "type": "p", "html": "Mit <code>SELECT</code> fragst du Spalten aus einer Tabelle ab, mit <code>WHERE</code> filterst du Zeilen:" },
+            { "type": "code", "file": "abfrage.sql", "code": "SELECT name, note\nFROM schueler\nWHERE note <= 2;" },
+            { "type": "h2", "text": "Tabellen verknüpfen: JOIN" },
+            { "type": "p", "html": "Gehören Daten zu mehreren Tabellen (z. B. Schüler und ihre Kurse), verbindet ein <code>JOIN</code> sie über den gemeinsamen Schlüssel:" },
+            { "type": "code", "file": "join.sql", "code": "SELECT schueler.name, kurs.titel\nFROM schueler\nJOIN kurs ON schueler.kurs_id = kurs.id;" },
+            { "type": "callout", "variant": "info", "title": "Primärschlüssel", "html": "Jede Tabelle hat meist eine Spalte (oft <code>id</code>), die jede Zeile eindeutig identifiziert — den <strong>Primärschlüssel</strong>. Andere Tabellen verweisen darauf per <strong>Fremdschlüssel</strong>." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "q2-1-e1", "title": "Fakultät rekursiv", "difficulty": "schwer",
+          "prompt_html": "Vervollständige die rekursive Methode <code>fakultaet</code> und gib <code>5! = 120</code> aus.",
+          "expected": "120",
+          "tip_html": "Basisfall: <code>n <= 1</code> liefert <code>1</code>. Sonst: <code>n * fakultaet(n - 1)</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(fakultaet(5));\n    }\n\n    static int fakultaet(int n) {\n        // Basisfall + rekursiver Aufruf\n        return 0;\n    }\n}"
+        }
+      ]
+    },
+
+    {
+      "id": "q2-2", "phase": "Q2", "nr": "2", "title": "Kryptographie, Netzwerke & Automaten",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "q2-2-1", "num": "2.1", "title": "Kryptographie und Datensicherheit", "readTime": "≈ 9 Min.",
+          "blocks": [
+            { "type": "p", "html": "<strong>Kryptographie</strong> verwandelt lesbare Nachrichten (Klartext) in unlesbare Nachrichten (Geheimtext) — nur wer den passenden Schlüssel kennt, kann sie zurückverwandeln." },
+            { "type": "h2", "text": "Die Caesar-Verschlüsselung" },
+            { "type": "p", "html": "Eine der ältesten Methoden verschiebt jeden Buchstaben um eine feste Anzahl Stellen im Alphabet. Bei Verschiebung <code>3</code> wird aus <code>A</code> ein <code>D</code>, aus <code>B</code> ein <code>E</code> usw." },
+            { "type": "code", "file": "Caesar.java", "code": "char c = 'A';\nint shift = 3;\nint verschoben = (c - 'A' + shift) % 26;\nchar neu = (char) ('A' + verschoben);\n// neu == 'D'" },
+            { "type": "callout", "variant": "warn", "title": "Unsicher!", "html": "Die Caesar-Verschlüsselung hat nur 26 mögliche Schlüssel — ein Computer probiert alle in Millisekunden durch (<strong>Brute-Force</strong>). Moderne Verfahren (AES, RSA) nutzen riesige Schlüsselräume und mathematisch harte Probleme." },
+            { "type": "h2", "text": "Symmetrisch vs. asymmetrisch" },
+            { "type": "p", "html": "Bei <strong>symmetrischer</strong> Verschlüsselung nutzen Sender und Empfänger denselben Schlüssel (wie bei Caesar). Bei <strong>asymmetrischer</strong> Verschlüsselung (z. B. RSA) hat jede Seite ein Schlüsselpaar: einen öffentlichen Schlüssel zum Verschlüsseln, einen privaten zum Entschlüsseln — so muss nie ein geheimer Schlüssel übertragen werden." }
+          ]
+        },
+        {
+          "id": "q2-2-2", "num": "2.2", "title": "Netzwerke und Client-Server-Modell", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Die meisten Anwendungen, die du täglich nutzt, folgen dem <strong>Client-Server-Modell</strong>: der <strong>Client</strong> (z. B. dein Browser) stellt eine Anfrage, der <strong>Server</strong> verarbeitet sie und schickt eine Antwort zurück." },
+            { "type": "code", "file": "Ablauf.txt", "code": "Client                          Server\n  |-- Anfrage (Request) -------->|\n  |                               | verarbeitet\n  |<-- Antwort (Response) -------|" },
+            { "type": "h2", "text": "IP-Adressen und Ports" },
+            { "type": "p", "html": "Eine <strong>IP-Adresse</strong> identifiziert einen Rechner im Netzwerk. Ein <strong>Port</strong> identifiziert innerhalb dieses Rechners, welcher Dienst gemeint ist — z. B. Port <code>80</code> für unverschlüsseltes HTTP, Port <code>443</code> für verschlüsseltes HTTPS." },
+            { "type": "callout", "variant": "info", "title": "Diese App als Beispiel", "html": "Wenn du in JavaLernen auf \"Ausführen\" klickst, ist dein Browser der <strong>Client</strong>: er schickt deinen Code an den PHP-<strong>Server</strong>, der ihn kompiliert und das Ergebnis zurückschickt." }
+          ]
+        },
+        {
+          "id": "q2-2-3", "num": "2.3", "title": "Endliche Automaten und formale Sprachen", "readTime": "≈ 10 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>endlicher Automat</strong> ist eine Maschine mit einer festen Anzahl <strong>Zustände</strong>. Ereignisse (Eingaben) lösen <strong>Übergänge</strong> zwischen Zuständen aus." },
+            { "type": "h2", "text": "Beispiel: Drehkreuz" },
+            { "type": "p", "html": "Ein Drehkreuz kennt zwei Zustände: <strong>Gesperrt</strong> und <strong>Frei</strong>. Eine Münze schaltet von Gesperrt auf Frei; Durchgehen schaltet von Frei zurück auf Gesperrt. Andere Eingaben ändern nichts." },
+            { "type": "code", "file": "Drehkreuz.java", "code": "if (zustand.equals(\"Gesperrt\") && ereignis.equals(\"Muenze\")) {\n    zustand = \"Frei\";\n} else if (zustand.equals(\"Frei\") && ereignis.equals(\"Durchgehen\")) {\n    zustand = \"Gesperrt\";\n}\n// sonst: Zustand bleibt unverändert" },
+            { "type": "callout", "variant": "tip", "title": "Wozu das nützt", "html": "Automaten modellieren Ampeln, Getränkeautomaten, Spielfiguren — und in der theoretischen Informatik erkennen sie <strong>formale Sprachen</strong>: Mengen von Zeichenketten, die einem Muster folgen (Grundlage für z. B. reguläre Ausdrücke)." }
+          ]
+        },
+        {
+          "id": "q2-2-4", "num": "2.4", "title": "Informatik, Mensch und Gesellschaft", "readTime": "≈ 8 Min.",
+          "blocks": [
+            { "type": "p", "html": "Software trifft heute Entscheidungen, die Menschen betreffen: Kreditvergabe, Bewerbungsvorauswahl, Preisbildung. Das bringt Verantwortung mit sich, die über reines Programmieren hinausgeht." },
+            { "type": "h2", "text": "Datenschutz" },
+            { "type": "p", "html": "Die <strong>DSGVO</strong> (Datenschutz-Grundverordnung) verlangt: Daten nur mit Zweck und Einwilligung sammeln, so wenig wie nötig speichern (<strong>Datensparsamkeit</strong>), und Betroffenen Auskunfts- und Löschrechte geben." },
+            { "type": "h2", "text": "Algorithmische Verzerrung" },
+            { "type": "p", "html": "Ein Algorithmus ist nur so fair wie seine <strong>Trainingsdaten</strong>. Spiegeln diese vergangene Diskriminierung wider, reproduziert das trainierte Modell sie — oft unsichtbar, weil es \"nur Mathematik\" zu sein scheint." },
+            { "type": "callout", "variant": "info", "title": "Kein Rezept, sondern eine Haltung", "html": "Dieses Thema hat selten eine einzige richtige Antwort. Ziel ist, beim Entwerfen von Software aktiv zu fragen: Wer könnte durch dieses System benachteiligt werden? Welche Daten sind wirklich nötig?" }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "q2-2-e1", "title": "Caesar-Verschlüsselung", "difficulty": "mittel",
+          "prompt_html": "Verschlüssle <code>text</code> mit einer Caesar-Verschiebung um <code>shift</code> Stellen (nur Großbuchstaben A–Z, mit Umbruch von Z zu A).",
+          "expected": "KDOOR",
+          "tip_html": "Die Formel: <code>(c - 'A' + shift) % 26</code> liefert die neue Position im Alphabet, <code>(char)('A' + verschoben)</code> den neuen Buchstaben.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        String text = \"HALLO\";\n        int shift = 3;\n        StringBuilder result = new StringBuilder();\n\n        for (char c : text.toCharArray()) {\n            // TODO: verschoben berechnen und neuen Buchstaben anhängen\n        }\n        System.out.println(result);\n    }\n}"
+        },
+        {
+          "id": "q2-2-e2", "title": "Drehkreuz-Automat", "difficulty": "schwer",
+          "prompt_html": "Simuliere das Drehkreuz: für jedes Ereignis in <code>ereignisse</code> wird <code>zustand</code> aktualisiert und ausgegeben.",
+          "expected": "Frei\nGesperrt\nGesperrt\nFrei\nFrei\nGesperrt",
+          "tip_html": "Zwei Übergänge zählen: Gesperrt+Muenze → Frei, und Frei+Durchgehen → Gesperrt. Alles andere lässt den Zustand unverändert.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        String zustand = \"Gesperrt\";\n        String[] ereignisse = {\"Muenze\", \"Durchgehen\", \"Durchgehen\", \"Muenze\", \"Muenze\", \"Durchgehen\"};\n\n        for (String ereignis : ereignisse) {\n            if (zustand.equals(\"Gesperrt\") && ereignis.equals(\"Muenze\")) {\n                // TODO: zustand auf \"Frei\" setzen\n            } else if (zustand.equals(\"Frei\") && ereignis.equals(\"Durchgehen\")) {\n                // TODO: zustand auf \"Gesperrt\" setzen\n            }\n            System.out.println(zustand);\n        }\n    }\n}"
+        }
+      ]
+    }
+  ]
+}
