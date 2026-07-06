@@ -1,0 +1,319 @@
+{
+  "meta": {
+    "lang": "python",
+    "curriculum": "Python-Grundkurs · angelehnt an Programmieren Starten (Python Tutorial deutsch)",
+    "note": "Seed-Inhalte. Videos: YouTube-Kanal „Programmieren Starten“."
+  },
+  "chapters": [
+    {
+      "id": "py-0", "phase": "PY", "nr": "0", "title": "Einführung in Python",
+      "status": "current", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-0-1", "num": "0.1", "title": "Dein erstes Programm", "readTime": "≈ 6 Min.",
+          "video": { "id": "oxXAb8IikHM", "title": "Python Tutorial deutsch [1/24] – Dein erstes Programm", "channel": "Programmieren Starten", "duration": "17:09" },
+          "blocks": [
+            { "type": "p", "html": "Python ist eine der beliebtesten Programmiersprachen — klar, lesbar und ideal zum Einstieg. Anders als Java brauchst du <strong>keine Klasse und keine <code>main</code>-Methode</strong>: du schreibst einfach Anweisungen, die von oben nach unten ausgeführt werden." },
+            { "type": "h2", "text": "Ausgabe mit print()" },
+            { "type": "code", "file": "main.py", "code": "print(\"Hallo, Welt!\")\nprint(\"Ich lerne Python.\")" },
+            { "type": "callout", "variant": "info", "title": "Kein Semikolon", "html": "In Python endet eine Anweisung einfach mit dem Zeilenende — kein <code>;</code> nötig. Und Kommentare beginnen mit <code>#</code> statt <code>//</code>." },
+            { "type": "code", "file": "main.py", "code": "# Das ist ein Kommentar\nprint(\"Python ist einfach\")   # auch am Zeilenende möglich" }
+          ]
+        },
+        {
+          "id": "py-0-2", "num": "0.2", "title": "Zahlen und Rechnen", "readTime": "≈ 8 Min.",
+          "video": { "id": "VtiDkRDPA_c", "title": "Python Tutorial deutsch [2/24] – Zahlen in Python", "channel": "Programmieren Starten", "duration": "11:14" },
+          "blocks": [
+            { "type": "p", "html": "Python rechnet direkt mit Zahlen. Ganze Zahlen heißen <code>int</code>, Kommazahlen <code>float</code>." },
+            { "type": "code", "file": "main.py", "code": "print(3 + 4)      # 7\nprint(10 / 3)     # 3.3333333333333335 (float)\nprint(10 // 3)    # 3  (ganzzahlige Division)\nprint(10 % 3)     # 1  (Rest / Modulo)\nprint(2 ** 8)     # 256 (Potenz)" },
+            { "type": "callout", "variant": "tip", "title": "Zwei Divisionen", "html": "<code>/</code> liefert immer eine Kommazahl, <code>//</code> rundet auf die ganze Zahl ab. Der Modulo <code>%</code> gibt den Rest — nützlich, um auf Teilbarkeit zu prüfen." }
+          ]
+        },
+        {
+          "id": "py-0-3", "num": "0.3", "title": "Strings und Variablen", "readTime": "≈ 9 Min.",
+          "video": { "id": "sTEf4_mrLvw", "title": "Python Tutorial deutsch [3/24] – Strings in Python", "channel": "Programmieren Starten", "duration": "10:39" },
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>String</strong> ist eine Zeichenkette in Anführungszeichen. Eine <strong>Variable</strong> speichert einen Wert unter einem Namen — ohne Typangabe, Python erkennt den Typ selbst." },
+            { "type": "code", "file": "main.py", "code": "name = \"Alberto\"\nalter = 30\nprint(name)\nprint(alter)" },
+            { "type": "h2", "text": "f-Strings: Werte in Text einbauen" },
+            { "type": "p", "html": "Mit einem <code>f</code> vor dem String kannst du Variablen direkt in geschweiften Klammern einsetzen — die eleganteste Art, Text zusammenzubauen." },
+            { "type": "code", "file": "main.py", "code": "name = \"Alberto\"\nprint(f\"Hallo, {name}!\")\nprint(f\"In 5 Jahren bin ich {30 + 5}.\")" },
+            { "type": "callout", "variant": "info", "title": "f-String statt +", "html": "Statt <code>\"Hallo, \" + name + \"!\"</code> schreibst du kürzer <code>f\"Hallo, {name}!\"</code>. In den Klammern darf sogar gerechnet werden." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-0-e1", "title": "Deine erste Ausgabe", "difficulty": "leicht",
+          "prompt_html": "Gib mit einem <strong>f-String</strong> und der Variable <code>name</code> den Gruß <code>Hallo, Alberto!</code> aus.",
+          "expected": "Hallo, Alberto!",
+          "tip_html": "Ein f-String: <code>print(f\"Hallo, {name}!\")</code>",
+          "starter": "name = \"Alberto\"\n# TODO: gib \"Hallo, Alberto!\" mit einem f-String aus\n"
+        },
+        {
+          "id": "py-0-e2", "title": "Rechnen und ausgeben", "difficulty": "leicht",
+          "prompt_html": "Berechne <code>7 * 6</code> und gib das Ergebnis im Format <code>Ergebnis: 42</code> aus.",
+          "expected": "Ergebnis: 42",
+          "tip_html": "<code>print(f\"Ergebnis: {7 * 6}\")</code>",
+          "starter": "# TODO: gib \"Ergebnis: 42\" aus (7 * 6 berechnen)\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-1", "phase": "PY", "nr": "1", "title": "Datentypen & Eingabe",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-1-1", "num": "1.1", "title": "Datentypen: int, float, str, bool", "readTime": "≈ 9 Min.",
+          "video": { "id": "1WqFJ5wsA4o", "title": "Python Tutorial deutsch [5/24] – Datentypen (int, float, str)", "channel": "Programmieren Starten", "duration": "10:27" },
+          "blocks": [
+            { "type": "p", "html": "Jeder Wert in Python hat einen <strong>Typ</strong>. Mit <code>type(...)</code> kannst du ihn abfragen." },
+            { "type": "grid", "items": [
+              { "code": "int", "label": "ganze Zahl · 42" },
+              { "code": "float", "label": "Kommazahl · 3.14" },
+              { "code": "str", "label": "Text · \"hallo\"" },
+              { "code": "bool", "label": "Wahrheitswert · True/False" }
+            ]},
+            { "type": "code", "file": "main.py", "code": "print(type(42))       # <class 'int'>\nprint(type(3.14))     # <class 'float'>\nprint(type(\"hallo\"))  # <class 'str'>\nprint(type(True))     # <class 'bool'>" },
+            { "type": "callout", "variant": "info", "title": "Dynamisch typisiert", "html": "Anders als Java musst du den Typ nie hinschreiben — Python leitet ihn aus dem Wert ab. Eine Variable kann sogar später einen Wert anderen Typs bekommen." }
+          ]
+        },
+        {
+          "id": "py-1-2", "num": "1.2", "title": "Eingabe mit input()", "readTime": "≈ 8 Min.",
+          "video": { "id": "I9h1c-121Uk", "title": "Python Tutorial deutsch [6/24] – Die input()-Funktion", "channel": "Programmieren Starten", "duration": "8:42" },
+          "blocks": [
+            { "type": "p", "html": "Mit <code>input()</code> liest dein Programm eine Eingabe des Nutzers ein. <strong>Wichtig:</strong> <code>input()</code> liefert immer einen <code>str</code> — auch wenn eine Zahl eingegeben wird." },
+            { "type": "code", "file": "main.py", "code": "name = input(\"Wie heißt du? \")\nprint(f\"Hallo, {name}!\")" },
+            { "type": "callout", "variant": "warn", "title": "Immer ein String", "html": "<code>input()</code> liefert Text. Willst du damit rechnen, musst du erst umwandeln (Type-Casting, nächste Lektion): <code>int(input())</code>." }
+          ]
+        },
+        {
+          "id": "py-1-3", "num": "1.3", "title": "Type-Casting", "readTime": "≈ 10 Min.",
+          "video": { "id": "u_ECGvn1Z2c", "title": "Python Tutorial deutsch [7/24] – Type-Casting-Funktionen", "channel": "Programmieren Starten", "duration": "14:08" },
+          "blocks": [
+            { "type": "p", "html": "<strong>Type-Casting</strong> wandelt einen Wert in einen anderen Typ um. Die wichtigsten Funktionen: <code>int()</code>, <code>float()</code>, <code>str()</code>." },
+            { "type": "code", "file": "main.py", "code": "text = \"42\"\nzahl = int(text)      # str -> int\nprint(zahl + 1)        # 43\n\nalter = int(input(\"Alter: \"))   # Eingabe direkt in int umwandeln\nprint(f\"Nächstes Jahr: {alter + 1}\")" },
+            { "type": "callout", "variant": "warn", "title": "Vorsicht", "html": "<code>int(\"abc\")</code> gibt einen Fehler (<code>ValueError</code>) — nur was wie eine Zahl aussieht, lässt sich umwandeln." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-1-e1", "title": "Eingabe verdoppeln", "difficulty": "leicht",
+          "prompt_html": "Lies eine Zahl ein und gib ihr <strong>Doppeltes</strong> aus. Wird mit mehreren Zahlen getestet.",
+          "tests": [
+            { "stdin": "5", "expected": "10" },
+            { "stdin": "10", "expected": "20" },
+            { "stdin": "0", "expected": "0" }
+          ],
+          "tip_html": "Erst umwandeln, dann rechnen: <code>n = int(input())</code>, dann <code>print(n * 2)</code>.",
+          "starter": "n = int(input())   # Eingabe als Zahl (gegeben)\n# TODO: gib das Doppelte von n aus\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-2", "phase": "PY", "nr": "2", "title": "Kontrollstrukturen",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-2-1", "num": "2.1", "title": "Verzweigungen: if / elif / else", "readTime": "≈ 9 Min.",
+          "video": { "id": "b6KzYbM-Hvg", "title": "Python Tutorial deutsch [10/24] – Die if-Anweisung", "channel": "Programmieren Starten", "duration": "9:32" },
+          "blocks": [
+            { "type": "p", "html": "Eine <code>if</code>-Anweisung führt Code nur aus, wenn eine Bedingung <code>True</code> ist. Statt geschweifter Klammern nutzt Python <strong>Einrückung</strong> (4 Leerzeichen), um den Block zu markieren." },
+            { "type": "code", "file": "main.py", "code": "alter = 18\nif alter >= 18:\n    print(\"Volljährig\")\nelse:\n    print(\"Minderjährig\")" },
+            { "type": "h2", "text": "Mehrere Fälle: elif" },
+            { "type": "code", "file": "main.py", "code": "note = 2\nif note == 1:\n    print(\"sehr gut\")\nelif note == 2:\n    print(\"gut\")\nelse:\n    print(\"geht so\")" },
+            { "type": "callout", "variant": "warn", "title": "Einrückung ist Pflicht", "html": "Die Einrückung ist in Python nicht nur schön, sondern <strong>Teil der Sprache</strong>. Falsch eingerückter Code gibt einen <code>IndentationError</code>. Vergiss auch den Doppelpunkt <code>:</code> am Zeilenende nicht." },
+            { "type": "grid", "items": [
+              { "code": "==", "label": "gleich" },
+              { "code": "!=", "label": "ungleich" },
+              { "code": ">=  <=", "label": "größer/kleiner gleich" }
+            ]}
+          ]
+        },
+        {
+          "id": "py-2-2", "num": "2.2", "title": "Logische Operatoren", "readTime": "≈ 8 Min.",
+          "video": { "id": "075l6R42tkQ", "title": "Python Tutorial deutsch [12/24] – Logische Operatoren", "channel": "Programmieren Starten", "duration": "11:33" },
+          "blocks": [
+            { "type": "p", "html": "Python schreibt logische Verknüpfungen als <strong>Wörter</strong> — lesbarer als die Symbole anderer Sprachen." },
+            { "type": "grid", "items": [
+              { "code": "and", "label": "und (beide wahr)" },
+              { "code": "or", "label": "oder (mind. eine)" },
+              { "code": "not", "label": "nicht (kehrt um)" }
+            ]},
+            { "type": "code", "file": "main.py", "code": "alter = 16\nbegleitet = True\nif alter >= 18 or (alter >= 16 and begleitet):\n    print(\"Eintritt erlaubt\")\nelse:\n    print(\"Kein Eintritt\")" }
+          ]
+        },
+        {
+          "id": "py-2-3", "num": "2.3", "title": "Die while-Schleife", "readTime": "≈ 8 Min.",
+          "video": { "id": "sXLicTuJzB4", "title": "Python Tutorial deutsch [13/24] – Die while-Schleife", "channel": "Programmieren Starten", "duration": "8:50" },
+          "blocks": [
+            { "type": "p", "html": "Die <code>while</code>-Schleife wiederholt einen Block, <strong>solange</strong> eine Bedingung wahr ist." },
+            { "type": "code", "file": "main.py", "code": "wert = 1\nwhile wert < 100:\n    wert = wert * 2\n    print(wert)" },
+            { "type": "callout", "variant": "warn", "title": "Endlosschleife vermeiden", "html": "Im Schleifenkörper muss sich etwas ändern, das die Bedingung irgendwann <code>False</code> macht — sonst läuft die Schleife für immer." }
+          ]
+        },
+        {
+          "id": "py-2-4", "num": "2.4", "title": "Die for-Schleife", "readTime": "≈ 7 Min.",
+          "video": { "id": "ISo1uqLcVw8", "title": "Python Tutorial deutsch [16/24] – Die for-Schleife", "channel": "Programmieren Starten", "duration": "6:39" },
+          "blocks": [
+            { "type": "p", "html": "Die <code>for</code>-Schleife durchläuft eine Folge von Werten. Mit <code>range(...)</code> erzeugst du Zahlenfolgen." },
+            { "type": "code", "file": "main.py", "code": "for i in range(1, 6):    # 1, 2, 3, 4, 5 (6 ist NICHT dabei)\n    print(i)\n\nfor buchstabe in \"Python\":   # geht auch über Strings\n    print(buchstabe)" },
+            { "type": "callout", "variant": "info", "title": "range verstehen", "html": "<code>range(1, 6)</code> läuft von 1 bis <em>vor</em> 6 — die obere Grenze ist ausgeschlossen. <code>range(5)</code> allein läuft von 0 bis 4." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-2-e1", "title": "Gerade oder ungerade?", "difficulty": "mittel",
+          "prompt_html": "Lies eine Zahl ein und gib aus, ob sie <strong>gerade</strong> oder <strong>ungerade</strong> ist — Format <code>7 ist ungerade</code>. Wird mit mehreren Zahlen getestet.",
+          "tests": [
+            { "stdin": "7", "expected": "7 ist ungerade" },
+            { "stdin": "4", "expected": "4 ist gerade" },
+            { "stdin": "0", "expected": "0 ist gerade" }
+          ],
+          "tip_html": "<code>z % 2 == 0</code> ist wahr, wenn <code>z</code> gerade ist. Ausgabe z. B. mit f-String: <code>print(f\"{z} ist gerade\")</code>.",
+          "starter": "z = int(input())   # Eingabe (gegeben)\n\n# TODO: gib aus, ob z gerade oder ungerade ist\n#       Format:  <z> ist gerade   bzw.   <z> ist ungerade\n"
+        },
+        {
+          "id": "py-2-e2", "title": "Summe mit for-Schleife", "difficulty": "leicht",
+          "prompt_html": "Berechne die Summe aller Zahlen von <code>1</code> bis <code>n</code> (eingelesen) und gib sie im Format <code>Summe: 55</code> aus.",
+          "tests": [
+            { "stdin": "10", "expected": "Summe: 55" },
+            { "stdin": "5", "expected": "Summe: 15" },
+            { "stdin": "1", "expected": "Summe: 1" }
+          ],
+          "tip_html": "<code>for i in range(1, n + 1):</code> läuft von 1 bis n. In der Schleife: <code>summe += i</code>.",
+          "starter": "n = int(input())   # Eingabe (gegeben)\nsumme = 0\n\nfor i in range(1, n + 1):\n    # TODO: i zur summe addieren\n    pass\n\nprint(f\"Summe: {summe}\")\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-3", "phase": "PY", "nr": "3", "title": "Listen",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-3-1", "num": "3.1", "title": "Listen erstellen und durchlaufen", "readTime": "≈ 8 Min.",
+          "video": { "id": "ihF8bZoauBs", "title": "Python Tutorial deutsch [14/24] – Einführung in Listen", "channel": "Programmieren Starten", "duration": "8:06" },
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>Liste</strong> speichert mehrere Werte in einer festen Reihenfolge — in eckigen Klammern, durch Kommas getrennt. Anders als ein Java-Array wächst sie dynamisch." },
+            { "type": "code", "file": "main.py", "code": "zahlen = [4, 8, 15, 16, 23, 42]\nprint(len(zahlen))     # 6 (Länge)\nzahlen.append(100)     # ans Ende anhängen\n\nfor z in zahlen:       # jedes Element durchlaufen\n    print(z)" },
+            { "type": "callout", "variant": "tip", "title": "Gemischt erlaubt", "html": "Eine Python-Liste darf verschiedene Typen enthalten: <code>[1, \"text\", 3.14, True]</code>. In der Praxis nimmt man aber meist gleichartige Werte." }
+          ]
+        },
+        {
+          "id": "py-3-2", "num": "3.2", "title": "Zugriff über den Index", "readTime": "≈ 8 Min.",
+          "video": { "id": "_XzWPXvya2w", "title": "Python Tutorial deutsch [15/24] – Zugriff auf Listen", "channel": "Programmieren Starten", "duration": "8:31" },
+          "blocks": [
+            { "type": "p", "html": "Jedes Element hat einen <strong>Index</strong>, beginnend bei <code>0</code>. Python erlaubt auch <strong>negative</strong> Indizes von hinten." },
+            { "type": "code", "file": "main.py", "code": "namen = [\"Anna\", \"Ben\", \"Cem\"]\nprint(namen[0])     # Anna  (erstes)\nprint(namen[-1])    # Cem   (letztes)\nnamen[1] = \"Bea\"    # ändern\nprint(namen[1:3])   # ['Bea', 'Cem']  (Ausschnitt / Slicing)" },
+            { "type": "callout", "variant": "warn", "title": "IndexError", "html": "Greifst du auf einen Index zu, den es nicht gibt (z. B. <code>namen[5]</code> bei 3 Elementen), gibt Python einen <code>IndexError</code>." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-3-e1", "title": "Listen-Summe", "difficulty": "leicht",
+          "prompt_html": "Berechne die Summe aller Zahlen in der Liste <code>zahlen</code> und gib sie im Format <code>Summe: 108</code> aus.",
+          "expected": "Summe: 108",
+          "tip_html": "Durchlaufe die Liste mit <code>for z in zahlen:</code> und addiere jedes <code>z</code>. (Oder direkt <code>sum(zahlen)</code>.)",
+          "starter": "zahlen = [4, 8, 15, 16, 23, 42]\nsumme = 0\n\n# TODO: alle Elemente aufaddieren\n\nprint(f\"Summe: {summe}\")\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-4", "phase": "PY", "nr": "4", "title": "Funktionen",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-4-1", "num": "4.1", "title": "Funktionen definieren", "readTime": "≈ 8 Min.",
+          "video": { "id": "LQCfN5HS9xI", "title": "Python Tutorial deutsch [18/24] – Funktionen", "channel": "Programmieren Starten", "duration": "7:37" },
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>Funktion</strong> bündelt Code unter einem Namen, den du beliebig oft aufrufen kannst. Definiert wird sie mit <code>def</code>." },
+            { "type": "code", "file": "main.py", "code": "def begruessung():\n    print(\"Hallo!\")\n    print(\"Willkommen.\")\n\nbegruessung()   # Aufruf\nbegruessung()   # nochmal" },
+            { "type": "callout", "variant": "info", "title": "Erst definieren, dann aufrufen", "html": "Eine Funktion läuft erst, wenn du sie <em>aufrufst</em> — die Definition allein tut nichts. Der Funktionskörper ist wieder eingerückt." }
+          ]
+        },
+        {
+          "id": "py-4-2", "num": "4.2", "title": "Parameter und Rückgabewerte", "readTime": "≈ 10 Min.",
+          "video": { "id": "ehSP-sYoKCY", "title": "Python Tutorial deutsch [20/24] – Funktionen mit Rückgabewert", "channel": "Programmieren Starten", "duration": "12:03" },
+          "blocks": [
+            { "type": "p", "html": "Eine Funktion kann Werte über <strong>Parameter</strong> entgegennehmen und mit <code>return</code> ein Ergebnis <strong>zurückgeben</strong>." },
+            { "type": "code", "file": "main.py", "code": "def quadrat(n):\n    return n * n\n\nergebnis = quadrat(5)\nprint(ergebnis)          # 25\nprint(quadrat(3) + 1)    # 10 — Rückgabewert direkt weiterverwenden" },
+            { "type": "callout", "variant": "warn", "title": "print ist nicht return", "html": "<code>print(x)</code> zeigt einen Wert an, <code>return x</code> gibt ihn ans aufrufende Programm zurück. Nur ein zurückgegebener Wert lässt sich weiterverwenden (in eine Variable speichern, weiterrechnen)." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-4-e1", "title": "Funktion mit Rückgabewert", "difficulty": "mittel",
+          "prompt_html": "Vervollständige die Funktion <code>quadrat</code>, sodass sie das Quadrat von <code>n</code> <strong>zurückgibt</strong>. <code>n</code> wird eingelesen.",
+          "tests": [
+            { "stdin": "4", "expected": "16" },
+            { "stdin": "5", "expected": "25" },
+            { "stdin": "1", "expected": "1" }
+          ],
+          "tip_html": "<code>return n * n</code> im Funktionskörper.",
+          "starter": "def quadrat(n):\n    # TODO: das Quadrat von n zurückgeben\n    pass\n\nprint(quadrat(int(input())))\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-5", "phase": "PY", "nr": "5", "title": "Objektorientierung",
+      "status": "locked", "progress": 0,
+      "lessons": [
+        {
+          "id": "py-5-1", "num": "5.1", "title": "Klassen und Objekte", "readTime": "≈ 11 Min.",
+          "video": { "id": "XxCZrT7Z3G4", "title": "Python Tutorial deutsch [22/24] – Klassen und Objekte", "channel": "Programmieren Starten", "duration": "14:25" },
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>Klasse</strong> ist ein Bauplan, ein <strong>Objekt</strong> ein konkretes Exemplar. In Python definiert der spezielle Konstruktor <code>__init__</code> die Attribute beim Erzeugen." },
+            { "type": "code", "file": "main.py", "code": "class Hund:\n    def __init__(self, name):\n        self.name = name        # Attribut setzen\n\nmein_hund = Hund(\"Rex\")\nprint(mein_hund.name)           # Rex" },
+            { "type": "callout", "variant": "info", "title": "self", "html": "<code>self</code> ist das Objekt selbst. Über <code>self.name</code> greift die Klasse auf ihr eigenes Attribut zu. Beim Aufruf <code>Hund(\"Rex\")</code> musst du <code>self</code> nicht mitgeben — Python setzt es automatisch." }
+          ]
+        },
+        {
+          "id": "py-5-2", "num": "5.2", "title": "Methoden", "readTime": "≈ 12 Min.",
+          "video": { "id": "58IjjwHs_4A", "title": "Python Tutorial deutsch [24/24] – Methoden in Klassen", "channel": "Programmieren Starten", "duration": "18:19" },
+          "blocks": [
+            { "type": "p", "html": "Eine <strong>Methode</strong> ist eine Funktion, die zu einer Klasse gehört. Ihr erster Parameter ist immer <code>self</code>." },
+            { "type": "code", "file": "main.py", "code": "class Hund:\n    def __init__(self, name):\n        self.name = name\n\n    def bellen(self):\n        print(f\"{self.name} sagt: Wuff!\")\n\nh = Hund(\"Rex\")\nh.bellen()     # Rex sagt: Wuff!" },
+            { "type": "callout", "variant": "tip", "title": "Zustand + Verhalten", "html": "Attribute (<code>self.name</code>) sind der <em>Zustand</em> des Objekts, Methoden (<code>bellen</code>) sein <em>Verhalten</em> — genau wie bei Java, nur mit <code>self</code> statt implizitem <code>this</code>." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-5-e1", "title": "Klasse Hund", "difficulty": "mittel",
+          "prompt_html": "Vervollständige die Methode <code>bellen()</code>, sodass sie <code>Rex sagt: Wuff!</code> ausgibt (mit dem Namen des Objekts).",
+          "expected": "Rex sagt: Wuff!",
+          "tip_html": "Greife über <code>self.name</code> auf den Namen zu: <code>print(f\"{self.name} sagt: Wuff!\")</code>",
+          "starter": "class Hund:\n    def __init__(self, name):\n        self.name = name\n\n    def bellen(self):\n        # TODO: \"<name> sagt: Wuff!\" ausgeben\n        pass\n\nh = Hund(\"Rex\")\nh.bellen()\n"
+        }
+      ]
+    },
+
+    {
+      "id": "py-proj", "phase": "PY", "nr": "P", "title": "Kapitel-Projekt · Zahlenraten",
+      "status": "locked", "progress": 0, "isProject": true,
+      "project": {
+        "tag": "Kapitel-Projekt",
+        "title": "Zahlenraten-Spiel",
+        "intro": "Du beherrschst jetzt Ein-/Ausgabe, Verzweigungen, Schleifen, Funktionen und Klassen. Zeit, alles in einem kleinen Spiel zu verbinden.",
+        "description_html": "Baue ein Ratespiel: das Programm denkt sich eine Zahl (z. B. <code>42</code>), der Spieler rät per <code>input()</code>. Nach jedem Versuch gibt das Programm <code>zu hoch</code> / <code>zu niedrig</code> aus (mit <code>if</code>), bis die Zahl stimmt — gezählt mit einer <code>while</code>-Schleife. Erweiterung: als Klasse <code>Spiel</code> mit Methoden kapseln.",
+        "duration": "≈ 30 Min.",
+        "reward_xp": 150,
+        "stats": [
+          { "value": "+150", "label": "XP verdient" },
+          { "value": "6 / 6", "label": "Kapitel" },
+          { "value": "—", "label": "Genauigkeit" }
+        ]
+      },
+      "lessons": [], "exercises": []
+    }
+  ]
+}

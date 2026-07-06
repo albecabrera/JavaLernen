@@ -10,6 +10,12 @@
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
+  /* ---------- Sprache (Java / Python) ---------- */
+  const LANG_KEY = 'javalernen_lang';
+  let LANG = 'java';
+  try { const l = localStorage.getItem(LANG_KEY); if (l === 'python' || l === 'java') LANG = l; } catch (e) {}
+  const CONTENT_FILE = { java: 'content/content.json', python: 'content/content-python.json' };
+
   /* ---------- Router de vistas ---------- */
   const tabs = $$('.tab');
 
@@ -55,20 +61,55 @@
     $('#netS').textContent = off ? 'Lokal gespeichert · Sync ausstehend' : 'Alle Inhalte lokal · aktuell';
   });
 
+  /* ---------- Einstellungen: Theme, Editor-Größe, Animationen (persistente) ---------- */
+  const SETTINGS_KEY = 'javalernen_settings_v1';
+  const SIZE_PX = { s: '12px', m: '13.5px', l: '15px' };
+  const root = document.documentElement;
+  let SETTINGS = { theme: 'dark', size: 'm', anim: true };
+  try { const s = JSON.parse(localStorage.getItem(SETTINGS_KEY)); if (s) Object.assign(SETTINGS, s); } catch (e) {}
+
+  function applySettings() {
+    root.setAttribute('data-theme', SETTINGS.theme);
+    root.style.setProperty('--code-size', SIZE_PX[SETTINGS.size] || SIZE_PX.m);
+    root.setAttribute('data-anim', SETTINGS.anim ? 'on' : 'off');
+    $$('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === SETTINGS.theme)));
+    $$('[data-size-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sizeSet === SETTINGS.size)));
+    const at = $('#animToggle'); if (at) at.checked = SETTINGS.anim;
+  }
+  function saveSettings() { try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS)); } catch (e) {} applySettings(); }
+  applySettings();
+
+  const settingsBtn = $('#settingsBtn'), settingsPop = $('#settingsPop');
+  function toggleSettings(open) {
+    const show = open != null ? open : settingsPop.hidden;
+    settingsPop.hidden = !show;
+    settingsBtn.setAttribute('aria-expanded', String(show));
+  }
+  settingsBtn?.addEventListener('click', e => { e.stopPropagation(); toggleSettings(); });
+  settingsPop?.addEventListener('click', e => {
+    e.stopPropagation();
+    const t = e.target.closest('[data-theme-set]'), s = e.target.closest('[data-size-set]');
+    if (t) { SETTINGS.theme = t.dataset.themeSet; saveSettings(); }
+    if (s) { SETTINGS.size = s.dataset.sizeSet; saveSettings(); }
+  });
+  $('#animToggle')?.addEventListener('change', e => { SETTINGS.anim = e.target.checked; saveSettings(); });
+  document.addEventListener('click', () => { if (settingsPop && !settingsPop.hidden) toggleSettings(false); });
+
   /* ---------- Evaluación de código (mock hasta CheerpJ) ---------- */
   const runBtn = $('#runBtn'), feedback = $('#feedback'), code = $('#code');
   let EXPECTED = '7 ist ungerade'; // se actualiza al cargar cada ejercicio
 
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  let paint = () => {}; // repaint del editor de ejercicios (se asigna al montar)
 
   // "compilador" mínimo para el ejercicio: detecta el String impreso en la rama que corre.
   // No ejecuta Java real — es feedback pedagógico determinista hasta integrar CheerpJ.
   // Llama al backend PHP (javac real). Devuelve la respuesta normalizada.
-  async function runOnServer(src) {
+  async function runOnServer(src, stdin) {
     const res = await fetch('backend/run.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: src }),
+      body: JSON.stringify({ source: src, stdin: stdin || '', lang: LANG }),
     });
     return res.json(); // { ok, phase, stdout, stderr, ms }
   }
@@ -105,8 +146,10 @@
     }
     // ejecutó bien: comparar salida con lo esperado
     if (stdout === EXPECTED) {
+      const justSolved = onExerciseSolved(activeExercise);
+      const xpNote = justSolved ? ` · <span style="color:var(--accent)">+${XP_PER_EXERCISE} XP</span>` : '';
       feedback.innerHTML =
-        `<div class="fb-bar ok"><span class="fb-check">✓</span> Kompiliert · Alle Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}</div>
+        `<div class="fb-bar ok"><span class="fb-check">✓</span> Kompiliert · Alle Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
          <div class="fb-body"><pre class="mono fb-console">${esc(stdout)}</pre></div>`;
       return;
     }
@@ -124,21 +167,82 @@
        </div>`;
   }
 
+  // Modo multi-caso: corre el código contra varios test cases (stdin distintos).
+  // El alumno solo pasa si TODOS los casos dan la salida esperada → no se puede hardcodear.
+  function renderTests(ex, r) {
+    if (r.__net) { renderResult(r); return; }
+    if (r.phase === 'compile' && !r.ok) { renderResult(r); return; }
+    const runs = r.runs || [];
+    const results = ex.tests.map((t, i) => {
+      const run = runs[i] || {};
+      const got = (run.stdout || '').replace(/\s+$/, '');
+      const exp = (t.expected || '').replace(/\s+$/, '');
+      return { t, got, exp, err: run.stderr || '', pass: run.ok && got === exp };
+    });
+    const passed = results.filter(x => x.pass).length;
+    const allPass = passed === results.length;
+
+    if (allPass) {
+      const justSolved = onExerciseSolved(activeExercise);
+      const xpNote = justSolved ? ` · <span style="color:var(--accent)">+${XP_PER_EXERCISE} XP</span>` : '';
+      feedback.innerHTML =
+        `<div class="fb-bar ok"><span class="fb-check">✓</span> Alle ${results.length} Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
+         <div class="fb-body">${testRows(results)}</div>`;
+      return;
+    }
+    // al menos un caso falla → mostrar cuáles, con el primer diff pedagógico
+    const firstFail = results.find(x => !x.pass);
+    feedback.innerHTML =
+      `<div class="fb-bar"><span class="fb-x">✕</span> ${passed} von ${results.length} Tests bestanden</div>
+       <div class="fb-body">
+         ${testRows(results)}
+         ${firstFail.err
+           ? `<div class="fb-diff-h err-t"><span class="fb-x">✕</span> Laufzeitfehler bei Eingabe ${firstFail.t.stdin != null ? `„${esc(firstFail.t.stdin)}“` : ''}</div><pre class="mono fb-console err-t">${esc(firstFail.err)}</pre>`
+           : `<div class="fb-diff-h err-t"><span class="fb-x">✕</span> Ausgabe weicht ab${firstFail.t.stdin != null ? ` (Eingabe „${esc(firstFail.t.stdin)}“)` : ''}</div>
+              <div class="fb-diff">
+                <div class="ok-row"><span class="plus">＋</span><span class="w">erwartet</span><span class="code-str">${esc(firstFail.exp)}</span></div>
+                <div class="err-row"><span class="minus">－</span><span class="w">erhalten</span><span class="err-t">${esc(firstFail.got || '(leer)')}</span></div>
+              </div>`}
+       </div>`;
+  }
+
+  function testRows(results) {
+    return `<div class="test-rows">` + results.map((x, i) => {
+      const label = x.t.stdin != null && x.t.stdin !== '' ? `Eingabe „${esc(x.t.stdin)}“` : `Test ${i + 1}`;
+      return `<div class="test-row ${x.pass ? 'pass' : 'fail'}"><span class="test-ic">${x.pass ? '✓' : '✕'}</span><span class="test-label">${label}</span><span class="test-out mono">${esc(x.got || '—')}</span></div>`;
+    }).join('') + `</div>`;
+  }
+
   /* ---------- Editor: syntax-highlighting overlay (vanilla, sin deps) ---------- */
   const gutter = $('#gutter'), hlCode = $('#hl')?.firstElementChild;
 
-  const KW = new Set(('abstract assert boolean break byte case catch char class const continue ' +
+  const JAVA_KW = new Set(('abstract assert boolean break byte case catch char class const continue ' +
     'default do double else enum extends final finally float for goto if implements import ' +
     'instanceof int interface long native new package private protected public return short ' +
     'static strictfp super switch synchronized this throw throws transient try void volatile ' +
     'while var record sealed permits yield true false null').split(' '));
-  const TYPES = new Set(('String System Integer Double Boolean Object Math List ArrayList Map ' +
+  const JAVA_TYPES = new Set(('String System Integer Double Boolean Object Math List ArrayList Map ' +
     'HashMap Set HashSet Scanner Exception RuntimeException Character Long Float Byte Short ' +
     'StringBuilder Arrays Collections Comparable Comparable Iterator Optional').split(' '));
+  const JAVA_TOKEN = /(\/\/[^\n]*)|(\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*")|('(?:\\.|[^'\\])*')|(@\w+)|(\b\d[\d_]*\.?\d*[fFdDlL]?\b)|([A-Za-z_$][\w$]*)|([+\-*/%=<>!&|^~?:]+)/g;
 
-  const TOKEN = /(\/\/[^\n]*)|(\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*")|('(?:\\.|[^'\\])*')|(@\w+)|(\b\d[\d_]*\.?\d*[fFdDlL]?\b)|([A-Za-z_$][\w$]*)|([+\-*/%=<>!&|^~?:]+)/g;
+  const PY_KW = new Set(('and as assert async await break class continue def del elif else except ' +
+    'finally for from global if import in is lambda nonlocal not or pass raise return try while ' +
+    'with yield True False None match case self').split(' '));
+  const PY_TYPES = new Set(('int float str bool list dict set tuple range object bytes complex ' +
+    'frozenset type Exception ValueError TypeError KeyError IndexError').split(' '));
+  // grupos: 1 comentario # · (2 sin uso) · 3/4 strings · 5 decorador @ · 6 número · 7 ident · 8 operador
+  const PY_TOKEN = /(#[^\n]*)()|("(?:\\.|[^"\\])*")|('(?:\\.|[^'\\])*')|(@\w+)|(\b\d[\d_]*\.?\d*[jJ]?\b)|([A-Za-z_][\w]*)|([+\-*/%=<>!&|^~?:@]+)/g;
+
+  const LANGCFG = {
+    java:   { kw: JAVA_KW, types: JAVA_TYPES, token: JAVA_TOKEN },
+    python: { kw: PY_KW,   types: PY_TYPES,   token: PY_TOKEN },
+  };
+  const PY_BUILTINS = new Set('print input len range int str float bool list dict set tuple type abs min max sum sorted enumerate zip map filter open round'.split(' '));
 
   function highlight(src) {
+    const cfg = LANGCFG[LANG] || LANGCFG.java;
+    const TOKEN = cfg.token, KW = cfg.kw, TYPES = cfg.types;
     let out = '', last = 0, m;
     TOKEN.lastIndex = 0;
     while ((m = TOKEN.exec(src))) {
@@ -163,53 +267,203 @@
     return out;
   }
 
-  function syncGutter(src) {
-    const n = src.split('\n').length;
-    let g = '';
-    for (let i = 1; i <= n; i++) g += (i > 1 ? '\n' : '') + i;
-    if (gutter) gutter.textContent = g;
-  }
+  /* ================= Editor: atajos estilo IntelliJ IDEA =================
+     Operan sobre cualquier <textarea>. execCommand('insertText') preserva
+     el historial de deshacer nativo (⌘Z sigue funcionando). ================ */
+  const PAIRS = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
+  const CLOSERS = new Set([')', ']', '}', '"', "'"]);
 
-  function paint() {
-    if (!code || !hlCode) return;
-    let v = code.value;
-    if (v[v.length - 1] === '\n') v += ' '; // trailing newline visible
-    hlCode.innerHTML = highlight(v);
-    syncGutter(code.value);
+  function editReplace(ta, from, to, text, selStart, selEnd) {
+    ta.focus();
+    ta.setSelectionRange(from, to);
+    if (!document.execCommand('insertText', false, text)) {
+      ta.setRangeText(text, from, to, 'end'); // fallback
+    }
+    if (selStart != null) ta.setSelectionRange(selStart, selEnd == null ? selStart : selEnd);
   }
+  const lineStartAt = (v, p) => v.lastIndexOf('\n', p - 1) + 1;
+  const lineEndAt   = (v, p) => { const i = v.indexOf('\n', p); return i < 0 ? v.length : i; };
+  const indentOf    = s => (s.match(/^[ \t]*/) || [''])[0];
 
-  function syncScroll() {
-    const hl = $('#hl');
-    if (hl) { hl.scrollTop = code.scrollTop; hl.scrollLeft = code.scrollLeft; }
-    if (gutter) gutter.scrollTop = code.scrollTop;
-  }
+  function intellijKeys(e, ta, repaint) {
+    const mod = e.metaKey || e.ctrlKey;
+    const v = ta.value, s = ta.selectionStart, en = ta.selectionEnd;
+    const done = () => { repaint(); return true; };
 
-  if (code && hlCode) {
-    code.addEventListener('input', paint);
-    code.addEventListener('scroll', syncScroll);
-    code.addEventListener('keydown', e => {
-      if (e.key === 'Tab') { // Tab inserta 4 espacios en vez de saltar foco
-        e.preventDefault();
-        const s = code.selectionStart, en = code.selectionEnd;
-        code.value = code.value.slice(0, s) + '    ' + code.value.slice(en);
-        code.selectionStart = code.selectionEnd = s + 4;
-        paint();
+    // ⌘/  Zeilen (aus)kommentieren
+    if (mod && e.key === '/') {
+      e.preventDefault();
+      const ls = lineStartAt(v, s), le = lineEndAt(v, en);
+      const lines = v.slice(ls, le).split('\n');
+      const allComm = lines.every(l => l.trim() === '' || /^\s*\/\//.test(l));
+      const out = lines.map(l => l.trim() === '' ? l
+        : allComm ? l.replace(/^(\s*)\/\/ ?/, '$1')
+        : l.replace(/^(\s*)/, '$1// ')).join('\n');
+      editReplace(ta, ls, le, out, ls, ls + out.length);
+      return done();
+    }
+    // ⌘D  Zeile/Auswahl duplizieren
+    if (mod && (e.key === 'd' || e.key === 'D') && !e.shiftKey) {
+      e.preventDefault();
+      if (s !== en) { editReplace(ta, en, en, v.slice(s, en), en + (en - s)); }
+      else { const ls = lineStartAt(v, s), le = lineEndAt(v, s);
+        const line = v.slice(ls, le); editReplace(ta, le, le, '\n' + line, s + line.length + 1); }
+      return done();
+    }
+    // ⌘⌫  Zeile löschen  (IntelliJ „Delete Line“)
+    if (mod && e.key === 'Backspace') {
+      e.preventDefault();
+      const ls = lineStartAt(v, s); let le = lineEndAt(v, en);
+      if (le < v.length) le++; else if (ls > 0) return editReplace(ta, ls - 1, le, '', ls - 1), done();
+      editReplace(ta, ls, le, '', ls); return done();
+    }
+    // ⌥⇧↑ / ⌥⇧↓  Zeile verschieben
+    if (e.altKey && e.shiftKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      const ls = lineStartAt(v, s), le = lineEndAt(v, en);
+      if (e.key === 'ArrowUp') {
+        if (ls === 0) return true;
+        const prevLs = lineStartAt(v, ls - 1);
+        const block = v.slice(ls, le), prev = v.slice(prevLs, ls - 1);
+        editReplace(ta, prevLs, le, block + '\n' + prev, prevLs + (s - ls), prevLs + (en - ls));
+      } else {
+        if (le >= v.length) return true;
+        const nextLe = lineEndAt(v, le + 1);
+        const block = v.slice(ls, le), next = v.slice(le + 1, nextLe);
+        const np = ls + next.length + 1;
+        editReplace(ta, ls, nextLe, next + '\n' + block, np + (s - ls), np + (en - ls));
       }
+      return done();
+    }
+    // Tab / ⇧Tab  Einrücken / Ausrücken (mehrzeilig bei Auswahl)
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const multi = v.slice(s, en).includes('\n') || e.shiftKey;
+      if (!multi) { editReplace(ta, s, en, '    ', s + 4); return done(); }
+      const ls = lineStartAt(v, s), le = lineEndAt(v, en);
+      const lines = v.slice(ls, le).split('\n');
+      const out = lines.map(l => e.shiftKey ? l.replace(/^ {1,4}|^\t/, '') : '    ' + l).join('\n');
+      editReplace(ta, ls, le, out, ls, ls + out.length);
+      return done();
+    }
+    // Enter  Auto-Einrückung (+ Block öffnen zwischen { })
+    if (e.key === 'Enter' && !e.shiftKey && !mod) {
+      const ind = indentOf(v.slice(lineStartAt(v, s), s));
+      const before = v[s - 1], after = v[en];
+      if (before === '{' && after === '}') {
+        e.preventDefault();
+        editReplace(ta, s, en, '\n' + ind + '    ' + '\n' + ind, s + 1 + ind.length + 4);
+        return done();
+      }
+      if (ind) { e.preventDefault(); editReplace(ta, s, en, '\n' + ind, s + 1 + ind.length); return done(); }
+      return false;
+    }
+    // Auto-Paare: (, [, {, ", '  → schließendes Zeichen ergänzen / Auswahl umschließen
+    if (PAIRS[e.key]) {
+      e.preventDefault();
+      const close = PAIRS[e.key];
+      if (s !== en) editReplace(ta, s, en, e.key + v.slice(s, en) + close, s + 1, en + 1);
+      else editReplace(ta, s, en, e.key + close, s + 1);
+      return done();
+    }
+    // Über schließendes Zeichen „hinwegtippen“ statt doppeln
+    if (CLOSERS.has(e.key) && v[en] === e.key && s === en) {
+      e.preventDefault(); ta.setSelectionRange(en + 1, en + 1); return true;
+    }
+    // Backspace zwischen leerem Paar  → beide löschen
+    if (e.key === 'Backspace' && !mod && s === en && s > 0 && PAIRS[v[s - 1]] === v[s]) {
+      e.preventDefault(); editReplace(ta, s - 1, s + 1, '', s - 1); return done();
+    }
+    return false;
+  }
+
+  function makeEditor(ta, pre, gut) {
+    const codeEl = (pre && pre.querySelector('code')) || pre;
+    function repaint() {
+      let v = ta.value;
+      if (v[v.length - 1] === '\n') v += ' ';
+      if (codeEl) codeEl.innerHTML = highlight(v);
+      if (gut) { const n = ta.value.split('\n').length; let g = '';
+        for (let i = 1; i <= n; i++) g += (i > 1 ? '\n' : '') + i; gut.textContent = g; }
+    }
+    function sync() { if (pre) { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; } if (gut) gut.scrollTop = ta.scrollTop; }
+    ta.addEventListener('input', repaint);
+    ta.addEventListener('scroll', sync);
+    ta.addEventListener('keydown', e => { if (intellijKeys(e, ta, repaint)) sync(); });
+    repaint();
+    return repaint;
+  }
+
+  if (code && hlCode) paint = makeEditor(code, $('#hl'), gutter);
+
+  async function runTests(src, tests) {
+    const res = await fetch('backend/run.php', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: src, stdins: tests.map(t => t.stdin || ''), lang: LANG }),
     });
-    paint();
+    return res.json();
   }
 
   runBtn?.addEventListener('click', async () => {
     renderRunning();
     runBtn.disabled = true;
     try {
-      renderResult(await runOnServer(code.value));
+      const ex = activeExercise;
+      if (ex && Array.isArray(ex.tests) && ex.tests.length) {
+        renderTests(ex, await runTests(code.value, ex.tests));
+      } else {
+        renderResult(await runOnServer(code.value));  // retrocompat: 1 solo caso
+      }
     } catch (e) {
       renderResult({ __net: String(e && e.message || e) });
     } finally {
       runBtn.disabled = false;
     }
   });
+  // ⌘↵ / Ctrl+↵ im Übungs-Editor → ausführen
+  code?.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runBtn?.click(); }
+  });
+  // Zurücksetzen: Editor auf den Startcode der aktuellen Übung zurücksetzen
+  $('#resetBtn')?.addEventListener('click', () => {
+    if (!activeExercise || !code) return;
+    code.value = activeExercise.starter || '';
+    paint();
+    if (feedback) feedback.innerHTML = '';
+    code.focus();
+  });
+
+  /* ---------- Playground / Konsole ---------- */
+  const pgCode = $('#pgCode'), pgStdin = $('#pgStdin'), pgRunBtn = $('#pgRunBtn'), pgOut = $('#pgOutput');
+  if (pgCode) makeEditor(pgCode, $('#pgHl'), $('#pgGutter'));
+
+  function renderPgResult(r) {
+    if (r.__net) { pgOut.innerHTML = `<span class="pg-err">✕ Keine Verbindung zum Compiler.</span>`; return; }
+    if (r.phase === 'compile' && !r.ok) {
+      pgOut.innerHTML = `<span class="pg-err">✕ Kompilierfehler</span>\n` + esc(r.stderr || 'Fehler.');
+      return;
+    }
+    const meta = r.ms != null ? ` <span class="pg-meta">· ${r.ms} ms</span>` : '';
+    let out = (r.ok ? `<span class="pg-ok">✓ Kompiliert</span>` : `<span class="pg-err">✕ Laufzeitfehler</span>`) + meta + '\n';
+    const so = (r.stdout || '').replace(/\n$/, ''), se = (r.stderr || '').replace(/\n$/, '');
+    if (so) out += esc(so);
+    if (se) out += (so ? '\n' : '') + `<span class="pg-err">${esc(se)}</span>`;
+    if (!so && !se) out += `<span class="pg-meta">(keine Ausgabe)</span>`;
+    pgOut.innerHTML = out;
+  }
+
+  async function runPlayground() {
+    if (!pgOut) return;
+    pgOut.textContent = 'Kompiliert …';
+    pgRunBtn.disabled = true;
+    try { renderPgResult(await runOnServer(pgCode.value, pgStdin.value)); }
+    catch (e) { renderPgResult({ __net: 1 }); }
+    finally { pgRunBtn.disabled = false; }
+  }
+  pgRunBtn?.addEventListener('click', runPlayground);
+  [pgCode, pgStdin].forEach(el => el?.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runPlayground(); }
+  }));
 
   /* ============================================================
      CONTENIDO data-driven: carga content.json y renderiza
@@ -227,6 +481,7 @@
     EF: ['Einführungsphase', 'EF', false],
     Q1: ['Q1 · Datenstrukturen', '', true],
     Q2: ['Q2 · Rekursion & SQL', '', true],
+    PY: ['Python-Grundkurs', 'PY', false],
   };
   const phaseLabel = ph => (PHASE[ph] || [ph])[0];
   const DIFF = { leicht: 'Leicht', mittel: 'Mittel', schwer: 'Schwer' };
@@ -245,15 +500,32 @@
   function renderSidebar() {
     const nav = $('#chapterNav'); if (!nav) return;
     let html = '';
-    ['EF', 'Q1', 'Q2'].forEach(ph => {
+    const phases = [...new Set(CONTENT.chapters.map(c => c.phase))]; // fases en el orden que aparecen
+    phases.forEach(ph => {
       const chs = CONTENT.chapters.filter(c => c.phase === ph);
       if (!chs.length) return;
-      const [lbl, badge, locked] = PHASE[ph];
+      const [lbl, badge, locked] = PHASE[ph] || [ph, '', false];
       html += `<div class="nav-group-hd${locked ? ' locked' : ''}"><span>${esc(lbl)}</span>` +
               (badge ? `<span style="color:var(--accent)">${esc(badge)}</span>` : (locked ? ICON.lockSm : '')) + `</div>`;
       chs.forEach(c => { html += navItem(c); });
     });
     nav.innerHTML = html;
+  }
+
+  function videoCardHTML(v) {
+    const url = `https://youtu.be/${v.id}`;
+    const thumb = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
+    return `<a class="video-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer">
+      <span class="video-thumb">
+        <img src="${esc(thumb)}" alt="" loading="lazy" width="336" height="189">
+        <span class="video-play" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 4l14 8-14 8V4z" fill="currentColor"/></svg></span>
+        <span class="video-dur">${esc(v.duration)}</span>
+      </span>
+      <span class="video-info">
+        <span class="video-eyebrow">▶ Video ansehen · ${esc(v.channel)}</span>
+        <span class="video-title">${esc(v.title)}</span>
+      </span>
+    </a>`;
   }
 
   function blockHTML(b) {
@@ -268,6 +540,8 @@
       }
       case 'grid': return `<div class="op-grid">` +
         b.items.map(it => `<div><div class="op">${esc(it.code)}</div><div class="lbl">${esc(it.label)}</div></div>`).join('') + `</div>`;
+      case 'figure': return `<figure class="fig"><div class="fig-svg">${b.svg || ''}</div>` +
+        (b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : '') + `</figure>`;
       default: return '';
     }
   }
@@ -295,7 +569,7 @@
     $('#lesCrumb').innerHTML = `${esc(phaseLabel(ch.phase))} / Kapitel ${esc(ch.nr)} / <span class="cur">${esc(les.title)}</span>`;
     $('#lesTime').textContent = les.readTime || '';
     $('#lesTitle').textContent = les.title;
-    body.innerHTML = les.blocks.map(blockHTML).join('');
+    body.innerHTML = (les.video ? videoCardHTML(les.video) : '') + les.blocks.map(blockHTML).join('');
 
     const prevBtn = $('#lesPrevBtn'), nextBtn = $('#lesNextBtn');
     const hasEx = ch.exercises && ch.exercises.length;
@@ -348,11 +622,15 @@
     activeExercise = ex; EXPECTED = ex.expected;
     const pills = n > 1 ? `<div class="les-pills">` + ch.exercises.map((e, i) =>
       `<button class="les-pill${i === activeExerciseIndex ? ' active' : ''}" data-ex-idx="${i}">${i + 1}</button>`).join('') + `</div>` : '';
+    const expectedBox = Array.isArray(ex.tests) && ex.tests.length
+      ? `<div class="card card-pad prompt-expected"><div class="k">Testfälle (${ex.tests.length})</div>` +
+        ex.tests.map(t => `<div class="tc-row"><span class="tc-in mono">${t.stdin != null && t.stdin !== '' ? 'Eingabe ' + esc(t.stdin) : '—'}</span><span class="tc-arrow">→</span><span class="tc-exp mono">${esc(t.expected)}</span></div>`).join('') + `</div>`
+      : `<div class="card card-pad prompt-expected"><div class="k">Erwartete Ausgabe</div><pre>${esc(ex.expected || '')}</pre></div>`;
     p.innerHTML = pills +
       `<div><span class="prompt-tag">${esc(ch.nr)} · Übung</span><span class="prompt-diff">${esc(DIFF[ex.difficulty] || '')}</span></div>
        <h1 class="prompt-title">${esc(ex.title)}</h1>
        <p class="prompt-p">${ex.prompt_html}</p>
-       <div class="card card-pad prompt-expected"><div class="k">Erwartete Ausgabe</div><pre>${esc(ex.expected)}</pre></div>` +
+       ${expectedBox}` +
       (ex.tip_html ? `<div class="prompt-tip"><span>💡</span><div><div class="c-title">Tipp</div><div class="c-body">${ex.tip_html}</div></div></div>` : '');
     if (code) { code.value = ex.starter || ''; paint(); }
     if (feedback) feedback.innerHTML = '';
@@ -385,6 +663,124 @@
     ).join('');
   }
 
+  /* ============================================================
+     PROGRESO REAL (localStorage) — sin esto, streak/XP/badges eran
+     puro decorado que nunca cambiaba sin importar cuánto practicaras.
+     El estado de capítulos (locked/current/done) pasa a ser DERIVADO
+     de qué ejercicios están realmente resueltos, no editado a mano.
+     ============================================================ */
+  const PROGRESS_KEY = 'javalernen_progress_v1';
+  const XP_PER_EXERCISE = 20;
+  const XP_PER_LEVEL = 1000;
+  const BADGE_DEFS = [
+    { id: 'erste-uebung',    icon: '⭐',   title: 'Erste Übung',     desc: 'Erste Übung erfolgreich gelöst',      check: p => p.solvedCount >= 1 },
+    { id: 'fuenf-uebungen',  icon: '🔥',   title: '5 Übungen',       desc: 'Fünf Übungen erfolgreich gelöst',     check: p => p.solvedCount >= 5 },
+    { id: 'erstes-kapitel',  icon: '</>',  title: 'Erstes Kapitel',  desc: 'Ein ganzes Kapitel abgeschlossen',    check: p => p.chaptersDone >= 1 },
+    { id: 'streak-3',        icon: '📅',   title: '3-Tage-Serie',    desc: 'Drei Tage in Folge geübt',            check: p => p.streak.count >= 3 },
+  ];
+
+  function todayStr() { return new Date().toISOString().slice(0, 10); }
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(PROGRESS_KEY);
+      if (raw) { const p = JSON.parse(raw); if (p && p.solved) return p; }
+    } catch (e) {}
+    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [] };
+  }
+  function saveProgress() {
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); } catch (e) {}
+  }
+  let PROGRESS = loadProgress();
+
+  function bumpStreak() {
+    const today = todayStr();
+    if (PROGRESS.streak.last === today) return;
+    const y = new Date(); y.setDate(y.getDate() - 1);
+    const yesterday = y.toISOString().slice(0, 10);
+    PROGRESS.streak.count = (PROGRESS.streak.last === yesterday) ? PROGRESS.streak.count + 1 : 1;
+    PROGRESS.streak.last = today;
+  }
+
+  const chapterExerciseIds = ch => (ch.exercises || []).map(e => e.id);
+
+  // Deriva locked/current/done de TODOS los capítulos a partir de qué ejercicios
+  // están resueltos — nunca se edita ch.status a mano, siempre se recalcula entero.
+  function recomputeChapterStatuses() {
+    if (!CONTENT) return;
+    let reached = true;
+    let chaptersDone = 0;
+    for (const ch of CONTENT.chapters) {
+      const exIds = chapterExerciseIds(ch);
+      if (!reached) { ch.status = 'locked'; ch.progress = 0; continue; }
+      const doneCount = exIds.filter(id => PROGRESS.solved[id]).length;
+      const allDone = exIds.length === 0 || doneCount === exIds.length;
+      ch.progress = exIds.length ? Math.round(100 * doneCount / exIds.length) : 100;
+      ch.status = allDone ? 'done' : 'current';
+      if (allDone) chaptersDone++;
+      reached = allDone; // el siguiente capítulo solo se alcanza si este terminó
+    }
+    return chaptersDone;
+  }
+
+  function checkBadges(stats) {
+    const before = new Set(PROGRESS.badges);
+    BADGE_DEFS.forEach(b => { if (b.check(stats) && !before.has(b.id)) PROGRESS.badges.push(b.id); });
+  }
+
+  // Se llama cuando un ejercicio compila+corre OK y la salida matchea EXPECTED.
+  function onExerciseSolved(ex) {
+    if (!ex || PROGRESS.solved[ex.id]) return false; // ya resuelto antes, no duplicar XP
+    PROGRESS.solved[ex.id] = true;
+    PROGRESS.xp += XP_PER_EXERCISE;
+    bumpStreak();
+    const chaptersDone = recomputeChapterStatuses();
+    const solvedCount = Object.keys(PROGRESS.solved).length;
+    checkBadges({ solvedCount, chaptersDone, streak: PROGRESS.streak });
+    saveProgress();
+    renderSidebar();
+    renderDashboard();
+    renderOverview();
+    return true;
+  }
+
+  function renderProgressUI() {
+    const level = Math.floor(PROGRESS.xp / XP_PER_LEVEL) + 1;
+    const xpInLevel = PROGRESS.xp % XP_PER_LEVEL;
+    const xpToNext = XP_PER_LEVEL - xpInLevel;
+    const circumference = 402; // 2·π·64, radio del anillo SVG
+
+    $('#topStreak') && ($('#topStreak').textContent = PROGRESS.streak.count);
+    $('#topXp') && ($('#topXp').textContent = PROGRESS.xp);
+    $('#streakVal') && ($('#streakVal').textContent = PROGRESS.streak.count);
+    $('#xpVal') && ($('#xpVal').textContent = PROGRESS.xp);
+    $('#xpSub') && ($('#xpSub').textContent = `Level ${level} · ${xpToNext} XP bis Level ${level + 1}`);
+    $('#levelVal') && ($('#levelVal').textContent = level);
+    $('#levelSub') && ($('#levelSub').textContent = `${xpInLevel} / ${XP_PER_LEVEL} XP · noch ${xpToNext}`);
+    const arc = $('#ringArc');
+    if (arc) arc.setAttribute('stroke-dashoffset', String(circumference * (1 - xpInLevel / XP_PER_LEVEL)));
+
+    const cells = $('#streakCells');
+    if (cells) {
+      const on = Math.min(PROGRESS.streak.count, 7);
+      cells.innerHTML = Array.from({ length: 7 }, (_, i) => `<i class="${i < on ? 'on' : ''}"></i>`).join('');
+    }
+
+    $('#badgeCount') && ($('#badgeCount').textContent = PROGRESS.badges.length);
+    $('#badgeTotal') && ($('#badgeTotal').textContent = `von ${BADGE_DEFS.length}`);
+    const earned = BADGE_DEFS.filter(b => PROGRESS.badges.includes(b.id));
+    const badgeSub = $('#badgeSub');
+    if (badgeSub) badgeSub.textContent = earned.length ? earned.map(b => b.icon).join(' ') : 'Noch keine verdient';
+    const list = $('#badgeList');
+    if (list) {
+      list.innerHTML = earned.length
+        ? earned.slice().reverse().map(b =>
+            `<div class="badge-item"><span class="badge-ico">${b.icon}</span><span><span class="t" style="display:block">${esc(b.title)}</span><span class="s">${esc(b.desc)}</span></span></div>`
+          ).join('')
+        : `<p style="font-size:13px;color:var(--faint);line-height:1.6">Noch keine Abzeichen verdient — schließe deine erste Übung ab, um loszulegen.</p>`;
+    }
+  }
+
   /* ---------- Dashboard: resume card + Lernpfad (data-driven, clickeable) ---------- */
   function findCurrentChapter() {
     return CONTENT.chapters.find(c => c.status === 'current' && !c.isProject) ||
@@ -414,7 +810,10 @@
 
   function renderLernpfad() {
     const list = $('#lernpfadList'), sub = $('#lernpfadSub'); if (!list) return;
-    const efChapters = CONTENT.chapters.filter(c => c.phase === 'EF');
+    const firstPhase = CONTENT.chapters[0] && CONTENT.chapters[0].phase;
+    const efChapters = CONTENT.chapters.filter(c => c.phase === firstPhase);
+    const heading = $('#lernpfadList')?.closest('.card')?.querySelector('h2');
+    if (heading) heading.textContent = `Lernpfad · ${phaseLabel(firstPhase)}`;
     const done = efChapters.filter(c => c.status === 'done').length;
     if (sub) sub.textContent = `${done} von ${efChapters.length} Kapiteln abgeschlossen`;
     list.innerHTML = efChapters.map(c => {
@@ -445,6 +844,7 @@
     const ch = findCurrentChapter();
     renderResumeCard(ch);
     renderLernpfad();
+    renderProgressUI();
   }
 
   /* ---------- Übersicht: Curriculum del Zertifikatskurs + cobertura en JavaLernen ---------- */
@@ -482,21 +882,51 @@
       openChapter(btn.dataset.chapter, c && c.isProject ? 'project' : 'lesson'); }
   });
 
+  function applyLangUI() {
+    $$('.lang-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+    const brand = $('#brandName'); if (brand) brand.textContent = LANG === 'python' ? 'PyLernen' : 'JavaLernen';
+    const ovTab = $('.tab[data-view="overview"]'); // la Übersicht (Zertifikatskurs) es solo para Java
+    if (ovTab) ovTab.style.display = LANG === 'python' ? 'none' : '';
+    const fname = LANG === 'python' ? 'main.py' : 'Main.java';
+    $$('#exFile, .pg-bar .mono').forEach(el => { if (el) el.textContent = fname; });
+    // Playground-Startcode passend zur Sprache (Scratch, nicht persistiert)
+    const pg = $('#pgCode');
+    if (pg) {
+      pg.value = LANG === 'python'
+        ? 'name = input("Wie heißt du? ")\nprint(f"Hallo, {name}!")\n'
+        : 'import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print("Wie heißt du? ");\n        String name = sc.nextLine();\n        System.out.println("Hallo, " + name + "!");\n    }\n}';
+      pg.dispatchEvent(new Event('input'));
+    }
+  }
+
   async function init() {
+    applyLangUI();
     try {
-      CONTENT = await (await fetch('content/content.json')).json();
+      CONTENT = await (await fetch(CONTENT_FILE[LANG] || CONTENT_FILE.java)).json();
     } catch (e) {
-      console.error('Konnte content.json nicht laden:', e);
+      console.error('Konnte Inhalt nicht laden:', e);
       return;
     }
+    recomputeChapterStatuses(); // pisa los valores estáticos del JSON con el progreso real guardado
     renderSidebar();
     renderDashboard();
     renderOverview();
     const start = CONTENT.chapters.find(c => c.status === 'current') || CONTENT.chapters[0];
     if (start) openChapter(start.id, null);
-    // deep-link por hash (tras cargar contenido)
-    const initial = location.hash.replace('#', '') || 'dashboard';
-    if ($(`#view-${initial}`)) setView(initial);
+    if (LANG === 'python' && location.hash === '#overview') setView('dashboard');
+    else { const initial = location.hash.replace('#', '') || 'dashboard'; if ($(`#view-${initial}`)) setView(initial); }
   }
+
+  function switchLang(lang) {
+    if (lang === LANG || (lang !== 'java' && lang !== 'python')) return;
+    LANG = lang;
+    try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {}
+    activeChapter = null; activeExercise = null; activeLessonIndex = 0; activeExerciseIndex = 0;
+    if (feedback) feedback.innerHTML = '';
+    setView('dashboard');
+    init();
+  }
+  $$('.lang-btn').forEach(b => b.addEventListener('click', () => switchLang(b.dataset.lang)));
+
   init();
 })();

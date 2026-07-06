@@ -73,3 +73,64 @@
   --ff:'Geist',-apple-system,system-ui,sans-serif;
   --ff-mono:'JetBrains Mono',ui-monospace,monospace;
 }
+
+/* ============================================================
+   TEMA CLARO — overrides sobre los mismos tokens (design brief).
+   Contraste ajustado para blanco: acento verde más profundo,
+   tokens de código con variantes light legibles.
+   ============================================================ */
+:root[data-theme="light"] {
+  --bg:        #F4F5F6;
+  --sidebar:   #FBFBFC;
+  --panel:     #FFFFFF;
+  --panel2:    #FBFBFC;
+  --inset:     #F1F2F4;
+  --elev:      #EEF0F2;
+  --elev-border:#DDE0E4;
+
+  --border:    #E6E8EC;
+  --border2:   #E9EBEF;
+  --border3:   #D3D7DD;
+  --divider:   #ECEEF1;
+
+  --text:      #191C1F;
+  --text2:     #2C3136;
+  --text3:     #31373D;
+  --sub:       #414952;
+  --mut:       #667079;
+  --mut2:      #6B747D;
+  --faint:     #838C95;
+  --dis:       #97A0A9;
+  --lock:      #A7AFB8;
+
+  --accent:    #0E9F6E; /* verde profundo, legible sobre blanco */
+  --accent2:   #0A8862;
+  --on-accent: #FFFFFF;
+  --accent-bg:   rgba(14,159,110,0.08);
+  --accent-bg2:  rgba(14,159,110,0.12);
+  --accent-border: rgba(14,159,110,0.22);
+  --accent-border2:rgba(14,159,110,0.32);
+  --accent-shadow: rgba(14,159,110,0.22);
+  --accent-radial: rgba(14,159,110,0.10);
+  --glow-c:      rgba(14,159,110,0.30);
+
+  --info:  #0284C7; --info-t:#0369A1; --info-b:#0B5A86;
+  --info-bg:rgba(2,132,199,0.06); --info-border:rgba(2,132,199,0.20); --info-chip:rgba(2,132,199,0.10);
+  --warn:  #B45309; --warn-t:#92400E; --warn-b:#7A3E12;
+  --warn-bg:rgba(180,83,9,0.06); --warn-bg2:rgba(180,83,9,0.07); --warn-border:rgba(180,83,9,0.22); --warn-chip:rgba(180,83,9,0.12);
+  --err:   #DC2626; --err-t:#B91C1C;
+  --err-bg:rgba(220,38,38,0.10); --err-row:rgba(220,38,38,0.05); --ok-row:rgba(14,159,110,0.06);
+  --tip:   #7C3AED; --tip-t:#6D28D9; --tip-b:#5B2CA8;
+  --tip-bg:rgba(124,58,237,0.05); --tip-border:rgba(124,58,237,0.18);
+  --false-bg:#FBE9E9; --false-t:#DC2626;
+
+  --code-border:#E6E8EC; --code-hd:#F1F2F4; --chip-bg:#EEF3F1;
+  --code-kw:#7C3AED; --code-type:#0967A6; --code-fn:#0284C7; --code-str:#157F3C;
+  --code-num:#B45309; --code-op:#0E7490; --code-text:#24292F; --code-ln:#B8BFC7;
+
+  --dot:#DDE0E4; --topbar:rgba(255,255,255,0.75);
+  --card-a:#FFFFFF; --card-b:#FAFBFC; --card-border:#E6E8EC;
+  --avatar-a:#EEF0F2; --avatar-b:#DDE0E4; --avatar-border:#D3D7DD;
+  --pop-shadow:0 24px 60px rgba(20,24,28,0.16);
+  --focus-ring:#0967A6;
+}

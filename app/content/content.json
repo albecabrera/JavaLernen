@@ -17,7 +17,7 @@
       "coverage": ["ef-1", "ef-2", "ef-3", "ef-5"]
     },
     {
-      "id": "m3", "nr": "3", "title": "Algorithmik", "weeks": 5, "status": "partial",
+      "id": "m3", "nr": "3", "title": "Algorithmik", "weeks": 5, "status": "full",
       "description": "Suchen, Sortieren, Aufwand, Terminierung, Rekursion.",
       "topics": ["Suchalgorithmen (linear, binär)", "Sortieralgorithmen (Bubble, Selection, Insertion, Merge)", "Komplexität und Laufzeitanalyse", "Rekursive Algorithmen"],
       "coverage": ["q1-1", "q2-1"]
@@ -44,10 +44,11 @@
   "chapters": [
     {
       "id": "ef-0", "phase": "EF", "nr": "0", "title": "Einführung in Java",
-      "status": "done", "progress": 100,
+      "status": "current", "progress": 0,
       "lessons": [
         {
           "id": "ef-0-1", "num": "0.1", "title": "Java-Syntax und Grundkonzepte", "readTime": "≈ 8 Min.",
+          "video": { "id": "NI8SQaRpOZw", "title": "Das ERSTE Programm! – Java Programmieren Lernen", "channel": "Jonas Keil", "duration": "5:43" },
           "blocks": [
             { "type": "p", "html": "Jedes Java-Programm braucht ein festes Grundgerüst: eine <strong>Klasse</strong> als Container, darin eine <code>main</code>-Methode als Startpunkt — hier beginnt die Ausführung." },
             { "type": "code", "file": "Main.java", "code": "public class Main {\n    public static void main(String[] args) {\n        // hier steht dein Code\n    }\n}" },
@@ -61,6 +62,7 @@
         },
         {
           "id": "ef-0-2", "num": "0.2", "title": "Entwicklungsumgebungen", "readTime": "≈ 6 Min.",
+          "video": { "id": "la17ZW0SAUY", "title": "Java installieren 2022", "channel": "Jonas Keil", "duration": "2:58" },
           "blocks": [
             { "type": "p", "html": "Eine <strong>IDE</strong> (Integrated Development Environment) bündelt Editor, Compiler und Debugger in einem Werkzeug. Die drei gängigsten für Java im Unterricht:" },
             { "type": "h2", "text": "BlueJ" },
@@ -104,10 +106,11 @@
     },
     {
       "id": "ef-1", "phase": "EF", "nr": "1", "title": "Klassen & Objekte",
-      "status": "done", "progress": 100,
+      "status": "locked", "progress": 0,
       "lessons": [
         {
           "id": "ef-1-1", "num": "1.1", "title": "Klassen und Objekte", "readTime": "≈ 7 Min.",
+          "video": { "id": "7o-0IDEHs5M", "title": "Java GRUNDLAGEN (Klassen & Objekte)", "channel": "Jonas Keil", "duration": "12:23" },
           "blocks": [
             { "type": "p", "html": "Die objektorientierte Programmierung modelliert die Welt als <strong>Objekte</strong>, die Daten und Verhalten bündeln. Eine <strong>Klasse</strong> ist der Bauplan; ein <strong>Objekt</strong> ist ein konkretes Exemplar dieses Bauplans." },
             { "type": "p", "html": "Beispiel: <code>Auto</code> ist eine Klasse. Dein rotes Auto und mein blaues Auto sind zwei verschiedene <em>Objekte</em> derselben Klasse." },
@@ -121,6 +124,7 @@
         },
         {
           "id": "ef-1-2", "num": "1.2", "title": "Konstruktoren", "readTime": "≈ 8 Min.",
+          "video": { "id": "cD_u6A5S9Xk", "title": "Konstruktor in Java", "channel": "Jonas Keil", "duration": "13:06" },
           "blocks": [
             { "type": "p", "html": "Bisher musstest du jedes Attribut nach dem Erzeugen einzeln setzen — leicht zu vergessen. Ein <strong>Konstruktor</strong> initialisiert ein Objekt direkt beim Erzeugen mit <code>new</code>." },
             { "type": "h2", "text": "Konstruktor definieren" },
@@ -140,16 +144,24 @@
           "expected": "Rex sagt: Wuff!",
           "tip_html": "Ein Objekt erzeugst du mit <code>new Hund()</code>. Auf ein Attribut greifst du mit dem Punkt zu: <code>h.name = \"Rex\";</code>",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        // 1. Objekt erzeugen\n        // 2. Namen setzen\n        // 3. bellen() aufrufen\n    }\n}\n\nclass Hund {\n    String name;\n    void bellen() {\n        System.out.println(name + \" sagt: Wuff!\");\n    }\n}"
+        },
+        {
+          "id": "ef-1-e2", "title": "Konstruktor verwenden", "difficulty": "leicht",
+          "prompt_html": "Vervollständige den <code>Konstruktor</code> von <code>Auto</code>, sodass er das Attribut <code>farbe</code> setzt. Erzeuge dann ein rotes Auto und rufe <code>hupen()</code> auf.",
+          "expected": "Tuut! Ich bin rot",
+          "tip_html": "Im Konstruktor unterscheidest du Attribut und Parameter mit <code>this</code>: <code>this.farbe = farbe;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Auto meinAuto = new Auto(\"rot\");\n        meinAuto.hupen();\n    }\n}\n\nclass Auto {\n    String farbe;\n\n    Auto(String farbe) {\n        // TODO: das Attribut farbe setzen\n    }\n\n    void hupen() {\n        System.out.println(\"Tuut! Ich bin \" + farbe);\n    }\n}"
         }
       ]
     },
 
     {
       "id": "ef-2", "phase": "EF", "nr": "2", "title": "Attribute & Methoden",
-      "status": "done", "progress": 100,
+      "status": "locked", "progress": 0,
       "lessons": [
         {
           "id": "ef-2-1", "num": "2.1", "title": "Zustand und Verhalten", "readTime": "≈ 8 Min.",
+          "video": { "id": "bvGepmcDqD0", "title": "Java Methoden Tutorial in 9 min", "channel": "Jonas Keil", "duration": "9:20" },
           "blocks": [
             { "type": "p", "html": "Ein Objekt hat <strong>Attribute</strong> (seinen Zustand — was es <em>weiß</em>) und <strong>Methoden</strong> (sein Verhalten — was es <em>kann</em>)." },
             { "type": "h2", "text": "Attribute" },
@@ -163,6 +175,7 @@
         },
         {
           "id": "ef-2-2", "num": "2.2", "title": "Rückgabewerte mit return", "readTime": "≈ 7 Min.",
+          "video": { "id": "LlWPVBDV5Yc", "title": "Rückgabewerte in Java", "channel": "Jonas Keil", "duration": "12:43" },
           "blocks": [
             { "type": "p", "html": "Eine Methode mit Rückgabetyp <code>void</code> kann nichts an den Aufrufer zurückgeben. Soll ein Ergebnis weiterverwendet werden, braucht die Methode einen <strong>Rückgabetyp</strong> und ein <code>return</code>." },
             { "type": "code", "file": "Konto.java", "code": "double kontostand() {\n    return stand;\n}" },
@@ -180,16 +193,24 @@
           "expected": "Stand: 50.0\nStand: 80.0",
           "tip_html": "Rufe <code>einzahlen(...)</code> zweimal auf. Die Methode addiert jeweils auf <code>stand</code>.",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        // zwei Einzahlungen\n    }\n}\n\nclass Konto {\n    double stand;\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n        System.out.println(\"Stand: \" + stand);\n    }\n}"
+        },
+        {
+          "id": "ef-2-e2", "title": "Rückgabewert lesen", "difficulty": "leicht",
+          "prompt_html": "Vervollständige die Methode <code>kontostand()</code>, sodass sie den aktuellen Stand <strong>zurückgibt</strong>. Zahle <code>100.0</code> ein und gib den Stand aus.",
+          "expected": "Stand: 100.0",
+          "tip_html": "Eine Methode mit Rückgabetyp <code>double</code> braucht ein <code>return</code>: <code>return stand;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        System.out.println(\"Stand: \" + k.kontostand());\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    double kontostand() {\n        // TODO: den aktuellen Stand zurückgeben\n        return 0;\n    }\n}"
         }
       ]
     },
 
     {
       "id": "ef-3", "phase": "EF", "nr": "3", "title": "Kontrollstrukturen",
-      "status": "current", "progress": 60, "resumeLessonIndex": 2,
+      "status": "locked", "progress": 0,
       "lessons": [
         {
           "id": "ef-3-1", "num": "3.1", "title": "Verzweigungen mit if / else", "readTime": "≈ 8 Min.",
+          "video": { "id": "bduK1FAtHBk", "title": "Java IF ELSE in 5 min", "channel": "Jonas Keil", "duration": "5:48" },
           "blocks": [
             { "type": "p", "html": "Bisher wurde jede Anweisung genau einmal ausgeführt, von oben nach unten. <em>Nur wenn</em> eine Bedingung zutrifft, soll ein Codeblock laufen — das leisten <strong>Verzweigungen</strong>." },
             { "type": "h2", "text": "Die if-Anweisung" },
@@ -205,6 +226,7 @@
         },
         {
           "id": "ef-3-2", "num": "3.2", "title": "Logische Operatoren", "readTime": "≈ 7 Min.",
+          "video": { "id": "GjB6YrsZEGk", "title": "Logische Operatoren in 5 min", "channel": "Jonas Keil", "duration": "5:51" },
           "blocks": [
             { "type": "p", "html": "Oft hängt eine Entscheidung von <strong>mehreren</strong> Bedingungen ab. Logische Operatoren verknüpfen Wahrheitswerte zu einer neuen Bedingung." },
             { "type": "grid", "items": [
@@ -218,6 +240,7 @@
         },
         {
           "id": "ef-3-3", "num": "3.3", "title": "for-Schleifen", "readTime": "≈ 9 Min.",
+          "video": { "id": "CoEKIbc8B0k", "title": "Java For Schleife Tutorial", "channel": "Jonas Keil", "duration": "9:42" },
           "blocks": [
             { "type": "p", "html": "Eine <strong>Schleife</strong> wiederholt einen Codeblock. Die <code>for</code>-Schleife eignet sich, wenn die Anzahl der Wiederholungen im Voraus bekannt ist." },
             { "type": "code", "file": "Zaehlen.java", "code": "for (int i = 1; i <= 5; i++) {\n    System.out.println(\"Durchlauf \" + i);\n}" },
@@ -228,6 +251,7 @@
         },
         {
           "id": "ef-3-4", "num": "3.4", "title": "while-Schleifen", "readTime": "≈ 8 Min.",
+          "video": { "id": "mcm84hlxXo8", "title": "Java WHILE Schleife in 10 min", "channel": "Jonas Keil", "duration": "11:36" },
           "blocks": [
             { "type": "p", "html": "Ist die Anzahl der Wiederholungen <em>nicht</em> im Voraus bekannt — z. B. \"bis der Nutzer aufhört\" — passt eine <code>while</code>-Schleife besser." },
             { "type": "code", "file": "Verdoppeln.java", "code": "int wert = 1;\nwhile (wert < 100) {\n    wert = wert * 2;\n    System.out.println(wert);\n}" },
@@ -238,6 +262,7 @@
         },
         {
           "id": "ef-3-5", "num": "3.5", "title": "break und continue", "readTime": "≈ 6 Min.",
+          "video": { "id": "XPi-xN_I1-I", "title": "Java Break & Continue Tutorial", "channel": "Jonas Keil", "duration": "8:15" },
           "blocks": [
             { "type": "p", "html": "Manchmal soll eine Schleife vorzeitig beendet oder ein einzelner Durchlauf übersprungen werden — dafür gibt es <code>break</code> und <code>continue</code>." },
             { "type": "code", "file": "Suche.java", "code": "for (int i = 1; i <= 10; i++) {\n    if (i == 6) {\n        break;       // beendet die ganze Schleife\n    }\n    System.out.println(i);\n}" },
@@ -249,10 +274,32 @@
       "exercises": [
         {
           "id": "ef-3-e1", "title": "Gerade oder ungerade?", "difficulty": "mittel",
-          "prompt_html": "Das Programm soll für die Zahl in <code>zahl</code> ausgeben, ob sie <strong>gerade</strong> oder <strong>ungerade</strong> ist.",
-          "expected": "7 ist ungerade",
+          "prompt_html": "Lies eine Zahl <code>zahl</code> ein (schon vorgegeben) und gib aus, ob sie <strong>gerade</strong> oder <strong>ungerade</strong> ist — im Format <code>7 ist ungerade</code>. Dein Code wird mit <strong>mehreren Zahlen</strong> getestet, also darfst du das Ergebnis nicht fest eintippen.",
+          "tests": [
+            { "stdin": "7", "expected": "7 ist ungerade" },
+            { "stdin": "4", "expected": "4 ist gerade" },
+            { "stdin": "0", "expected": "0 ist gerade" }
+          ],
           "tip_html": "Mit dem Modulo-Operator <code>%</code> erhältst du den Rest. <code>zahl % 2 == 0</code> ist wahr, wenn <code>zahl</code> gerade ist.",
-          "starter": "public class Main {\n    public static void main(String[] args) {\n        int zahl = 7;\n\n        if (zahl % 2 == 0) {\n            System.out.println(zahl + \" ist ungerade\");\n        } else {\n            System.out.println(zahl + \" ist gerade\");\n        }\n    }\n}"
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int zahl = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n\n        // TODO: gib aus, ob zahl gerade oder ungerade ist\n        //       Format:  <zahl> ist gerade   bzw.   <zahl> ist ungerade\n    }\n}"
+        },
+        {
+          "id": "ef-3-e2", "title": "Summe mit for-Schleife", "difficulty": "leicht",
+          "prompt_html": "Berechne mit einer <code>for</code>-Schleife die Summe aller Zahlen von <code>1</code> bis <code>n</code> (eingelesen) und gib sie im Format <code>Summe: 55</code> aus.",
+          "tests": [
+            { "stdin": "10", "expected": "Summe: 55" },
+            { "stdin": "5", "expected": "Summe: 15" },
+            { "stdin": "1", "expected": "Summe: 1" }
+          ],
+          "tip_html": "Die Schleife läuft von <code>i = 1</code> bis <code>i &lt;= n</code>. In jedem Durchlauf: <code>summe += i;</code>",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n        int summe = 0;\n\n        for (int i = 1; i <= n; i++) {\n            // TODO: i zur summe addieren\n        }\n\n        System.out.println(\"Summe: \" + summe);\n    }\n}"
+        },
+        {
+          "id": "ef-3-e3", "title": "Verdoppeln mit while", "difficulty": "mittel",
+          "prompt_html": "<code>wert</code> wird bereits verdoppelt, solange er unter <code>100</code> ist. Ergänze das Zählen: erhöhe <code>schritte</code> bei jedem Durchlauf um 1.",
+          "expected": "7 Schritte, Wert=128",
+          "tip_html": "Im Schleifenkörper zählst du mit <code>schritte++;</code> mit. Ohne das bleibt der Zähler bei 0.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        int wert = 1;\n        int schritte = 0;\n\n        while (wert < 100) {\n            wert = wert * 2;\n            // TODO: schritte um 1 erhöhen\n        }\n\n        System.out.println(schritte + \" Schritte, Wert=\" + wert);\n    }\n}"
         }
       ]
     },
@@ -273,6 +320,7 @@
         },
         {
           "id": "ef-4-2", "num": "4.2", "title": "Listen von Objekten", "readTime": "≈ 9 Min.",
+          "video": { "id": "crm0yaneCb0", "title": "Listen in Java (Collections #1)", "channel": "Jonas Keil", "duration": "7:51" },
           "blocks": [
             { "type": "p", "html": "Ein Objekt kann nicht nur eines, sondern <strong>mehrere</strong> andere Objekte kennen — z. B. eine Klasse mit vielen Schülern. Dafür verwendest du eine <code>ArrayList</code>." },
             { "type": "code", "file": "Klasse.java", "code": "import java.util.ArrayList;\n\npublic class Klasse {\n    ArrayList<Schueler> schueler = new ArrayList<>();\n\n    void aufnehmen(Schueler s) {\n        schueler.add(s);\n    }\n}" },
@@ -289,6 +337,13 @@
           "expected": "Mara wohnt in Bonn",
           "tip_html": "Erst die Adresse erzeugen und die Stadt setzen, dann dem Schüler zuweisen: <code>s.adresse = a;</code>",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Schueler s = new Schueler();\n        s.name = \"Mara\";\n        // Adresse erzeugen, Stadt setzen, zuweisen\n        System.out.println(s.name + \" wohnt in \" + s.adresse.stadt);\n    }\n}\n\nclass Schueler { String name; Adresse adresse; }\nclass Adresse { String stadt; }"
+        },
+        {
+          "id": "ef-4-e2", "title": "Klasse mit vielen Schülern", "difficulty": "mittel",
+          "prompt_html": "Nimm <code>\"Anna\"</code> und <code>\"Ben\"</code> in die <code>Klasse</code> auf und gib die Anzahl der Schüler aus. Vervollständige dazu die Methode <code>anzahl()</code>.",
+          "expected": "Anzahl: 2",
+          "tip_html": "Eine <code>ArrayList</code> kennt ihre Größe: <code>return namen.size();</code>",
+          "starter": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        Klasse k = new Klasse();\n        k.aufnehmen(\"Anna\");\n        k.aufnehmen(\"Ben\");\n        System.out.println(\"Anzahl: \" + k.anzahl());\n    }\n}\n\nclass Klasse {\n    ArrayList<String> namen = new ArrayList<>();\n\n    void aufnehmen(String name) {\n        namen.add(name);\n    }\n\n    int anzahl() {\n        // TODO: die Anzahl der Namen zurückgeben\n        return 0;\n    }\n}"
         }
       ]
     },
@@ -299,6 +354,7 @@
       "lessons": [
         {
           "id": "ef-5-1", "num": "5.1", "title": "Gemeinsames auslagern: Vererbung", "readTime": "≈ 10 Min.",
+          "video": { "id": "xXDDVSjogs0", "title": "VERERBUNG in Java", "channel": "Jonas Keil", "duration": "8:00" },
           "blocks": [
             { "type": "p", "html": "Ein <code>Hund</code> und eine <code>Katze</code> sind beide <code>Tier</code>e: sie haben einen Namen und können fressen. Statt das doppelt zu schreiben, definierst du es einmal in einer <strong>Oberklasse</strong> und <strong>erbst</strong> es." },
             { "type": "h2", "text": "extends" },
@@ -311,11 +367,28 @@
         },
         {
           "id": "ef-5-2", "num": "5.2", "title": "Polymorphie", "readTime": "≈ 9 Min.",
+          "video": { "id": "ud1i5uqOmg8", "title": "Überschreibung in Java (+Überladung)", "channel": "Jonas Keil", "duration": "12:05" },
           "blocks": [
             { "type": "p", "html": "<strong>Polymorphie</strong> (\"Vielgestaltigkeit\") bedeutet: eine Variable vom Typ der Oberklasse kann ein Objekt jeder Unterklasse aufnehmen — und beim Methodenaufruf entscheidet Java automatisch, welche überschriebene Version läuft." },
             { "type": "code", "file": "Main.java", "code": "Tier t = new Hund();   // Oberklassen-Typ, Unterklassen-Objekt\nt.lautGeben();         // ruft Hund.lautGeben() auf, nicht Tier.lautGeben()" },
             { "type": "callout", "variant": "info", "title": "Warum das nützlich ist", "html": "Eine Methode kann einen Parameter vom Typ <code>Tier</code> annehmen und funktioniert automatisch für <code>Hund</code>, <code>Katze</code> und jede zukünftige Unterklasse — ohne Änderungen." },
             { "type": "code", "file": "Tierarzt.java", "code": "void untersuchen(Tier t) {\n    t.lautGeben();   // funktioniert für JEDE Tier-Unterklasse\n}" }
+          ]
+        },
+        {
+          "id": "ef-5-3", "num": "5.3", "title": "Schnittstellen und abstrakte Klassen", "readTime": "≈ 11 Min.",
+          "blocks": [
+            { "type": "p", "html": "Manchmal soll eine Oberklasse gar nicht als eigenständiges Objekt existieren — \"ein Tier an sich\" gibt es nicht, nur konkrete Tiere wie Hund oder Katze. Dafür gibt es <strong>abstrakte Klassen</strong>." },
+            { "type": "h2", "text": "Abstrakte Klassen" },
+            { "type": "p", "html": "Eine <code>abstract</code> Klasse kann Methoden ohne Rumpf deklarieren (<strong>abstrakte Methoden</strong>) — jede konkrete Unterklasse <em>muss</em> sie implementieren. Von der abstrakten Klasse selbst kann kein Objekt erzeugt werden." },
+            { "type": "code", "file": "Tier.java", "code": "abstract class Tier {\n    String name;\n    abstract void lautGeben();   // kein Rumpf — jede Unterklasse MUSS das liefern\n}\n\nclass Hund extends Tier {\n    void lautGeben() { System.out.println(name + \" bellt\"); }\n}" },
+            { "type": "callout", "variant": "warn", "title": "Compilerfehler bei Instanziierung", "html": "<code>Tier t = new Tier();</code> gibt einen echten Kompilierfehler: <code>Tier ist abstrakt, kann nicht instanziiert werden</code>. Genau das ist beabsichtigt — es zwingt dich, nur sinnvolle, konkrete Objekte zu erzeugen." },
+            { "type": "h2", "text": "Schnittstellen (Interfaces)" },
+            { "type": "p", "html": "Ein <code>interface</code> ist ein reiner <strong>Vertrag</strong>: nur Methodenköpfe, keine Implementierung, keine Attribute. Eine Klasse, die das Interface <strong>implementiert</strong>, verspricht, alle Methoden bereitzustellen." },
+            { "type": "code", "file": "Fahrbar.java", "code": "interface Fahrbar {\n    void fahren();   // automatisch public, kein Rumpf erlaubt\n}\n\nclass Auto implements Fahrbar {\n    public void fahren() { System.out.println(\"Auto fährt\"); }\n}\n\nclass Fahrrad implements Fahrbar {\n    public void fahren() { System.out.println(\"Fahrrad fährt\"); }\n}" },
+            { "type": "code", "file": "Main.java", "code": "Fahrbar[] fahrzeuge = { new Auto(), new Fahrrad() };\nfor (Fahrbar f : fahrzeuge) {\n    f.fahren();   // Polymorphie über das Interface, nicht über eine Oberklasse\n}" },
+            { "type": "callout", "variant": "info", "title": "Der entscheidende Unterschied", "html": "Eine Klasse kann nur <strong>eine</strong> Oberklasse haben (<code>extends</code>), aber <strong>beliebig viele</strong> Interfaces implementieren (<code>implements A, B, C</code>). Interfaces beschreiben <em>was</em> eine Klasse kann, unabhängig davon, <em>was</em> sie ist." },
+            { "type": "callout", "variant": "tip", "title": "Faustregel", "html": "Teilen sich verwandte Klassen bereits <em>Code</em> (Attribute, fertige Methoden) → abstrakte Klasse. Sollen völlig verschiedene Klassen nur dieselbe <em>Fähigkeit</em> teilen (fahren, vergleichbar sein, druckbar sein) → Interface." }
           ]
         }
       ],
@@ -326,6 +399,13 @@
           "expected": "Rex bellt: Wuff!",
           "tip_html": "<code>name</code> wird geerbt — du kannst es direkt setzen. Die überschriebene Methode wird automatisch statt der geerbten aufgerufen.",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Hund h = new Hund();\n        h.name = \"Rex\";\n        h.lautGeben();\n    }\n}\n\nclass Tier {\n    String name;\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}\n\nclass Hund extends Tier {\n    @Override\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}"
+        },
+        {
+          "id": "ef-5-eiface", "title": "Fahrbar: Schnittstelle implementieren", "difficulty": "mittel",
+          "prompt_html": "<code>Bus</code> soll das Interface <code>Fahrbar</code> implementieren. Vervollständige <code>fahren()</code>, sodass <code>\"Bus fährt\"</code> ausgegeben wird.",
+          "expected": "Bus fährt",
+          "tip_html": "Implementierende Methoden aus einem Interface müssen <code>public</code> sein: <code>public void fahren() { ... }</code>",
+          "starter": "interface Fahrbar {\n    void fahren();\n}\n\nclass Bus implements Fahrbar {\n    public void fahren() {\n        // TODO: \"Bus fährt\" ausgeben\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Fahrbar f = new Bus();\n        f.fahren();\n    }\n}"
         }
       ]
     },
@@ -336,6 +416,7 @@
       "lessons": [
         {
           "id": "ef-6-1", "num": "6.1", "title": "Klassendiagramme (UML)", "readTime": "≈ 9 Min.",
+          "video": { "id": "Rb9oNcj8mcw", "title": "UML Diagramme verstehen in 10 min", "channel": "Jonas Keil", "duration": "10:32" },
           "blocks": [
             { "type": "p", "html": "Bevor du eine Klasse programmierst, lohnt es sich, sie erst zu <strong>zeichnen</strong>. <strong>UML</strong> (Unified Modeling Language) ist eine genormte Notation, um Klassen und ihre Beziehungen unabhängig von der Programmiersprache darzustellen." },
             { "type": "h2", "text": "Die Klassenbox" },
@@ -426,6 +507,7 @@
       "lessons": [
         {
           "id": "q1-1-1", "num": "1.1", "title": "Arrays und Listen", "readTime": "≈ 10 Min.",
+          "video": { "id": "-7gk5dgM_5w", "title": "Arrays in Java – Für BEGINNER", "channel": "Jonas Keil", "duration": "8:08" },
           "blocks": [
             { "type": "p", "html": "Ein <strong>Array</strong> speichert mehrere Werte desselben Typs unter einem Namen, mit festem Umfang. Der Zugriff erfolgt über einen <strong>Index</strong>, der bei <code>0</code> beginnt." },
             { "type": "code", "file": "Arrays.java", "code": "int[] zahlen = { 4, 8, 15, 16, 23, 42 };\nSystem.out.println(zahlen[0]);       // 4\nSystem.out.println(zahlen.length);   // 6" },
@@ -435,48 +517,102 @@
           ]
         },
         {
-          "id": "q1-1-2", "num": "1.2", "title": "Suchen und Sortieren", "readTime": "≈ 12 Min.",
+          "id": "q1-1-2", "num": "1.2", "title": "Suchen und Sortieren", "readTime": "≈ 20 Min.",
           "blocks": [
             { "type": "p", "html": "Zwei Grundprobleme ziehen sich durch die gesamte Informatik: ein Element <strong>finden</strong> und eine Reihenfolge <strong>herstellen</strong>." },
             { "type": "h2", "text": "Lineare Suche" },
-            { "type": "p", "html": "Die einfachste Suche prüft jedes Element der Reihe nach, bis es gefunden wird:" },
-            { "type": "code", "file": "Suche.java", "code": "int gesucht = 16;\nint index = -1;\nfor (int i = 0; i < zahlen.length; i++) {\n    if (zahlen[i] == gesucht) {\n        index = i;\n        break;\n    }\n}" },
+            { "type": "p", "html": "Die einfachste Suche prüft jedes Element der Reihe nach, bis es gefunden wird — funktioniert auf <strong>jedem</strong> Array, sortiert oder nicht:" },
+            { "type": "code", "file": "LineareSuche.java", "code": "int gesucht = 16;\nint index = -1;\nfor (int i = 0; i < zahlen.length; i++) {\n    if (zahlen[i] == gesucht) {\n        index = i;\n        break;\n    }\n}" },
+            { "type": "h2", "text": "Binäre Suche" },
+            { "type": "p", "html": "Ist das Array <strong>sortiert</strong>, geht es viel schneller: vergleiche mit der Mitte, verwirf die Hälfte, in der der Wert nicht liegen kann — wiederhole." },
+            { "type": "code", "file": "BinaereSuche.java", "code": "int lo = 0, hi = zahlen.length - 1, index = -1;\nwhile (lo <= hi) {\n    int mitte = (lo + hi) / 2;\n    if (zahlen[mitte] == gesucht) { index = mitte; break; }\n    else if (zahlen[mitte] < gesucht) lo = mitte + 1;   // rechte Hälfte\n    else hi = mitte - 1;                                 // linke Hälfte\n}" },
+            { "type": "callout", "variant": "warn", "title": "Voraussetzung", "html": "Binäre Suche funktioniert <strong>nur auf sortierten</strong> Arrays. Ist das Array unsortiert, musst du es erst sortieren (siehe unten) oder lineare Suche verwenden." },
             { "type": "h2", "text": "Bubble Sort" },
-            { "type": "p", "html": "Ein einfacher Sortieralgorithmus vergleicht benachbarte Elemente und vertauscht sie, wenn sie in falscher Reihenfolge stehen — wiederholt, bis alles sortiert ist:" },
+            { "type": "p", "html": "Vergleicht benachbarte Elemente und vertauscht sie, wenn sie in falscher Reihenfolge stehen — wiederholt, bis alles sortiert ist:" },
             { "type": "code", "file": "BubbleSort.java", "code": "for (int i = 0; i < zahlen.length - 1; i++) {\n    for (int j = 0; j < zahlen.length - 1 - i; j++) {\n        if (zahlen[j] > zahlen[j + 1]) {\n            int tmp = zahlen[j];\n            zahlen[j] = zahlen[j + 1];\n            zahlen[j + 1] = tmp;\n        }\n    }\n}" },
-            { "type": "callout", "variant": "tip", "title": "Effizienz", "html": "Lineare Suche und Bubble Sort sind einfach zu verstehen, aber nicht die schnellsten Verfahren. Effizientere Algorithmen (binäre Suche, Quicksort) folgen später im Kernlehrplan." }
+            { "type": "h2", "text": "Insertion Sort" },
+            { "type": "p", "html": "Baut die sortierte Reihenfolge <strong>Stück für Stück</strong> auf: das nächste Element wird an der richtigen Stelle in den bereits sortierten Teil einsortiert (wie Spielkarten auf der Hand ordnen)." },
+            { "type": "code", "file": "InsertionSort.java", "code": "for (int i = 1; i < zahlen.length; i++) {\n    int akt = zahlen[i];\n    int j = i - 1;\n    while (j >= 0 && zahlen[j] > akt) {\n        zahlen[j + 1] = zahlen[j];   // nach rechts schieben\n        j--;\n    }\n    zahlen[j + 1] = akt;             // akt an die freie Stelle\n}" },
+            { "type": "h2", "text": "Selection Sort" },
+            { "type": "p", "html": "Sucht in jedem Durchlauf das <strong>kleinste</strong> verbleibende Element und tauscht es an die richtige Position:" },
+            { "type": "code", "file": "SelectionSort.java", "code": "for (int i = 0; i < zahlen.length - 1; i++) {\n    int minIndex = i;\n    for (int j = i + 1; j < zahlen.length; j++) {\n        if (zahlen[j] < zahlen[minIndex]) minIndex = j;\n    }\n    int tmp = zahlen[i];\n    zahlen[i] = zahlen[minIndex];\n    zahlen[minIndex] = tmp;\n}" },
+            { "type": "h2", "text": "Quicksort" },
+            { "type": "p", "html": "Wählt ein <strong>Pivot-Element</strong>, teilt das Array in \"kleiner als Pivot\" und \"größer als Pivot\" auf (<em>partitionieren</em>), und sortiert beide Hälften rekursiv — <strong>Teile und herrsche</strong> (Divide and Conquer)." },
+            { "type": "code", "file": "Quicksort.java", "code": "void quicksort(int[] z, int lo, int hi) {\n    if (lo >= hi) return;              // Basisfall: 0 oder 1 Element\n    int pivot = z[hi];\n    int i = lo - 1;\n    for (int j = lo; j < hi; j++) {\n        if (z[j] < pivot) { i++; tausche(z, i, j); }\n    }\n    tausche(z, i + 1, hi);\n    int p = i + 1;                     // Position des Pivots nach dem Partitionieren\n    quicksort(z, lo, p - 1);           // rekursiv: linke Hälfte\n    quicksort(z, p + 1, hi);           // rekursiv: rechte Hälfte\n}" },
+            { "type": "callout", "variant": "info", "title": "Rekursion trifft Sortieren", "html": "Quicksort ist rekursiv (siehe Q2 für die Grundlagen der Rekursion): jeder Aufruf löst ein kleineres Teilproblem, bis der Basisfall (0 oder 1 Element, bereits sortiert) erreicht ist." },
+            { "type": "h2", "text": "Merge Sort" },
+            { "type": "p", "html": "Ein zweites <strong>Teile-und-herrsche</strong>-Verfahren: teile das Array in der Mitte, sortiere <strong>beide Hälften rekursiv</strong>, <strong>verschmelze</strong> (merge) sie dann sortiert zusammen. Anders als Quicksort hat Merge Sort garantiert <code>O(n log n)</code> — auch im schlechtesten Fall." },
+            { "type": "code", "file": "MergeSort.java", "code": "int[] mergeSort(int[] z) {\n    if (z.length <= 1) return z;                    // Basisfall\n    int mitte = z.length / 2;\n    int[] links  = mergeSort(Arrays.copyOfRange(z, 0, mitte));\n    int[] rechts = mergeSort(Arrays.copyOfRange(z, mitte, z.length));\n    return verschmelzen(links, rechts);\n}\n\nint[] verschmelzen(int[] links, int[] rechts) {\n    int[] ergebnis = new int[links.length + rechts.length];\n    int i = 0, j = 0, k = 0;\n    while (i < links.length && j < rechts.length) {\n        ergebnis[k++] = (links[i] <= rechts[j]) ? links[i++] : rechts[j++];\n    }\n    while (i < links.length)  ergebnis[k++] = links[i++];   // Reste anhängen\n    while (j < rechts.length) ergebnis[k++] = rechts[j++];\n    return ergebnis;\n}" },
+            { "type": "callout", "variant": "tip", "title": "Merge Sort vs. Quicksort", "html": "Merge Sort braucht zusätzlichen Speicher für die Hilfsarrays, ist dafür aber <strong>stabil</strong> (gleiche Elemente behalten ihre Reihenfolge) und hat <em>garantiert</em> <code>O(n log n)</code> — Quicksort ist im Schnitt genauso schnell, kann im Worst Case aber auf <code>O(n²)</code> abrutschen (siehe oben)." },
+            { "type": "h2", "text": "Laufzeitanalyse: die O-Notation" },
+            { "type": "p", "html": "Die <strong>O-Notation</strong> beschreibt, wie die Laufzeit eines Algorithmus mit der Eingabegröße <code>n</code> wächst — unabhängig von Computer oder Programmiersprache." },
+            { "type": "grid", "items": [
+              { "code": "O(1)", "label": "konstant — Array-Zugriff per Index" },
+              { "code": "O(log n)", "label": "logarithmisch — binäre Suche" },
+              { "code": "O(n)", "label": "linear — lineare Suche" },
+              { "code": "O(n log n)", "label": "quasilinear — Quicksort (Ø-Fall)" },
+              { "code": "O(n²)", "label": "quadratisch — Bubble/Insertion/Selection Sort" }
+            ]},
+            { "type": "p", "html": "Bei <code>O(n²)</code> verdoppelt sich die Eingabe → die Laufzeit <strong>vervierfacht</strong> sich (die Schleife steckt in einer Schleife). Bei <code>O(n log n)</code> wächst die Laufzeit viel langsamer — deshalb ist Quicksort bei großen Datenmengen den einfachen Sortierverfahren klar überlegen." },
+            { "type": "callout", "variant": "warn", "title": "Worst Case bei Quicksort", "html": "Ist das Array bereits (um-)sortiert und das Pivot immer das größte/kleinste Element, entartet Quicksort zu <code>O(n²)</code> — genau wie Bubble Sort. In der Praxis wählt man das Pivot deshalb oft zufällig oder als Median dreier Werte." },
+            { "type": "callout", "variant": "tip", "title": "Effizienz im Überblick", "html": "Lineare Suche und die drei einfachen Sortierverfahren sind leicht zu verstehen, aber <code>O(n)</code> bzw. <code>O(n²)</code>. Binäre Suche (<code>O(log n)</code>) und Quicksort (<code>O(n log n)</code>) sind die \"cleveren\" Alternativen — schneller, aber mit Voraussetzungen (sortiertes Array) bzw. mehr Implementierungsaufwand." }
           ]
         },
         {
-          "id": "q1-1-3", "num": "1.3", "title": "Stacks und Queues", "readTime": "≈ 10 Min.",
+          "id": "q1-1-lst", "num": "1.3", "title": "Verkettete Liste (eigene Klasse)", "readTime": "≈ 12 Min.",
           "blocks": [
-            { "type": "p", "html": "Ein <strong>Stack</strong> (Stapel) und eine <strong>Queue</strong> (Schlange) speichern Elemente in einer festen Reihenfolge — sie unterscheiden sich nur darin, <em>welches</em> Element du als Nächstes herausnimmst." },
-            { "type": "h2", "text": "Stack: LIFO" },
-            { "type": "p", "html": "Ein Stack funktioniert wie ein Stapel Teller: Das <strong>zuletzt</strong> hinzugefügte Element kommt <strong>zuerst</strong> wieder herunter — <em>Last In, First Out</em>." },
-            { "type": "code", "file": "StackDemo.java", "code": "Deque<Integer> stack = new ArrayDeque<>();\nstack.push(1);\nstack.push(2);\nstack.push(3);\nSystem.out.println(stack.pop());   // 3 — zuletzt rein, zuerst raus" },
-            { "type": "h2", "text": "Queue: FIFO" },
-            { "type": "p", "html": "Eine Queue funktioniert wie eine Warteschlange: Das <strong>zuerst</strong> hinzugefügte Element wird auch <strong>zuerst</strong> bedient — <em>First In, First Out</em>." },
-            { "type": "code", "file": "QueueDemo.java", "code": "Deque<Integer> queue = new ArrayDeque<>();\nqueue.offer(1);\nqueue.offer(2);\nqueue.offer(3);\nSystem.out.println(queue.poll());   // 1 — zuerst rein, zuerst raus" },
-            { "type": "callout", "variant": "info", "title": "Java-Klasse", "html": "Java hat keine eigene <code>Stack</code>-Klasse mehr empfohlen — <code>ArrayDeque</code> (aus <code>java.util</code>) implementiert beides: <code>push</code>/<code>pop</code> für Stack-Verhalten, <code>offer</code>/<code>poll</code> für Queue-Verhalten." },
-            { "type": "callout", "variant": "tip", "title": "Anwendungsbeispiel", "html": "Der \"Rückgängig\"-Button (Undo) in Editoren ist ein klassischer Stack: die letzte Aktion wird zuerst rückgängig gemacht. Eine Warteschlange am Drucker ist eine klassische Queue." }
+            { "type": "p", "html": "Ein Array hat feste Größe. Eine <strong>verkettete Liste</strong> wächst dynamisch — und du baust sie <em>selbst</em> aus Objekten. Genau das verlangt der Abitur-Kernlehrplan: die Datenstruktur als eigene Java-Klasse zu implementieren, nicht nur <code>ArrayList</code> zu benutzen." },
+            { "type": "h2", "text": "Die Idee: Knoten zeigt auf Knoten" },
+            { "type": "p", "html": "Jeder <strong>Knoten</strong> speichert einen Wert und eine Referenz <code>next</code> auf den nächsten Knoten. Der letzte Knoten zeigt auf <code>null</code>. Die Liste selbst merkt sich nur den <strong>Kopf</strong> (den ersten Knoten)." },
+            { "type": "figure", "caption": "Einfach verkettete Liste: jeder Knoten kennt nur seinen Nachfolger.", "svg": "<svg viewBox='0 0 700 110' width='700' height='110' role='img' aria-label='Verkettete Liste mit drei Knoten'><defs><marker id='ah' markerWidth='9' markerHeight='9' refX='7' refY='4.5' orient='auto'><path d='M0 0L9 4.5L0 9z' fill='var(--accent)'/></marker></defs><text x='30' y='24' font-family='JetBrains Mono, monospace' font-size='12' fill='var(--mut2)'>kopf</text><path d='M42 30 L42 52' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah)'/><g font-family='JetBrains Mono, monospace' font-size='15'><rect x='20' y='56' width='128' height='42' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='112' y1='56' x2='112' y2='98' stroke='var(--border3)'/><text x='58' y='82' fill='var(--text)' text-anchor='middle'>10</text><circle cx='130' cy='77' r='4' fill='var(--accent)'/><path d='M134 77 L196 77' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah)'/><rect x='200' y='56' width='128' height='42' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='292' y1='56' x2='292' y2='98' stroke='var(--border3)'/><text x='238' y='82' fill='var(--text)' text-anchor='middle'>20</text><circle cx='310' cy='77' r='4' fill='var(--accent)'/><path d='M314 77 L376 77' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah)'/><rect x='380' y='56' width='128' height='42' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='472' y1='56' x2='472' y2='98' stroke='var(--border3)'/><text x='418' y='82' fill='var(--text)' text-anchor='middle'>30</text><circle cx='490' cy='77' r='4' fill='var(--accent)'/><path d='M494 77 L556 77' stroke='var(--dis)' stroke-width='2' stroke-dasharray='4 4' fill='none'/><text x='588' y='82' font-size='14' fill='var(--dis)' text-anchor='middle'>null</text></g></svg>" },
+            { "type": "h2", "text": "Knoten und Liste als Klassen" },
+            { "type": "code", "file": "Liste.java", "code": "class Knoten {\n    int wert;\n    Knoten next;        // Referenz auf den nächsten Knoten\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Liste {\n    Knoten kopf;        // erster Knoten (oder null bei leerer Liste)\n\n    void anhaengen(int wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) { kopf = neu; return; }\n        Knoten k = kopf;\n        while (k.next != null) { k = k.next; }  // bis zum Ende laufen\n        k.next = neu;\n    }\n}" },
+            { "type": "callout", "variant": "info", "title": "Durchlaufen (Traversieren)", "html": "Mit <code>Knoten k = kopf;</code> und <code>k = k.next;</code> hangelst du dich von Knoten zu Knoten, bis <code>k == null</code> ist. Dieses Muster brauchst du für Größe zählen, Suchen, Ausgeben — alles." },
+            { "type": "callout", "variant": "warn", "title": "Abitur-relevant", "html": "Genau diese Eigenimplementierung (mit <code>Knoten</code>-Referenzen) ist Prüfungsstoff im NRW-Abitur — nicht die fertige <code>LinkedList</code> aus der Java-Bibliothek. Verstehe das <code>next</code>-Prinzip, dann folgen Schlange, Stapel und Baum demselben Muster." }
           ]
         },
         {
-          "id": "q1-1-4", "num": "1.4", "title": "Bäume", "readTime": "≈ 11 Min.",
+          "id": "q1-1-3", "num": "1.4", "title": "Stacks und Queues (eigene Klassen)", "readTime": "≈ 13 Min.",
+          "video": { "id": "a4EpC1Kmb7I", "title": "Stack und Queue in Java (Collections #2)", "channel": "Jonas Keil", "duration": "5:52" },
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Stapel</strong> (Stack) und eine <strong>Schlange</strong> (Queue) speichern Elemente in fester Reihenfolge — sie unterscheiden sich nur darin, <em>welches</em> Element als Nächstes entfernt wird. Wie bei der verketteten Liste baust du beide selbst aus <code>Knoten</code>-Objekten." },
+            { "type": "h2", "text": "Stapel: LIFO" },
+            { "type": "p", "html": "Wie ein Stapel Teller: das <strong>zuletzt</strong> hinzugefügte Element kommt <strong>zuerst</strong> wieder herunter — <em>Last In, First Out</em>. Neue Elemente kommen immer <strong>oben</strong> drauf, <code>pop()</code> nimmt immer <strong>von oben</strong>." },
+            { "type": "figure", "caption": "Stapel nach push(10), push(20), push(30): oben zeigt auf das zuletzt eingefügte Element.", "svg": "<svg viewBox='0 0 200 236' width='200' height='236' role='img' aria-label='Stapel mit drei Elementen, oben zeigt auf 30'><defs><marker id='ah-stack' markerWidth='9' markerHeight='9' refX='7' refY='4.5' orient='auto'><path d='M0 0L9 4.5L0 9z' fill='var(--accent)'/></marker></defs><text x='72' y='14' font-family='JetBrains Mono, monospace' font-size='12' fill='var(--mut2)' text-anchor='middle'>oben</text><path d='M72 18 L72 46' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-stack)'/><g font-family='JetBrains Mono, monospace' font-size='15'><rect x='12' y='50' width='160' height='46' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='124' y1='50' x2='124' y2='96' stroke='var(--border3)'/><text x='68' y='78' fill='var(--text)' text-anchor='middle'>30</text><circle cx='148' cy='73' r='4' fill='var(--accent)'/><path d='M148 96 L148 104' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-stack)'/><rect x='12' y='104' width='160' height='46' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='124' y1='104' x2='124' y2='150' stroke='var(--border3)'/><text x='68' y='132' fill='var(--text)' text-anchor='middle'>20</text><circle cx='148' cy='127' r='4' fill='var(--accent)'/><path d='M148 150 L148 158' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-stack)'/><rect x='12' y='158' width='160' height='46' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='124' y1='158' x2='124' y2='204' stroke='var(--border3)'/><text x='68' y='186' fill='var(--text)' text-anchor='middle'>10</text><circle cx='148' cy='181' r='4' fill='var(--accent)'/><path d='M148 204 L148 212' stroke='var(--dis)' stroke-width='2' stroke-dasharray='4 4' fill='none'/><text x='148' y='228' font-size='13' fill='var(--dis)' text-anchor='middle'>null</text></g></svg>" },
+            { "type": "code", "file": "Stapel.java", "code": "class Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Stapel {\n    private Knoten oben;   // zeigt immer auf das zuletzt eingefügte Element\n\n    void push(int wert) {\n        Knoten neu = new Knoten(wert);\n        neu.next = oben;   // neuer Knoten zeigt auf den alten obersten\n        oben = neu;         // und wird selbst zum neuen obersten\n    }\n\n    int pop() {\n        int wert = oben.wert;\n        oben = oben.next;   // der zweite wird zum neuen obersten\n        return wert;\n    }\n\n    boolean istLeer() { return oben == null; }\n}" },
+            { "type": "callout", "variant": "info", "title": "Warum O(1)?", "html": "<code>push</code> und <code>pop</code> verändern nur den <code>oben</code>-Zeiger und einen einzigen <code>next</code> — unabhängig davon, wie viele Elemente im Stapel liegen. Das macht beide Operationen <strong>konstant schnell</strong>." },
+            { "type": "h2", "text": "Schlange: FIFO" },
+            { "type": "p", "html": "Wie eine Warteschlange am Schalter: das <strong>zuerst</strong> hinzugefügte Element wird auch <strong>zuerst</strong> bedient — <em>First In, First Out</em>. Neue Elemente kommen ans <strong>Ende</strong>, entfernt wird immer vom <strong>Kopf</strong>." },
+            { "type": "figure", "caption": "Schlange mit drei Elementen: kopf entfernt, ende reiht neu ein.", "svg": "<svg viewBox='0 0 560 140' width='560' height='140' role='img' aria-label='Schlange mit drei Elementen, kopf zeigt auf Anna, ende zeigt auf Cem'><defs><marker id='ah-queue' markerWidth='9' markerHeight='9' refX='7' refY='4.5' orient='auto'><path d='M0 0L9 4.5L0 9z' fill='var(--accent)'/></marker></defs><text x='76' y='20' font-family='JetBrains Mono, monospace' font-size='12' fill='var(--mut2)' text-anchor='middle'>kopf (entfernen)</text><path d='M76 24 L76 46' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-queue)'/><text x='456' y='20' font-family='JetBrains Mono, monospace' font-size='12' fill='var(--mut2)' text-anchor='middle'>ende (einreihen)</text><path d='M456 24 L456 46' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-queue)'/><g font-family='JetBrains Mono, monospace' font-size='14'><rect x='16' y='50' width='140' height='44' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='120' y1='50' x2='120' y2='94' stroke='var(--border3)'/><text x='68' y='77' fill='var(--text)' text-anchor='middle'>Anna</text><circle cx='138' cy='72' r='4' fill='var(--accent)'/><path d='M142 72 L196 72' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-queue)'/><rect x='200' y='50' width='140' height='44' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><line x1='304' y1='50' x2='304' y2='94' stroke='var(--border3)'/><text x='252' y='77' fill='var(--text)' text-anchor='middle'>Ben</text><circle cx='322' cy='72' r='4' fill='var(--accent)'/><path d='M326 72 L380 72' stroke='var(--accent)' stroke-width='2' fill='none' marker-end='url(#ah-queue)'/><rect x='384' y='50' width='140' height='44' rx='8' fill='var(--panel2)' stroke='var(--border3)'/><text x='436' y='77' fill='var(--text)' text-anchor='middle'>Cem</text></g></svg>" },
+            { "type": "code", "file": "Schlange.java", "code": "class Schlange {\n    private Knoten kopf, ende;   // zwei Zeiger: Anfang und Ende\n\n    void einreihen(String wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) { kopf = neu; ende = neu; }\n        else { ende.next = neu; ende = neu; }   // hinten anhängen\n    }\n\n    String entfernen() {\n        String wert = kopf.wert;\n        kopf = kopf.next;                       // vorne entfernen\n        if (kopf == null) ende = null;          // Schlange jetzt leer\n        return wert;\n    }\n\n    boolean istLeer() { return kopf == null; }\n}" },
+            { "type": "callout", "variant": "warn", "title": "Der Unterschied zur Liste", "html": "Eine einfach verkettete Liste (Lektion 1.3) hätte für <code>entfernen()</code> am Ende O(n) gebraucht (bis zum letzten Knoten laufen). Der <strong>zweite Zeiger</strong> <code>ende</code> macht <code>einreihen()</code> zu O(1) — genau der Trick, der Stapel und Schlange so schnell macht." },
+            { "type": "h2", "text": "In der Praxis: java.util" },
+            { "type": "p", "html": "Verstehst du das Prinzip, nutzt du im echten Code die fertige, getestete Klasse <code>ArrayDeque</code> — sie kann beides:" },
+            { "type": "code", "file": "InDerPraxis.java", "code": "Deque<Integer> stapel = new ArrayDeque<>();\nstapel.push(1); stapel.push(2);\nstapel.pop();          // 2 — LIFO\n\nDeque<String> schlange = new ArrayDeque<>();\nschlange.offer(\"a\"); schlange.offer(\"b\");\nschlange.poll();       // \"a\" — FIFO" },
+            { "type": "callout", "variant": "tip", "title": "Anwendungsbeispiel", "html": "Der \"Rückgängig\"-Button (Undo) in Editoren ist ein klassischer Stapel: die letzte Aktion wird zuerst rückgängig gemacht. Eine Warteschlange am Drucker ist eine klassische Schlange." }
+          ]
+        },
+        {
+          "id": "q1-1-4", "num": "1.5", "title": "Bäume", "readTime": "≈ 14 Min.",
           "blocks": [
             { "type": "p", "html": "Ein <strong>Baum</strong> ist eine hierarchische Datenstruktur: jeder <strong>Knoten</strong> hat höchstens einen Vorgänger (Elternknoten) und beliebig viele Nachfolger (Kindknoten). Ein <strong>Binärbaum</strong> erlaubt maximal zwei Kinder pro Knoten." },
             { "type": "code", "file": "Knoten.java", "code": "class Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}" },
             { "type": "h2", "text": "Suchbaum: sortiert einfügen" },
             { "type": "p", "html": "In einem <strong>binären Suchbaum</strong> (BST) ist jeder linke Nachfolger <em>kleiner</em>, jeder rechte Nachfolger <em>größer</em> als sein Elternknoten. Das macht Suchen sehr schnell." },
+            { "type": "figure", "caption": "BST nach dem Einfügen von 5, 3, 8, 1, 4 — links immer kleiner, rechts immer größer als der Elternknoten.", "svg": "<svg viewBox='0 0 340 210' width='340' height='210' role='img' aria-label='Binärer Suchbaum mit Wurzel 5, Kindern 3 und 8, Enkeln 1 und 4'><g stroke='var(--border3)' stroke-width='2' fill='none'><line x1='170' y1='30' x2='90' y2='110'/><line x1='170' y1='30' x2='250' y2='110'/><line x1='90' y1='110' x2='55' y2='185'/><line x1='90' y1='110' x2='125' y2='185'/></g><g font-family='JetBrains Mono, monospace' font-size='15'><circle cx='170' cy='30' r='22' fill='var(--panel2)' stroke='var(--accent)' stroke-width='2'/><text x='170' y='36' fill='var(--text)' text-anchor='middle'>5</text><circle cx='90' cy='110' r='22' fill='var(--panel2)' stroke='var(--border3)' stroke-width='2'/><text x='90' y='116' fill='var(--text)' text-anchor='middle'>3</text><circle cx='250' cy='110' r='22' fill='var(--panel2)' stroke='var(--border3)' stroke-width='2'/><text x='250' y='116' fill='var(--text)' text-anchor='middle'>8</text><circle cx='55' cy='185' r='22' fill='var(--panel2)' stroke='var(--border3)' stroke-width='2'/><text x='55' y='191' fill='var(--text)' text-anchor='middle'>1</text><circle cx='125' cy='185' r='22' fill='var(--panel2)' stroke='var(--border3)' stroke-width='2'/><text x='125' y='191' fill='var(--text)' text-anchor='middle'>4</text></g></svg>" },
             { "type": "code", "file": "Baum.java", "code": "Knoten einfuegenRek(Knoten k, int wert) {\n    if (k == null) return new Knoten(wert);\n    if (wert < k.wert) {\n        k.links = einfuegenRek(k.links, wert);\n    } else {\n        k.rechts = einfuegenRek(k.rechts, wert);\n    }\n    return k;\n}" },
             { "type": "h2", "text": "Durchlaufen: inorder" },
             { "type": "p", "html": "Ein <strong>inorder</strong>-Durchlauf (links, Knoten, rechts) besucht einen Suchbaum in <strong>sortierter Reihenfolge</strong> — ein Nebeneffekt der Struktur, kein Zufall:" },
             { "type": "code", "file": "Baum.java", "code": "void inorder(Knoten k) {\n    if (k == null) return;\n    inorder(k.links);\n    System.out.print(k.wert + \" \");\n    inorder(k.rechts);\n}" },
-            { "type": "callout", "variant": "warn", "title": "Unbalanciert", "html": "Fügst du Werte bereits sortiert ein (1, 2, 3, 4…), entartet der Baum zu einer Liste — jeder Knoten hat nur ein Kind. Suchen wird dann so langsam wie bei einem Array. Balancierte Bäume (AVL, Rot-Schwarz) lösen dieses Problem." }
+            { "type": "h2", "text": "Suchen im Baum" },
+            { "type": "p", "html": "Suchen nutzt dieselbe Sortier-Eigenschaft wie das Einfügen: ist der gesuchte Wert kleiner, geht es links weiter, ist er größer, rechts — genau wie bei der binären Suche im Array (Lektion 1.2), nur über Zeiger statt über Indizes." },
+            { "type": "code", "file": "Baum.java", "code": "boolean suchen(int wert) {\n    return suchenRek(wurzel, wert);\n}\n\nboolean suchenRek(Knoten k, int wert) {\n    if (k == null) return false;         // Basisfall: nicht gefunden\n    if (wert == k.wert) return true;      // Basisfall: gefunden\n    if (wert < k.wert) return suchenRek(k.links, wert);\n    return suchenRek(k.rechts, wert);\n}" },
+            { "type": "callout", "variant": "info", "title": "O(log n) — wenn der Baum balanciert ist", "html": "Bei jedem Schritt wird (im Idealfall) die Hälfte der verbleibenden Knoten ausgeschlossen — genau wie bei der binären Suche. Ein <strong>balancierter</strong> Baum mit n Knoten braucht daher nur <code>O(log n)</code> Schritte zum Suchen." },
+            { "type": "callout", "variant": "warn", "title": "Unbalanciert", "html": "Fügst du Werte bereits sortiert ein (1, 2, 3, 4…), entartet der Baum zu einer Liste — jeder Knoten hat nur ein Kind, Suchen wird zu <code>O(n)</code>, so langsam wie bei einem Array. Balancierte Bäume (AVL, Rot-Schwarz) lösen dieses Problem." }
           ]
         },
         {
-          "id": "q1-1-5", "num": "1.5", "title": "Graphen", "readTime": "≈ 10 Min.",
+          "id": "q1-1-5", "num": "1.6", "title": "Graphen", "readTime": "≈ 10 Min.",
           "blocks": [
             { "type": "p", "html": "Ein <strong>Graph</strong> verallgemeinert einen Baum: <strong>Knoten</strong> (Punkte) werden durch <strong>Kanten</strong> (Verbindungen) verbunden — ohne die Einschränkung, dass jeder Knoten nur einen Vorgänger hat. Freundschaftsnetzwerke, Straßenkarten und das Internet sind Graphen." },
             { "type": "h2", "text": "Darstellung: Adjazenzliste" },
@@ -497,11 +633,32 @@
           "starter": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 4, 8, 15, 16, 23, 42 };\n        int summe = 0;\n        // Schleife über alle Elemente\n        System.out.println(\"Summe: \" + summe);\n    }\n}"
         },
         {
-          "id": "q1-1-e2", "title": "Klammern prüfen", "difficulty": "mittel",
-          "prompt_html": "Prüfe mit einem <code>Stack</code> (<code>Deque</code>), ob die Klammern in <code>text</code> ausgeglichen sind: jede öffnende <code>(</code> braucht eine passende schließende <code>)</code>.",
+          "id": "q1-1-esort", "title": "Insertion Sort", "difficulty": "mittel",
+          "prompt_html": "Vervollständige <code>akt</code>: das ist der Wert, der in jedem Durchlauf an die richtige Stelle im bereits sortierten Teil einsortiert wird.",
+          "expected": "1 2 5 5 6 9",
+          "tip_html": "<code>akt</code> ist einfach das aktuell zu betrachtende Element: <code>zahlen[i]</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 5, 2, 9, 1, 5, 6 };\n\n        for (int i = 1; i < zahlen.length; i++) {\n            int akt;   // TODO: akt = zahlen[i]; setzen\n            int j = i - 1;\n            while (j >= 0 && zahlen[j] > akt) {\n                zahlen[j + 1] = zahlen[j];\n                j--;\n            }\n            zahlen[j + 1] = akt;\n        }\n\n        for (int x : zahlen) System.out.print(x + \" \");\n    }\n}"
+        },
+        {
+          "id": "q1-1-elst", "title": "Verkettete Liste: Größe zählen", "difficulty": "mittel",
+          "prompt_html": "Vervollständige <code>groesse()</code>: laufe vom <code>kopf</code> über die <code>next</code>-Referenzen bis <code>null</code> und zähle die Knoten. Erwartet: <code>3</code>.",
+          "expected": "3",
+          "tip_html": "Starte mit <code>Knoten k = kopf;</code> und <code>int n = 0;</code>. Solange <code>k != null</code>: <code>n++</code> und <code>k = k.next;</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Liste l = new Liste();\n        l.anhaengen(10);\n        l.anhaengen(20);\n        l.anhaengen(30);\n        System.out.println(l.groesse());\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Liste {\n    Knoten kopf;\n\n    void anhaengen(int wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) { kopf = neu; return; }\n        Knoten k = kopf;\n        while (k.next != null) { k = k.next; }\n        k.next = neu;\n    }\n\n    int groesse() {\n        int n = 0;\n        // TODO: von kopf über next bis null laufen und zählen\n        return n;\n    }\n}"
+        },
+        {
+          "id": "q1-1-e2", "title": "Klammern prüfen (eigener Stapel)", "difficulty": "mittel",
+          "prompt_html": "Prüfe mit deinem <strong>eigenen</strong> <code>Stapel</code> (keine Bibliothek!), ob die Klammern in <code>text</code> ausgeglichen sind: jede öffnende <code>(</code> braucht eine passende schließende <code>)</code>.",
           "expected": "Ausgeglichen",
-          "tip_html": "Bei <code>(</code>: <code>stack.push(c)</code>. Bei <code>)</code>: wenn der Stack leer ist, ist es nicht ausgeglichen — sonst <code>stack.pop()</code>.",
-          "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        String text = \"(()())\";\n        Deque<Character> stack = new ArrayDeque<>();\n        boolean ok = true;\n\n        for (char c : text.toCharArray()) {\n            if (c == '(') {\n                stack.push(c);\n            } else if (c == ')') {\n                // TODO: Stack leer? -> nicht ausgeglichen. Sonst: pop()\n            }\n        }\n        if (!stack.isEmpty()) ok = false;\n\n        System.out.println(ok ? \"Ausgeglichen\" : \"Nicht ausgeglichen\");\n    }\n}"
+          "tip_html": "Bei <code>(</code>: <code>stapel.push(1)</code>. Bei <code>)</code>: wenn <code>istLeer()</code>, ist es nicht ausgeglichen — sonst <code>stapel.pop()</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        String text = \"(()())\";\n        Stapel stapel = new Stapel();\n        boolean ok = true;\n\n        for (char c : text.toCharArray()) {\n            if (c == '(') {\n                stapel.push(1);\n            } else if (c == ')') {\n                // TODO: Stapel leer? -> nicht ausgeglichen. Sonst: pop()\n            }\n        }\n        if (!stapel.istLeer()) ok = false;\n\n        System.out.println(ok ? \"Ausgeglichen\" : \"Nicht ausgeglichen\");\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Stapel {\n    private Knoten oben;\n    void push(int wert) {\n        Knoten neu = new Knoten(wert);\n        neu.next = oben;\n        oben = neu;\n    }\n    int pop() {\n        int wert = oben.wert;\n        oben = oben.next;\n        return wert;\n    }\n    boolean istLeer() { return oben == null; }\n}"
+        },
+        {
+          "id": "q1-1-eq", "title": "Warteschlange (eigene Schlange)", "difficulty": "mittel",
+          "prompt_html": "Vervollständige den Sonderfall in <code>einreihen()</code>: wenn die Schlange noch leer ist, müssen <code>kopf</code> <em>und</em> <code>ende</code> auf das neue Element zeigen. Gib danach alle Namen in FIFO-Reihenfolge aus.",
+          "expected": "Anna\nBen\nCem",
+          "tip_html": "Ist die Schlange leer (<code>kopf == null</code>), ist das neue Element gleichzeitig Anfang <em>und</em> Ende: <code>kopf = neu; ende = neu;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Schlange s = new Schlange();\n        s.einreihen(\"Anna\");\n        s.einreihen(\"Ben\");\n        s.einreihen(\"Cem\");\n        while (!s.istLeer()) {\n            System.out.println(s.entfernen());\n        }\n    }\n}\n\nclass Knoten {\n    String wert;\n    Knoten next;\n    Knoten(String wert) { this.wert = wert; }\n}\n\nclass Schlange {\n    private Knoten kopf, ende;\n\n    void einreihen(String wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) {\n            // TODO: Schlange war leer -> kopf UND ende auf 'neu' setzen\n        } else {\n            ende.next = neu;\n            ende = neu;\n        }\n    }\n\n    String entfernen() {\n        String wert = kopf.wert;\n        kopf = kopf.next;\n        if (kopf == null) ende = null;\n        return wert;\n    }\n\n    boolean istLeer() { return kopf == null; }\n}"
         },
         {
           "id": "q1-1-e3", "title": "Binärbaum einfügen und ausgeben", "difficulty": "schwer",
@@ -509,6 +666,13 @@
           "expected": "1 3 4 5 8",
           "tip_html": "Ist <code>wert</code> kleiner als <code>k.wert</code>, geht es links weiter: <code>k.links = einfuegenRek(k.links, wert);</code> — sonst rechts.",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        b.inorder(b.wurzel);\n        System.out.println();\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) {\n        wurzel = einfuegenRek(wurzel, wert);\n    }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        // TODO: wert < k.wert -> links einfügen, sonst -> rechts einfügen\n        return k;\n    }\n    void inorder(Knoten k) {\n        if (k == null) return;\n        inorder(k.links);\n        System.out.print(k.wert + \" \");\n        inorder(k.rechts);\n    }\n}"
+        },
+        {
+          "id": "q1-1-esearch", "title": "Suchen im Baum", "difficulty": "mittel",
+          "prompt_html": "Vervollständige <code>suchenRek</code> für den Fall, dass <code>wert</code> größer als <code>k.wert</code> ist. Prüfe, ob <code>4</code> und <code>7</code> im Baum enthalten sind.",
+          "expected": "true\nfalse",
+          "tip_html": "Genau wie beim Einfügen: ist <code>wert</code> größer, geht die Suche rechts weiter — <code>return suchenRek(k.rechts, wert);</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        System.out.println(b.suchen(4));\n        System.out.println(b.suchen(7));\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) { wurzel = einfuegenRek(wurzel, wert); }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        if (wert < k.wert) k.links = einfuegenRek(k.links, wert);\n        else k.rechts = einfuegenRek(k.rechts, wert);\n        return k;\n    }\n    boolean suchen(int wert) { return suchenRek(wurzel, wert); }\n    boolean suchenRek(Knoten k, int wert) {\n        if (k == null) return false;\n        if (wert == k.wert) return true;\n        if (wert < k.wert) return suchenRek(k.links, wert);\n        // TODO: sonst -> rechts weitersuchen\n        return false;\n    }\n}"
         },
         {
           "id": "q1-1-e4", "title": "Nachbarn ausgeben", "difficulty": "mittel",
@@ -525,13 +689,24 @@
       "status": "locked", "progress": 0,
       "lessons": [
         {
-          "id": "q2-1-1", "num": "1.1", "title": "Rekursion: Methoden, die sich selbst aufrufen", "readTime": "≈ 11 Min.",
+          "id": "q2-1-1", "num": "1.1", "title": "Rekursion: Methoden, die sich selbst aufrufen", "readTime": "≈ 18 Min.",
+          "video": { "id": "KwB0gjnYvoY", "title": "Java REKURSION verstehen in 5 min", "channel": "Jonas Keil", "duration": "5:19" },
           "blocks": [
             { "type": "p", "html": "Eine <strong>rekursive</strong> Methode ruft sich selbst auf, mit einem kleineren Teilproblem — bis ein <strong>Basisfall</strong> erreicht ist, der die Rekursion beendet." },
             { "type": "code", "file": "Fakultaet.java", "code": "int fakultaet(int n) {\n    if (n <= 1) return 1;          // Basisfall\n    return n * fakultaet(n - 1);   // Rekursion\n}" },
             { "type": "callout", "variant": "warn", "title": "Basisfall nicht vergessen", "html": "Ohne Basisfall ruft sich die Methode endlos auf → <code>StackOverflowError</code>. Jeder rekursive Aufruf muss dem Basisfall näher kommen." },
             { "type": "h2", "text": "Rekursion vs. Iteration" },
-            { "type": "p", "html": "Alles, was rekursiv lösbar ist, lässt sich auch iterativ (mit einer Schleife) lösen. Rekursion passt besonders gut zu Problemen, die sich natürlich in kleinere, gleichartige Teilprobleme zerlegen — z. B. Bäume oder das Durchsuchen verschachtelter Strukturen." }
+            { "type": "p", "html": "Alles, was rekursiv lösbar ist, lässt sich auch iterativ (mit einer Schleife) lösen. Rekursion passt besonders gut zu Problemen, die sich natürlich in kleinere, gleichartige Teilprobleme zerlegen — z. B. Bäume oder das Durchsuchen verschachtelter Strukturen." },
+            { "type": "h2", "text": "Klassiker: Türme von Hanoi" },
+            { "type": "p", "html": "Drei Stapel (A, B, C). Auf A liegen <code>n</code> Scheiben, absteigend nach Größe. Ziel: alle Scheiben von A nach C bewegen — es darf nie eine größere Scheibe auf einer kleineren liegen, und pro Zug bewegt sich nur eine Scheibe." },
+            { "type": "figure", "caption": "Ausgangslage bei 3 Scheiben: alle auf Stapel A.", "svg": "<svg viewBox='0 0 420 180' width='420' height='180' role='img' aria-label='Türme von Hanoi, drei Scheiben auf Stapel A'><line x1='20' y1='150' x2='400' y2='150' stroke='var(--border3)' stroke-width='3'/><line x1='80' y1='30' x2='80' y2='150' stroke='var(--border3)' stroke-width='4'/><line x1='210' y1='30' x2='210' y2='150' stroke='var(--border3)' stroke-width='4'/><line x1='340' y1='30' x2='340' y2='150' stroke='var(--border3)' stroke-width='4'/><g font-family='JetBrains Mono, monospace' font-size='13'><rect x='35' y='134' width='90' height='16' rx='4' fill='var(--panel2)' stroke='var(--accent)'/><rect x='45' y='116' width='70' height='16' rx='4' fill='var(--panel2)' stroke='var(--accent)'/><rect x='55' y='98' width='50' height='16' rx='4' fill='var(--panel2)' stroke='var(--accent)'/><text x='80' y='172' fill='var(--mut2)' text-anchor='middle'>A</text><text x='210' y='172' fill='var(--mut2)' text-anchor='middle'>B</text><text x='340' y='172' fill='var(--mut2)' text-anchor='middle'>C</text></g></svg>" },
+            { "type": "p", "html": "Die rekursive Lösung braucht nur drei Zeilen Logik: verschiebe die oberen <code>n-1</code> Scheiben von A nach B (mit C als Hilfe), bewege die größte Scheibe direkt von A nach C, verschiebe dann die <code>n-1</code> Scheiben von B nach C (mit A als Hilfe)." },
+            { "type": "code", "file": "Hanoi.java", "code": "void hanoi(int n, char von, char hilfe, char nach) {\n    if (n == 0) return;                    // Basisfall: nichts zu tun\n    hanoi(n - 1, von, nach, hilfe);         // 1. kleinere Scheiben aus dem Weg\n    System.out.println(\"Scheibe \" + n + \": \" + von + \" -> \" + nach);\n    hanoi(n - 1, hilfe, von, nach);         // 2. kleinere Scheiben nachziehen\n}\n\n// Aufruf: hanoi(3, 'A', 'B', 'C');" },
+            { "type": "callout", "variant": "info", "title": "Zwei rekursive Aufrufe pro Ebene", "html": "Anders als bei der Fakultät (ein rekursiver Aufruf) verzweigt sich Hanoi in <strong>zwei</strong> Aufrufe pro Ebene. Das verdoppelt die Anzahl der Aufrufe mit jeder Ebene — der Grund, warum Hanoi mit wachsendem <code>n</code> so schnell so viele Züge braucht." },
+            { "type": "h2", "text": "Wie viele Züge braucht man?" },
+            { "type": "p", "html": "Auch das lässt sich rekursiv formulieren: um <code>n</code> Scheiben zu verschieben, brauchst du erst alle Züge für <code>n-1</code> Scheiben, dann einen Zug für die größte, dann nochmal alle Züge für <code>n-1</code> Scheiben." },
+            { "type": "code", "file": "AnzahlZuege.java", "code": "int zugAnzahl(int n) {\n    if (n == 0) return 0;\n    return 2 * zugAnzahl(n - 1) + 1;\n}\n// zugAnzahl(3) == 7,  zugAnzahl(10) == 1023 — das ist O(2^n), exponentiell!" },
+            { "type": "callout", "variant": "warn", "title": "Exponentielles Wachstum", "html": "Bei <code>n = 64</code> (die Legende der Mönche von Hanoi) wären das <code>2⁶⁴ − 1</code> Züge — bei einem Zug pro Sekunde länger als das Alter des Universums. Nicht jede rekursive Lösung ist effizient, nur weil sie elegant aussieht." }
           ]
         },
         {
@@ -551,10 +726,21 @@
       "exercises": [
         {
           "id": "q2-1-e1", "title": "Fakultät rekursiv", "difficulty": "schwer",
-          "prompt_html": "Vervollständige die rekursive Methode <code>fakultaet</code> und gib <code>5! = 120</code> aus.",
-          "expected": "120",
+          "prompt_html": "Vervollständige die rekursive Methode <code>fakultaet</code>. <code>n</code> wird eingelesen — dein Code muss für <strong>jedes</strong> <code>n</code> stimmen.",
+          "tests": [
+            { "stdin": "5", "expected": "120" },
+            { "stdin": "3", "expected": "6" },
+            { "stdin": "1", "expected": "1" }
+          ],
           "tip_html": "Basisfall: <code>n <= 1</code> liefert <code>1</code>. Sonst: <code>n * fakultaet(n - 1)</code>.",
-          "starter": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(fakultaet(5));\n    }\n\n    static int fakultaet(int n) {\n        // Basisfall + rekursiver Aufruf\n        return 0;\n    }\n}"
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n        System.out.println(fakultaet(n));\n    }\n\n    static int fakultaet(int n) {\n        // TODO: Basisfall (n <= 1 -> 1) + rekursiver Aufruf (n * fakultaet(n-1))\n        return 0;\n    }\n}"
+        },
+        {
+          "id": "q2-1-ehanoi", "title": "Türme von Hanoi: Anzahl der Züge", "difficulty": "schwer",
+          "prompt_html": "Vervollständige <code>zugAnzahl</code> rekursiv: die Anzahl der Züge für <code>n</code> Scheiben ist <code>2 · zugAnzahl(n-1) + 1</code>. Gib die Anzahl für <code>n = 3</code> aus.",
+          "expected": "7",
+          "tip_html": "Basisfall <code>n == 0</code> liefert <code>0</code> Züge. Sonst: <code>return 2 * zugAnzahl(n - 1) + 1;</code>",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(zugAnzahl(3));\n    }\n\n    static int zugAnzahl(int n) {\n        if (n == 0) return 0;\n        // TODO: 2 * zugAnzahl(n - 1) + 1 zurückgeben\n        return 0;\n    }\n}"
         }
       ]
     },
@@ -586,13 +772,27 @@
           ]
         },
         {
-          "id": "q2-2-3", "num": "2.3", "title": "Endliche Automaten und formale Sprachen", "readTime": "≈ 10 Min.",
+          "id": "q2-2-3", "num": "2.3", "title": "Endliche Automaten und formale Sprachen", "readTime": "≈ 16 Min.",
           "blocks": [
             { "type": "p", "html": "Ein <strong>endlicher Automat</strong> ist eine Maschine mit einer festen Anzahl <strong>Zustände</strong>. Ereignisse (Eingaben) lösen <strong>Übergänge</strong> zwischen Zuständen aus." },
             { "type": "h2", "text": "Beispiel: Drehkreuz" },
             { "type": "p", "html": "Ein Drehkreuz kennt zwei Zustände: <strong>Gesperrt</strong> und <strong>Frei</strong>. Eine Münze schaltet von Gesperrt auf Frei; Durchgehen schaltet von Frei zurück auf Gesperrt. Andere Eingaben ändern nichts." },
             { "type": "code", "file": "Drehkreuz.java", "code": "if (zustand.equals(\"Gesperrt\") && ereignis.equals(\"Muenze\")) {\n    zustand = \"Frei\";\n} else if (zustand.equals(\"Frei\") && ereignis.equals(\"Durchgehen\")) {\n    zustand = \"Gesperrt\";\n}\n// sonst: Zustand bleibt unverändert" },
-            { "type": "callout", "variant": "tip", "title": "Wozu das nützt", "html": "Automaten modellieren Ampeln, Getränkeautomaten, Spielfiguren — und in der theoretischen Informatik erkennen sie <strong>formale Sprachen</strong>: Mengen von Zeichenketten, die einem Muster folgen (Grundlage für z. B. reguläre Ausdrücke)." }
+            { "type": "callout", "variant": "tip", "title": "Wozu das nützt", "html": "Automaten modellieren Ampeln, Getränkeautomaten, Spielfiguren — und in der theoretischen Informatik erkennen sie <strong>formale Sprachen</strong>: Mengen von Zeichenketten, die einem Muster folgen." },
+            { "type": "h2", "text": "Formale Grammatiken" },
+            { "type": "p", "html": "Eine <strong>Grammatik</strong> erzeugt eine formale Sprache durch <strong>Ersetzungsregeln</strong> (Produktionen). Diese Grammatik erzeugt genau die Wörter, die aus beliebig vielen <code>a</code> gefolgt von genau einem <code>b</code> bestehen:" },
+            { "type": "code", "file": "Grammatik.txt", "code": "S → aS   (ersetze S durch 'a' gefolgt von einem neuen S)\nS → b    (oder beende mit einem einzelnen 'b')\n\nAbleitung von \"aaab\":\nS → aS → aaS → aaaS → aaab" },
+            { "type": "callout", "variant": "info", "title": "Grammatik und Automat sind zwei Seiten derselben Medaille", "html": "Jede Sprache, die eine solche (reguläre) Grammatik erzeugen kann, kann auch von einem endlichen Automaten erkannt werden — und umgekehrt. Das Drehkreuz oben erkennt z. B. genau die Eingabefolgen, die mit einer Münze beginnen." },
+            { "type": "h2", "text": "Reguläre Ausdrücke (Regex)" },
+            { "type": "p", "html": "Ein <strong>regulärer Ausdruck</strong> ist eine kompakte Schreibweise für genau die Muster, die reguläre Grammatiken erzeugen und endliche Automaten erkennen. Java unterstützt sie direkt über <code>String.matches(...)</code>." },
+            { "type": "grid", "items": [
+              { "code": "[0-9]", "label": "eine Ziffer" },
+              { "code": "{5}", "label": "genau 5-mal" },
+              { "code": "*", "label": "0-mal oder öfter" },
+              { "code": "+", "label": "1-mal oder öfter" }
+            ]},
+            { "type": "code", "file": "Regex.java", "code": "String plz = \"53111\";\nboolean gueltig = plz.matches(\"[0-9]{5}\");   // true — genau 5 Ziffern\n\nString sprache = \"aaab\";\nboolean passt = sprache.matches(\"a*b\");        // true — die Grammatik von oben!" },
+            { "type": "callout", "variant": "warn", "title": "matches prüft die GANZE Zeichenkette", "html": "<code>\"53111x\".matches(\"[0-9]{5}\")</code> ist <code>false</code> — das <code>x</code> am Ende passt nicht ins Muster. Für \"kommt irgendwo vor\" gibt es <code>Pattern</code>/<code>Matcher</code> mit <code>find()</code> statt <code>matches()</code>." }
           ]
         },
         {
@@ -608,6 +808,13 @@
         }
       ],
       "exercises": [
+        {
+          "id": "q2-2-eregex", "title": "PLZ prüfen (Regex)", "difficulty": "leicht",
+          "prompt_html": "Vervollständige den regulären Ausdruck: eine gültige deutsche Postleitzahl besteht aus <strong>genau 5 Ziffern</strong>.",
+          "expected": "53111: true\n5311: false\nBonn5: false",
+          "tip_html": "Ziffer: <code>[0-9]</code>. Genau 5-mal: <code>{5}</code>. Zusammen: <code>\"[0-9]{5}\"</code>.",
+          "starter": "public class Main {\n    public static void main(String[] args) {\n        String[] eingaben = { \"53111\", \"5311\", \"Bonn5\" };\n\n        for (String e : eingaben) {\n            boolean gueltig = e.matches(\"\");   // TODO: Regex für genau 5 Ziffern\n            System.out.println(e + \": \" + gueltig);\n        }\n    }\n}"
+        },
         {
           "id": "q2-2-e1", "title": "Caesar-Verschlüsselung", "difficulty": "mittel",
           "prompt_html": "Verschlüssle <code>text</code> mit einer Caesar-Verschiebung um <code>shift</code> Stellen (nur Großbuchstaben A–Z, mit Umbruch von Z zu A).",
