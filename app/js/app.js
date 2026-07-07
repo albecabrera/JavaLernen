@@ -1009,8 +1009,11 @@
     if (brandLogo) brandLogo.innerHTML = `<img src="${logoSrc}" alt="${logoAlt}">`;
     const dashLogo = $('#dashLangLogo');
     if (dashLogo) { dashLogo.className = `dash-lang-logo ${LANG}`; dashLogo.innerHTML = `<img src="${logoSrc}" alt="${logoAlt}">`; }
-    const wm = $('#dashWatermark');
-    if (wm) { wm.className = `dash-watermark ${LANG}`; wm.innerHTML = `<img src="${logoSrc}" alt="" aria-hidden="true">`; }
+    // watermark de fondo — presente en las 6 vistas (Dashboard, Übersicht, Lektion, Übung, Projekt, Konsole)
+    $$('.dash-watermark').forEach(wm => {
+      wm.className = `dash-watermark ${LANG}`;
+      wm.innerHTML = `<img src="${logoSrc}" alt="" aria-hidden="true">`;
+    });
     const ovTab = $('.tab[data-view="overview"]'); // la Übersicht (Zertifikatskurs) es solo para Java
     if (ovTab) ovTab.style.display = LANG === 'python' ? 'none' : '';
     const fname = LANG === 'python' ? 'main.py' : 'Main.java';

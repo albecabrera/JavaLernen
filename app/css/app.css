@@ -75,6 +75,12 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .dash-watermark img { width: 100%; height: 100%; object-fit: contain; opacity: .1; }
 .dash-watermark.java { background: radial-gradient(circle at 62% 38%, rgba(248,152,32,.22), transparent 68%); }
 .dash-watermark.python { background: radial-gradient(circle at 62% 38%, rgba(75,139,190,.22), transparent 68%); }
+/* el contenido real de cada vista debe pintarse SIEMPRE encima del watermark (position:absolute) */
+.wm-content { position: relative; z-index: 1; }
+/* Übung/Konsole: el editor de código (derecha) tiene fondo opaco y taparía el watermark en la
+   esquina superior derecha de siempre — acá vive en la esquina superior izquierda, detrás del
+   panel de prompt/sidebar que sí es transparente. */
+#view-exercise .dash-watermark, #view-playground .dash-watermark { top: -50px; left: -40px; right: auto; }
 .brand-sub  { font-size: 11px; color: var(--faint); letter-spacing: 0.3px; }
 
 .lang-switch { display: flex; gap: 4px; margin: 0 14px 10px; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
@@ -182,7 +188,7 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .set-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
 
 .viewport { flex: 1; overflow-y: auto; min-height: 0; position: relative; }
-.view { display: none; }
+.view { display: none; position: relative; overflow: hidden; }
 .view.active { display: block; }
 
 /* ============================ BOTONES ============================ */

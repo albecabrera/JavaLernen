@@ -95,7 +95,7 @@
         <!-- ===== DASHBOARD ===== -->
         <section class="view active" id="view-dashboard" tabindex="-1">
           <div class="dash rise">
-            <div class="dash-watermark" id="dashWatermark" aria-hidden="true"></div>
+            <div class="dash-watermark" aria-hidden="true"></div>
             <div class="dash-head">
               <div style="display:flex;align-items:center;gap:16px">
                 <span class="dash-lang-logo" id="dashLangLogo" aria-hidden="true"></span>
@@ -147,6 +147,7 @@
 
         <!-- ===== ÜBERSICHT ===== -->
         <section class="view" id="view-overview" tabindex="-1">
+          <div class="dash-watermark" aria-hidden="true"></div>
           <div class="dash rise" style="max-width:1120px">
             <div class="dash-head">
               <div>
@@ -161,7 +162,8 @@
 
         <!-- ===== LEKTION ===== -->
         <section class="view" id="view-lesson" tabindex="-1">
-          <div style="max-width:820px;margin:0 auto;padding:34px 40px 80px" class="rise lesson-pad">
+          <div class="dash-watermark" aria-hidden="true"></div>
+          <div style="max-width:820px;margin:0 auto;padding:34px 40px 80px" class="rise lesson-pad wm-content">
             <p class="les-crumb" id="lesCrumb"></p>
             <div class="les-pills" id="lessonTabs"></div>
             <div class="les-meta"><span class="les-tag-theory">Theorie</span><span class="les-readtime" id="lesTime"></span></div>
@@ -176,7 +178,8 @@
 
         <!-- ===== ÜBUNG ===== -->
         <section class="view" id="view-exercise" tabindex="-1">
-          <div class="ex-grid" style="display:grid;grid-template-columns:400px 1fr;height:100%;min-height:0">
+          <div class="dash-watermark" aria-hidden="true"></div>
+          <div class="ex-grid wm-content" style="display:grid;grid-template-columns:400px 1fr;height:100%;min-height:0">
             <div style="border-right:1px solid var(--border);padding:30px;overflow-y:auto" class="ex-prompt" id="exPrompt"></div>
 
             <div style="display:flex;flex-direction:column;min-height:0;background:var(--panel2)" class="ex-editor">
@@ -212,7 +215,8 @@
 
         <!-- ===== PROJEKT ===== -->
         <section class="view" id="view-project" tabindex="-1">
-          <div style="max-width:760px;margin:0 auto;padding:48px 40px;text-align:center" class="rise">
+          <div class="dash-watermark" aria-hidden="true"></div>
+          <div style="max-width:760px;margin:0 auto;padding:48px 40px;text-align:center" class="rise wm-content">
             <div class="glow" style="display:inline-grid;place-items:center;width:88px;height:88px;border-radius:24px;background:linear-gradient(150deg,var(--accent-bg2),var(--accent-bg));border:1px solid var(--accent-border2);margin-bottom:24px;font-size:40px">⭐</div>
             <p class="tag" style="letter-spacing:1px;margin-bottom:10px" id="prTag">Kapitel abgeschlossen</p>
             <h1 style="font-size:30px;font-weight:700;letter-spacing:-0.7px;margin-bottom:12px" id="prTitle"></h1>
@@ -226,7 +230,8 @@
 
         <!-- ===== PLAYGROUND / KONSOLE ===== -->
         <section class="view" id="view-playground" tabindex="-1">
-          <div class="pg-grid">
+          <div class="dash-watermark" aria-hidden="true"></div>
+          <div class="pg-grid wm-content">
             <aside class="pg-side">
               <span class="prompt-tag">Konsole</span>
               <h1 class="prompt-title" style="margin-top:12px">Java-Spielwiese</h1>
