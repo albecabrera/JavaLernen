@@ -444,10 +444,126 @@
   const lineEndAt   = (v, p) => { const i = v.indexOf('\n', p); return i < 0 ? v.length : i; };
   const indentOf    = s => (s.match(/^[ \t]*/) || [''])[0];
 
+  /* ---------- Snippet-Vorschläge, wie IntelliJ Live Templates (⌘K-Stil-Dropdown) ---------- */
+  const JAVA_SNIPPETS = [
+    { trigger: 'sout',  desc: 'Gibt einen String aus' },
+    { trigger: 'souf',  desc: 'Gibt einen formatierten String aus' },
+    { trigger: 'soutv', desc: 'Gibt einen Ausdruck aus' },
+    { trigger: 'psvm',  desc: 'public static void main' },
+    { trigger: 'fori',  desc: 'for-Schleife mit Zähler' },
+  ];
+  const SNIP_MARK = '\u0001'; // Platzhalter, markiert wo der Cursor nach dem Einfügen landet
+  function snippetBody(trigger, ind) {
+    switch (trigger) {
+      case 'sout':  return `System.out.println("${SNIP_MARK}");`;
+      case 'souf':  return `System.out.printf("${SNIP_MARK}%n");`;
+      case 'soutv': return `System.out.println("${SNIP_MARK}" + );`;
+      case 'psvm':  return `public static void main(String[] args) {\n${ind}    ${SNIP_MARK}\n${ind}}`;
+      case 'fori':  return `for (int i = 0; i < ${SNIP_MARK}; i++) {\n${ind}    \n${ind}}`;
+      default: return null;
+    }
+  }
+
+  let snippetMenuEl = null, snippetState = null; // { ta, start, matches, active }
+
+  function closeSnippetMenu() {
+    if (snippetMenuEl) { snippetMenuEl.remove(); snippetMenuEl = null; }
+    snippetState = null;
+  }
+
+  // "Spiegel-Div"-Technik: misst wo der Cursor im Textarea PIXELGENAU steht,
+  // indem derselbe Text mit identischen Font-Metriken unsichtbar gerendert wird.
+  function caretViewportPos(ta) {
+    const cs = getComputedStyle(ta);
+    const div = document.createElement('div');
+    ['fontFamily', 'fontSize', 'fontWeight', 'letterSpacing', 'lineHeight', 'tabSize', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'borderLeftWidth', 'borderTopWidth']
+      .forEach(p => { div.style[p] = cs[p]; });
+    div.style.position = 'absolute'; div.style.visibility = 'hidden';
+    div.style.whiteSpace = 'pre-wrap'; div.style.wordWrap = 'break-word';
+    div.style.width = ta.clientWidth + 'px'; div.style.top = '0'; div.style.left = '-9999px';
+    div.textContent = ta.value.substring(0, ta.selectionStart);
+    const marker = document.createElement('span'); marker.textContent = '.';
+    div.appendChild(marker);
+    document.body.appendChild(div);
+    const taRect = ta.getBoundingClientRect(), mRect = marker.getBoundingClientRect(), dRect = div.getBoundingClientRect();
+    const x = taRect.left + (mRect.left - dRect.left) - ta.scrollLeft;
+    const y = taRect.top + (mRect.top - dRect.top) - ta.scrollTop + (parseFloat(cs.lineHeight) || 18);
+    document.body.removeChild(div);
+    return { x, y };
+  }
+
+  function renderSnippetMenu() {
+    if (!snippetState) return;
+    if (!snippetMenuEl) {
+      snippetMenuEl = document.createElement('div');
+      snippetMenuEl.className = 'snippet-menu';
+      document.body.appendChild(snippetMenuEl);
+    }
+    const { matches, active } = snippetState;
+    snippetMenuEl.innerHTML = matches.map((m, i) =>
+      `<div class="snippet-item${i === active ? ' active' : ''}" data-idx="${i}"><b>${esc(m.trigger)}</b><span>${esc(m.desc)}</span></div>`
+    ).join('') + `<div class="snippet-hint">↵ einfügen · ↑↓ wählen · Esc schließen</div>`;
+    const pos = caretViewportPos(snippetState.ta);
+    snippetMenuEl.style.left = pos.x + 'px';
+    snippetMenuEl.style.top = pos.y + 'px';
+  }
+
+  // wird bei jedem 'input' im Editor aufgerufen: prüft ob der Text unmittelbar vor dem
+  // Cursor der ANFANG eines bekannten Kürzels ist — schon ab dem ersten Buchstaben.
+  function updateSnippetMenu(ta) {
+    if (ta.selectionStart !== ta.selectionEnd) { closeSnippetMenu(); return; }
+    const before = ta.value.slice(0, ta.selectionStart);
+    const m = before.match(/[a-zA-Z]+$/);
+    const prefix = m ? m[0].toLowerCase() : '';
+    if (!prefix) { closeSnippetMenu(); return; }
+    const charBefore = before[before.length - prefix.length - 1];
+    if (charBefore && /[A-Za-z0-9_]/.test(charBefore)) { closeSnippetMenu(); return; } // Teil eines längeren Bezeichners
+    const matches = JAVA_SNIPPETS.filter(sn => sn.trigger.startsWith(prefix));
+    if (!matches.length) { closeSnippetMenu(); return; }
+    const keepActive = snippetState && snippetState.ta === ta ? Math.min(snippetState.active, matches.length - 1) : 0;
+    snippetState = { ta, start: ta.selectionStart - prefix.length, matches, active: keepActive };
+    renderSnippetMenu();
+  }
+
+  function acceptSnippet() {
+    if (!snippetState) return;
+    const { ta, start, matches, active } = snippetState;
+    const v = ta.value, caretNow = ta.selectionStart;
+    const ind = indentOf(v.slice(lineStartAt(v, start), start));
+    const raw = snippetBody(matches[active].trigger, ind);
+    closeSnippetMenu();
+    if (!raw) return;
+    const idx = raw.indexOf(SNIP_MARK);
+    const text = raw.replace(SNIP_MARK, '');
+    editReplace(ta, start, caretNow, text, start + idx);
+  }
+
+  document.addEventListener('mousedown', e => {
+    if (!snippetMenuEl) return;
+    const item = e.target.closest('.snippet-item');
+    if (item && snippetState) {
+      e.preventDefault(); // evita que el textarea pierda foco antes de aceptar
+      snippetState.active = Number(item.dataset.idx);
+      const ta = snippetState.ta;
+      acceptSnippet();
+      ta.focus();
+    } else if (!snippetMenuEl.contains(e.target)) {
+      closeSnippetMenu();
+    }
+  });
+
   function intellijKeys(e, ta, repaint) {
     const mod = e.metaKey || e.ctrlKey;
     const v = ta.value, s = ta.selectionStart, en = ta.selectionEnd;
     const done = () => { repaint(); return true; };
+
+    // mientras el menú de sugerencias está abierto, estas teclas quedan reservadas para él
+    if (snippetState && snippetState.ta === ta) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); snippetState.active = (snippetState.active + 1) % snippetState.matches.length; renderSnippetMenu(); return true; }
+      if (e.key === 'ArrowUp') { e.preventDefault(); snippetState.active = (snippetState.active - 1 + snippetState.matches.length) % snippetState.matches.length; renderSnippetMenu(); return true; }
+      if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); acceptSnippet(); return done(); }
+      if (e.key === 'Escape') { e.preventDefault(); closeSnippetMenu(); return true; }
+    }
 
     // ⌘/  Zeilen (aus)kommentieren
     if (mod && e.key === '/') {
@@ -493,17 +609,6 @@
         editReplace(ta, ls, nextLe, next + '\n' + block, np + (s - ls), np + (en - ls));
       }
       return done();
-    }
-    // Live-Template: "sout" + Tab → System.out.println(""); Cursor zwischen die Anführungszeichen
-    if (e.key === 'Tab' && !e.shiftKey && s === en) {
-      const before4 = v.slice(Math.max(0, s - 4), s);
-      const charBefore = v[s - 5];
-      if (before4 === 'sout' && !/[A-Za-z0-9_]/.test(charBefore || '')) {
-        e.preventDefault();
-        const snippet = 'System.out.println("")';
-        editReplace(ta, s - 4, s, snippet, s - 4 + snippet.indexOf('""') + 1);
-        return done();
-      }
     }
     // Tab / ⇧Tab  Einrücken / Ausrücken (mehrzeilig bei Auswahl)
     if (e.key === 'Tab') {
@@ -557,8 +662,9 @@
         for (let i = 1; i <= n; i++) g += (i > 1 ? '\n' : '') + i; gut.textContent = g; }
     }
     function sync() { if (pre) { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; } if (gut) gut.scrollTop = ta.scrollTop; }
-    ta.addEventListener('input', repaint);
-    ta.addEventListener('scroll', sync);
+    ta.addEventListener('input', () => { repaint(); updateSnippetMenu(ta); });
+    ta.addEventListener('scroll', () => { sync(); if (snippetState && snippetState.ta === ta) closeSnippetMenu(); });
+    ta.addEventListener('blur', () => { if (snippetState && snippetState.ta === ta) closeSnippetMenu(); });
     ta.addEventListener('keydown', e => { if (intellijKeys(e, ta, repaint)) sync(); });
     repaint();
     return repaint;
