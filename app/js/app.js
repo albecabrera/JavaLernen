@@ -747,12 +747,20 @@
     $('#lesTitle').textContent = les.title;
     body.innerHTML = (les.video ? videoCardHTML(les.video) : '') + les.blocks.map(blockHTML).join('');
 
-    const prevBtn = $('#lesPrevBtn'), nextBtn = $('#lesNextBtn');
+    const prevBtn = $('#lesPrevBtn'), doneBtn = $('#lesDoneBtn'), nextBtn = $('#lesNextBtn');
     const hasEx = ch.exercises && ch.exercises.length;
+    const isLast = activeLessonIndex === n - 1;
     if (prevBtn) prevBtn.textContent = activeLessonIndex > 0 ? '◄ Vorherige Lektion' : '◄ Zurück';
+
+    // "Lektion abgeschlossen" primero, y solo tras confirmarla aparece el botón para avanzar —
+    // en vez de un simple "Weiter", celebra el logro y evita que el alumno avance sin haber leído.
+    const done = !!PROGRESS.lessonsDone[`${ch.id}#${activeLessonIndex}`];
+    if (doneBtn) doneBtn.hidden = done;
     if (nextBtn) {
-      nextBtn.textContent = activeLessonIndex < n - 1 ? 'Nächste Lektion ►' : (hasEx ? 'Zur Übung ►' : 'Fertig ►');
-      nextBtn.style.display = (activeLessonIndex === n - 1 && !hasEx) ? 'none' : '';
+      nextBtn.hidden = !done;
+      if (isLast && !hasEx) nextBtn.textContent = '🎉 Geschafft!';
+      else if (isLast) nextBtn.textContent = '🎉 Perfekt! Zur Übung ►';
+      else nextBtn.textContent = '🎉 Perfekt! Weiter zur nächsten Lektion ►';
     }
   }
 
@@ -772,10 +780,19 @@
     if (activeLessonIndex > 0) selectLesson(activeLessonIndex - 1);
     else setView('dashboard');
   });
+  $('#lesDoneBtn')?.addEventListener('click', () => {
+    if (!activeChapter) return;
+    PROGRESS.lessonsDone[`${activeChapter.id}#${activeLessonIndex}`] = true;
+    saveProgress();
+    renderLesson(activeChapter);
+  });
   $('#lesNextBtn')?.addEventListener('click', () => {
-    const n = (activeChapter && activeChapter.lessons || []).length;
+    const ch = activeChapter; if (!ch) return;
+    const n = (ch.lessons || []).length;
+    const hasEx = ch.exercises && ch.exercises.length;
     if (activeLessonIndex < n - 1) selectLesson(activeLessonIndex + 1);
-    else setView('exercise');
+    else if (hasEx) setView('exercise');
+    else setView('dashboard');
   });
 
   let activeExerciseIndex = 0;
@@ -908,12 +925,13 @@
         if (p && p.solved) {
           if (!p.lastLesson) p.lastLesson = {};       // por-alumno: última lección vista de cada capítulo
           if (!p.watchedVideos) p.watchedVideos = {}; // por-alumno: videos ya clickeados
+          if (!p.lessonsDone) p.lessonsDone = {};      // por-alumno: lecciones confirmadas como "terminadas"
           if (p.name == null) p.name = '';            // antes hardcodeado "Alberto" en todo el HTML
           return p;
         }
       }
     } catch (e) {}
-    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [], lastLesson: {}, watchedVideos: {}, name: '' };
+    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [], lastLesson: {}, watchedVideos: {}, lessonsDone: {}, name: '' };
   }
   function saveProgress() {
     try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); } catch (e) {}
