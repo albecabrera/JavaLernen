@@ -189,7 +189,7 @@ $r = run_cmd($javaCmd, $work, RUN_TIMEOUT, $stdin);
 $ms = (int) round((microtime(true) - $t0) * 1000);
 
 if ($r['timedOut']) {
-    out(['ok' => false, 'phase' => 'run', 'ms' => $ms,
+    out(['ok' => false, 'phase' => 'run', 'ms' => $ms, 'timedOut' => true,
          'stdout' => $r['stdout'],
          'stderr' => 'Zeitlimit überschritten — vermutlich eine Endlosschleife.']);
 }

@@ -154,6 +154,18 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .seg { display: flex; gap: 4px; background: var(--panel2); border: 1px solid var(--border); border-radius: 9px; padding: 3px; }
 .seg-btn { flex: 1; padding: 6px 8px; border-radius: 7px; background: transparent; border: none; color: var(--mut); font-size: 12.5px; font-weight: 500; font-family: inherit; transition: background .15s, color .15s; }
 .seg-btn:hover { color: var(--text2); }
+
+/* toast de celebración (badge/level-up) — reutiliza jl-rise para la entrada */
+.jl-toast {
+  position: fixed; top: 20px; right: 20px; z-index: 300; display: flex; align-items: center; gap: 12px;
+  background: var(--panel); border: 1px solid var(--accent-border2); border-radius: var(--r-lg);
+  box-shadow: var(--pop-shadow), 0 0 0 1px var(--accent-shadow); padding: 14px 18px; max-width: 320px;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.jl-toast.out { opacity: 0; transform: translateY(-10px); }
+.jl-toast-ico { font-size: 26px; line-height: 1; }
+.jl-toast-title { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.jl-toast-desc { font-size: 12px; color: var(--mut2); margin-top: 2px; }
 .seg-btn[aria-pressed="true"] { background: var(--accent-bg); color: var(--accent); }
 .set-toggle { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text2); cursor: pointer; }
 .set-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
@@ -210,6 +222,7 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .ring .lvl { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
 .ring .lvl b { font-size: 34px; font-weight: 700; }
 .ring .lvl span { font-size: 11px; color: var(--mut2); letter-spacing: 1px; }
+#ringArc { transition: stroke-dashoffset .8s cubic-bezier(.22,1,.36,1); }
 
 .badge-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--divider); }
 .badge-item:first-of-type { border-top: none; }
@@ -357,6 +370,16 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .video-dur {
   position: absolute; right: 6px; bottom: 6px; font-family: var(--ff-mono); font-size: 10.5px; font-weight: 600;
   color: #fff; background: rgba(8,9,11,0.75); padding: 2px 6px; border-radius: 5px; letter-spacing: 0.3px;
+}
+.video-seen {
+  position: absolute; left: 6px; top: 6px; font-size: 10.5px; font-weight: 600;
+  color: var(--on-accent); background: var(--accent); padding: 2px 7px; border-radius: 5px; letter-spacing: 0.2px;
+}
+/* thumbnail roto (id de YouTube inválido/borrado) -> ícono simple en vez de imagen gris */
+.video-thumb.thumb-err img { display: none; }
+.video-thumb.thumb-err::before {
+  content: "▶"; position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 22px; color: var(--faint); background: var(--panel2);
 }
 .video-info { display: flex; flex-direction: column; justify-content: center; gap: 5px; min-width: 0; }
 .video-eyebrow { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }

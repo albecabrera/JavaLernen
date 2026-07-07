@@ -28,6 +28,9 @@
     location.hash = view;
     // la pantalla Projekt muestra stats reales — refrescar cada vez que se entra
     if (view === 'project' && activeChapter && activeChapter.isProject) renderProject(activeChapter);
+    // el dashboard (saludo, resume-card, anillo) solo se pintaba al cargar o al resolver un
+    // ejercicio — quedaba desactualizado si el alumno solo leía lecciones y volvía acá.
+    if (view === 'dashboard' && typeof CONTENT !== 'undefined' && CONTENT) renderDashboard();
   }
 
   // tabs de la topbar
@@ -102,6 +105,10 @@
   let EXPECTED = '7 ist ungerade'; // se actualiza al cargar cada ejercicio
 
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  // saca las líneas "at Main.main(...)" del stacktrace de una excepción runtime — ruido para
+  // un alumno de Gymnasium, deja el mensaje real de la excepción intacto. NO se usa en errores
+  // de compilación, ahí el stacktrace de javac sí es información útil.
+  const cleanStderr = s => s.split('\n').filter(l => !/^\s*at /.test(l)).join('\n');
   let paint = () => {}; // repaint del editor de ejercicios (se asigna al montar)
 
   // "compilador" mínimo para el ejercicio: detecta el String impreso en la rama que corre.
@@ -137,13 +144,23 @@
       return;
     }
     const stdout = (r.stdout || '').replace(/\s+$/, '');
-    // error de ejecución (excepción en runtime, timeout ya viene con stderr)
+    // timeout: mensaje propio en vez del genérico "Laufzeitfehler" — no es un bug del alumno
+    // en el sentido clásico, es "tu programa nunca terminó" (probable loop infinito).
+    if (r.timedOut) {
+      feedback.innerHTML =
+        `<div class="fb-bar err"><span class="fb-x">⏱</span> Zeitlimit überschritten</div>
+         <div class="fb-body">
+           ${stdout ? `<div class="fb-label">Konsole (bis zum Abbruch)</div><pre class="mono fb-console">${esc(stdout)}</pre>` : ''}
+           <div class="fb-warn"><span>⏱</span><p>Dein Programm hat zu lange gebraucht — vermutlich eine Endlosschleife. Prüfe, ob sich die Abbruchbedingung deiner Schleife wirklich ändert.</p></div></div>`;
+      return;
+    }
+    // error de ejecución (excepción en runtime)
     if (!r.ok && r.stderr) {
       feedback.innerHTML =
         `<div class="fb-bar err"><span class="fb-x">✕</span> Laufzeitfehler</div>
          <div class="fb-body">
            ${stdout ? `<div class="fb-label">Konsole</div><pre class="mono fb-console">${esc(stdout)}</pre>` : ''}
-           <pre class="mono fb-console err-t">${esc(r.stderr)}</pre></div>`;
+           <pre class="mono fb-console err-t">${esc(cleanStderr(r.stderr))}</pre></div>`;
       return;
     }
     // ejecutó bien: comparar salida con lo esperado
@@ -151,7 +168,7 @@
       const justSolved = onExerciseSolved(activeExercise);
       const xpNote = justSolved ? ` · <span style="color:var(--accent)">+${XP_PER_EXERCISE} XP</span>` : '';
       feedback.innerHTML =
-        `<div class="fb-bar ok"><span class="fb-check">✓</span> Kompiliert · Alle Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
+        `<div class="fb-bar ok rise"><span class="fb-check">✓</span> Kompiliert · Alle Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
          <div class="fb-body"><pre class="mono fb-console">${esc(stdout)}</pre></div>`;
       return;
     }
@@ -179,7 +196,7 @@
       const run = runs[i] || {};
       const got = (run.stdout || '').replace(/\s+$/, '');
       const exp = (t.expected || '').replace(/\s+$/, '');
-      return { t, got, exp, err: run.stderr || '', pass: run.ok && got === exp };
+      return { t, got, exp, err: run.stderr || '', timedOut: !!run.timedOut, pass: run.ok && got === exp };
     });
     const passed = results.filter(x => x.pass).length;
     const allPass = passed === results.length;
@@ -188,7 +205,7 @@
       const justSolved = onExerciseSolved(activeExercise);
       const xpNote = justSolved ? ` · <span style="color:var(--accent)">+${XP_PER_EXERCISE} XP</span>` : '';
       feedback.innerHTML =
-        `<div class="fb-bar ok"><span class="fb-check">✓</span> Alle ${results.length} Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
+        `<div class="fb-bar ok rise"><span class="fb-check">✓</span> Alle ${results.length} Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
          <div class="fb-body">${testRows(results)}</div>`;
       return;
     }
@@ -198,8 +215,11 @@
       `<div class="fb-bar"><span class="fb-x">✕</span> ${passed} von ${results.length} Tests bestanden</div>
        <div class="fb-body">
          ${testRows(results)}
-         ${firstFail.err
-           ? `<div class="fb-diff-h err-t"><span class="fb-x">✕</span> Laufzeitfehler bei Eingabe ${firstFail.t.stdin != null ? `„${esc(firstFail.t.stdin)}“` : ''}</div><pre class="mono fb-console err-t">${esc(firstFail.err)}</pre>`
+         ${firstFail.timedOut
+           ? `<div class="fb-diff-h err-t"><span>⏱</span> Zeitlimit überschritten bei Eingabe ${firstFail.t.stdin != null ? `„${esc(firstFail.t.stdin)}“` : ''}</div>
+              <div class="fb-warn"><span>⏱</span><p>Dein Programm hat zu lange gebraucht — vermutlich eine Endlosschleife.</p></div>`
+           : firstFail.err
+           ? `<div class="fb-diff-h err-t"><span class="fb-x">✕</span> Laufzeitfehler bei Eingabe ${firstFail.t.stdin != null ? `„${esc(firstFail.t.stdin)}“` : ''}</div><pre class="mono fb-console err-t">${esc(cleanStderr(firstFail.err))}</pre>`
            : `<div class="fb-diff-h err-t"><span class="fb-x">✕</span> Ausgabe weicht ab${firstFail.t.stdin != null ? ` (Eingabe „${esc(firstFail.t.stdin)}“)` : ''}</div>
               <div class="fb-diff">
                 <div class="ok-row"><span class="plus">＋</span><span class="w">erwartet</span><span class="code-str">${esc(firstFail.exp)}</span></div>
@@ -517,11 +537,13 @@
   function videoCardHTML(v) {
     const url = `https://youtu.be/${v.id}`;
     const thumb = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
-    return `<a class="video-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer">
+    const seen = PROGRESS.watchedVideos[v.id];
+    return `<a class="video-card" href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-video-id="${esc(v.id)}">
       <span class="video-thumb">
-        <img src="${esc(thumb)}" alt="" loading="lazy" width="336" height="189">
+        <img src="${esc(thumb)}" alt="" loading="lazy" width="336" height="189" onerror="this.closest('.video-thumb').classList.add('thumb-err')">
         <span class="video-play" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 4l14 8-14 8V4z" fill="currentColor"/></svg></span>
         <span class="video-dur">${esc(v.duration)}</span>
+        ${seen ? `<span class="video-seen">✓ Gesehen</span>` : ''}
       </span>
       <span class="video-info">
         <span class="video-eyebrow">▶ Video ansehen · ${esc(v.channel)}</span>
@@ -529,6 +551,13 @@
       </span>
     </a>`;
   }
+  // delegado: marcar "visto" al click, sin bloquear la navegación al video
+  $('#lessonBody')?.addEventListener('click', e => {
+    const a = e.target.closest('.video-card[data-video-id]');
+    if (!a) return;
+    const id = a.dataset.videoId;
+    if (!PROGRESS.watchedVideos[id]) { PROGRESS.watchedVideos[id] = true; saveProgress(); }
+  });
 
   function blockHTML(b) {
     switch (b.type) {
@@ -585,6 +614,8 @@
   function selectLesson(idx) {
     if (!activeChapter) return;
     activeLessonIndex = idx;
+    PROGRESS.lastLesson[activeChapter.id] = idx;
+    saveProgress();
     renderLesson(activeChapter);
   }
 
@@ -671,7 +702,7 @@
   function openChapter(id, view, lessonIndex) {
     const ch = CONTENT && CONTENT.chapters.find(c => c.id === id); if (!ch) return;
     activeChapter = ch;
-    activeLessonIndex = lessonIndex != null ? lessonIndex : (ch.resumeLessonIndex || 0);
+    activeLessonIndex = lessonIndex != null ? lessonIndex : (PROGRESS.lastLesson[ch.id] ?? 0);
     activeExerciseIndex = 0;
     $$('#chapterNav [data-chapter]').forEach(b => b.setAttribute('aria-current', String(b.dataset.chapter === id)));
     if (ch.isProject) renderProject(ch);
@@ -727,9 +758,16 @@
   function loadProgress() {
     try {
       const raw = localStorage.getItem(PROGRESS_KEY);
-      if (raw) { const p = JSON.parse(raw); if (p && p.solved) return p; }
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && p.solved) {
+          if (!p.lastLesson) p.lastLesson = {};       // por-alumno: última lección vista de cada capítulo
+          if (!p.watchedVideos) p.watchedVideos = {}; // por-alumno: videos ya clickeados
+          return p;
+        }
+      }
     } catch (e) {}
-    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [] };
+    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [], lastLesson: {}, watchedVideos: {} };
   }
   function saveProgress() {
     try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); } catch (e) {}
@@ -766,24 +804,46 @@
     return chaptersDone;
   }
 
+  // devuelve los BADGE_DEFS recién ganados (no solo muta PROGRESS.badges) para poder celebrarlos
   function checkBadges(stats) {
     const before = new Set(PROGRESS.badges);
-    BADGE_DEFS.forEach(b => { if (b.check(stats) && !before.has(b.id)) PROGRESS.badges.push(b.id); });
+    const nuevos = BADGE_DEFS.filter(b => b.check(stats) && !before.has(b.id));
+    nuevos.forEach(b => PROGRESS.badges.push(b.id));
+    return nuevos;
+  }
+
+  let toastQueue = Promise.resolve();
+  function showToast({ icon, title, desc }) {
+    // encola: si hay varios logros de una, se muestran uno tras otro, no superpuestos
+    toastQueue = toastQueue.then(() => new Promise(resolve => {
+      const el = document.createElement('div');
+      el.className = 'jl-toast rise';
+      el.innerHTML = `<span class="jl-toast-ico">${icon}</span><div><div class="jl-toast-title">${esc(title)}</div>${desc ? `<div class="jl-toast-desc">${esc(desc)}</div>` : ''}</div>`;
+      document.body.appendChild(el);
+      setTimeout(() => {
+        el.classList.add('out');
+        setTimeout(() => { el.remove(); resolve(); }, 300);
+      }, 3200);
+    }));
   }
 
   // Se llama cuando un ejercicio compila+corre OK y la salida matchea EXPECTED.
   function onExerciseSolved(ex) {
     if (!ex || PROGRESS.solved[ex.id]) return false; // ya resuelto antes, no duplicar XP
     PROGRESS.solved[ex.id] = true;
+    const levelBefore = Math.floor(PROGRESS.xp / XP_PER_LEVEL);
     PROGRESS.xp += XP_PER_EXERCISE;
+    const levelAfter = Math.floor(PROGRESS.xp / XP_PER_LEVEL);
     bumpStreak();
     const chaptersDone = recomputeChapterStatuses();
     const solvedCount = Object.keys(PROGRESS.solved).length;
-    checkBadges({ solvedCount, chaptersDone, streak: PROGRESS.streak });
+    const nuevos = checkBadges({ solvedCount, chaptersDone, streak: PROGRESS.streak });
     saveProgress();
     renderSidebar();
     renderDashboard();
     renderOverview();
+    nuevos.forEach(b => showToast({ icon: b.icon, title: 'Abzeichen freigeschaltet!', desc: b.title }));
+    if (levelAfter > levelBefore) showToast({ icon: '🎉', title: `Level ${levelAfter + 1} erreicht!`, desc: 'Weiter so.' });
     return true;
   }
 
@@ -832,12 +892,13 @@
 
   function renderResumeCard(ch) {
     const box = $('#resumeCard'); if (!box) return;
-    const idx = ch.resumeLessonIndex || 0;
+    const started = PROGRESS.lastLesson[ch.id] != null;
+    const idx = PROGRESS.lastLesson[ch.id] ?? 0;
     const les = ch.lessons[idx];
     const n = ch.lessons.length;
     const firstP = (les.blocks.find(b => b.type === 'p') || {}).html || '';
     box.innerHTML =
-      `<p class="resume-tag">Fortsetzen · <span class="sub">Kapitel ${esc(ch.nr)} · ${esc(ch.title)}</span></p>
+      `<p class="resume-tag">${started ? 'Fortsetzen' : 'Jetzt starten'} · <span class="sub">Kapitel ${esc(ch.nr)} · ${esc(ch.title)}</span></p>
        <h2 class="resume-title">${esc(les.num ? 'Lektion ' + les.num : les.title)}${les.num ? ' — ' + esc(les.title) : ''}</h2>
        <p class="resume-desc">${firstP}</p>
        <div class="row-cta" style="display:flex;align-items:center;gap:18px">
@@ -880,10 +941,24 @@
 
   $('#continueBtn')?.addEventListener('click', () => {
     const ch = findCurrentChapter();
-    openChapter(ch.id, 'lesson', ch.resumeLessonIndex || 0);
+    openChapter(ch.id, 'lesson', PROGRESS.lastLesson[ch.id] ?? 0);
   });
 
+  // Antes hardcodeado en el HTML ("Guten Abend" / "Samstag, 4. Juli" siempre) — ahora real.
+  function renderGreeting() {
+    const eyebrow = $('.dash .eyebrow'), greet = $('.dash .h-greet');
+    if (!eyebrow && !greet) return;
+    const now = new Date();
+    const h = now.getHours();
+    const saludo = h < 5 ? 'Gute Nacht' : h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : h < 22 ? 'Guten Abend' : 'Gute Nacht';
+    const fecha = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
+    const phase = CONTENT && CONTENT.chapters[0] && phaseLabel(CONTENT.chapters[0].phase);
+    if (eyebrow) eyebrow.textContent = phase ? `${fecha} · ${phase}` : fecha;
+    if (greet) greet.textContent = `${saludo}, Alberto`;
+  }
+
   function renderDashboard() {
+    renderGreeting();
     const ch = findCurrentChapter();
     renderResumeCard(ch);
     renderLernpfad();
