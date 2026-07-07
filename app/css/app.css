@@ -58,12 +58,23 @@ code, pre, .mono { font-family: var(--ff-mono); }
   border-right: 1px solid var(--border); display: flex; flex-direction: column;
 }
 .brand { padding: 22px 20px 18px; display: flex; align-items: center; gap: 11px; }
-.brand-logo {
-  width: 32px; height: 32px; border-radius: 9px;
-  background: linear-gradient(150deg,#34D399,#10B981);
-  display: grid; place-items: center; box-shadow: 0 4px 14px rgba(16,185,129,0.35);
-}
+.brand-logo { flex: none; display: flex; align-items: center; justify-content: center; }
+.brand-logo img { height: 30px; width: auto; display: block; }
 .brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+
+/* logo de lenguaje en el dashboard — grande a propósito, con glow de marca */
+.dash-lang-logo { flex: none; display: flex; align-items: center; justify-content: center; }
+.dash-lang-logo img { height: 64px; width: auto; display: block; }
+.dash-lang-logo.java img { filter: drop-shadow(0 6px 20px rgba(248,152,32,.4)); }
+.dash-lang-logo.python img { filter: drop-shadow(0 6px 20px rgba(75,139,190,.4)); }
+
+/* watermark del dashboard: logo grande y tenue de fondo, con degradado suave de marca */
+.dash { position: relative; overflow: hidden; }
+.dash-head, .dash-grid { position: relative; z-index: 1; }
+.dash-watermark { position: absolute; top: -60px; right: -50px; width: 320px; height: 320px; pointer-events: none; z-index: 0; }
+.dash-watermark img { width: 100%; height: 100%; object-fit: contain; opacity: .1; }
+.dash-watermark.java { background: radial-gradient(circle at 62% 38%, rgba(248,152,32,.22), transparent 68%); }
+.dash-watermark.python { background: radial-gradient(circle at 62% 38%, rgba(75,139,190,.22), transparent 68%); }
 .brand-sub  { font-size: 11px; color: var(--faint); letter-spacing: 0.3px; }
 
 .lang-switch { display: flex; gap: 4px; margin: 0 14px 10px; background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }

@@ -1003,6 +1003,14 @@
   function applyLangUI() {
     $$('.lang-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
     const brand = $('#brandName'); if (brand) brand.textContent = LANG === 'python' ? 'PyLernen' : 'JavaLernen';
+    const logoSrc = LANG === 'python' ? 'img/python-vertical.svg' : 'img/java-vertical.svg';
+    const logoAlt = LANG === 'python' ? 'Python-Logo' : 'Java-Logo';
+    const brandLogo = $('.brand-logo');
+    if (brandLogo) brandLogo.innerHTML = `<img src="${logoSrc}" alt="${logoAlt}">`;
+    const dashLogo = $('#dashLangLogo');
+    if (dashLogo) { dashLogo.className = `dash-lang-logo ${LANG}`; dashLogo.innerHTML = `<img src="${logoSrc}" alt="${logoAlt}">`; }
+    const wm = $('#dashWatermark');
+    if (wm) { wm.className = `dash-watermark ${LANG}`; wm.innerHTML = `<img src="${logoSrc}" alt="" aria-hidden="true">`; }
     const ovTab = $('.tab[data-view="overview"]'); // la Übersicht (Zertifikatskurs) es solo para Java
     if (ovTab) ovTab.style.display = LANG === 'python' ? 'none' : '';
     const fname = LANG === 'python' ? 'main.py' : 'Main.java';
