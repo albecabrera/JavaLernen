@@ -188,10 +188,19 @@
   }
   shortcutsOverlay?.addEventListener('click', e => { if (e.target === shortcutsOverlay) toggleShortcutsHelp(false); });
   $('#shortcutsBtn')?.addEventListener('click', () => toggleShortcutsHelp(true));
+  $('#shortcutsCloseBtn')?.addEventListener('click', () => toggleShortcutsHelp(false));
 
   /* ---------- Atajos de teclado globales ---------- */
   const CMDK_VIEW_ORDER = ['dashboard', 'overview', 'lesson', 'exercise', 'project', 'playground'];
   document.addEventListener('keydown', e => {
+    // Escape SIEMPRE cierra cualquier overlay abierto, sin importar qué más pase.
+    if (e.key === 'Escape') { closeCmdk(); toggleShortcutsHelp(false); return; }
+    // con un overlay modal abierto, los atajos globales NO deben disparar por detrás
+    // (antes: ⌘1 etc. navegaban igual mientras la ayuda quedaba tapando todo, parecía que
+    // "no funcionaba nada" porque la pantalla no cambiaba visualmente).
+    const overlayOpen = (cmdkOverlay && !cmdkOverlay.hidden) || (shortcutsOverlay && !shortcutsOverlay.hidden);
+    if (overlayOpen) return;
+
     const mod = e.metaKey || e.ctrlKey;
     const tag = document.activeElement && document.activeElement.tagName;
     const typing = tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
@@ -219,7 +228,6 @@
       return;
     }
     if (!mod && e.key === '?' && !typing) { e.preventDefault(); toggleShortcutsHelp(); return; }
-    if (e.key === 'Escape') toggleShortcutsHelp(false);
   });
 
   /* ---------- Evaluación de código (mock hasta CheerpJ) ---------- */
