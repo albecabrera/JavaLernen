@@ -79,6 +79,14 @@
   // Sidebar ein-/ausklappen (escritorio) — persistente, independiente del drawer mobile.
   $('#sidebarCollapseBtn')?.addEventListener('click', () => { SETTINGS.sidebarCollapsed = true; saveSettings(); });
   $('#sidebarExpandBtn')?.addEventListener('click', () => { SETTINGS.sidebarCollapsed = false; saveSettings(); });
+  // ⌘S / Strg+S alterna la sidebar — previene el "Seite speichern" nativo del browser.
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      SETTINGS.sidebarCollapsed = !SETTINGS.sidebarCollapsed;
+      saveSettings();
+    }
+  });
 
   const settingsBtn = $('#settingsBtn'), settingsPop = $('#settingsPop');
   function toggleSettings(open) {
