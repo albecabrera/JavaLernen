@@ -703,9 +703,9 @@
     }
   }
   runBtn?.addEventListener('click', () => doRun(false));
-  // ⌘↵ ejecuta · ⌘⇧↵ ejecuta y avanza a la siguiente Übung si pasó · ⌘⇧R resetea al starter
+  // F5 ejecuta (global, ver más abajo) · ⌘⇧↵ ejecuta y avanza a la siguiente Übung si pasó · ⌘⇧R resetea al starter
   code?.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); doRun(e.shiftKey); }
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'Enter') { e.preventDefault(); doRun(true); }
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'r') { e.preventDefault(); $('#resetBtn')?.click(); }
   });
   // Zurücksetzen: Editor auf den Startcode der aktuellen Übung zurücksetzen
@@ -745,9 +745,15 @@
     finally { pgRunBtn.disabled = false; }
   }
   pgRunBtn?.addEventListener('click', runPlayground);
-  [pgCode, pgStdin].forEach(el => el?.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runPlayground(); }
-  }));
+
+  // F5 ejecuta (como IntelliJ) — global, funciona sin importar qué tenga el foco;
+  // según la vista activa dispara la Übung o la Spielwiese. previene el reload de F5 del browser.
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'F5') return;
+    e.preventDefault();
+    if ($('#view-exercise')?.classList.contains('active')) doRun(false);
+    else if ($('#view-playground')?.classList.contains('active')) runPlayground();
+  });
 
   /* ============================================================
      CONTENIDO data-driven: carga content.json y renderiza
