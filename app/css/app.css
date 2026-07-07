@@ -552,6 +552,10 @@ code, pre, .mono { font-family: var(--ff-mono); }
   position: fixed; inset: 0; z-index: 400; background: rgba(6,8,10,0.6);
   display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh;
 }
+/* el atributo HTML `hidden` lo oculta el user-agent con display:none, pero la regla
+   .cmdk-overlay{display:flex} de arriba le gana por especificidad → el overlay quedaba
+   SIEMPRE visible tapando la app. Esta regla ([attr] > .class) lo restaura. */
+.cmdk-overlay[hidden] { display: none; }
 .cmdk-box {
   width: 100%; max-width: 560px; max-height: 70vh; margin: 0 20px; display: flex; flex-direction: column;
   background: var(--panel); border: 1px solid var(--border3); border-radius: var(--r-lg);
