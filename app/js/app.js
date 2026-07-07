@@ -659,6 +659,7 @@
     EF: ['Einführungsphase', 'EF', false],
     Q1: ['Q1 · Datenstrukturen', '', true],
     Q2: ['Q2 · Rekursion & SQL', '', true],
+    PRO: ['Professionelle Entwicklung', 'PRO', true],
     PY: ['Python-Grundkurs', 'PY', false],
   };
   const phaseLabel = ph => (PHASE[ph] || [ph])[0];
