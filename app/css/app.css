@@ -546,3 +546,27 @@ code, pre, .mono { font-family: var(--ff-mono); }
   .pg-side { border-right: none; border-bottom: 1px solid var(--border); }
   .pg-main .editor { min-height: 300px; }
 }
+
+/* ============================ COMMAND PALETTE (⌘K) ============================ */
+.cmdk-overlay {
+  position: fixed; inset: 0; z-index: 400; background: rgba(6,8,10,0.6);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh;
+}
+.cmdk-box {
+  width: 100%; max-width: 560px; max-height: 70vh; margin: 0 20px; display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--border3); border-radius: var(--r-lg);
+  box-shadow: var(--pop-shadow); overflow: hidden; animation: jl-rise .15s ease;
+}
+.cmdk-input-row { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--divider); flex: none; }
+.cmdk-kbd { font-family: var(--ff-mono); font-size: 11px; color: var(--mut2); background: var(--elev); border: 1px solid var(--elev-border); border-radius: 6px; padding: 3px 6px; flex: none; }
+.cmdk-input { flex: 1; background: transparent; border: none; color: var(--text); font-size: 15px; font-family: inherit; }
+.cmdk-input:focus { outline: none; }
+.cmdk-list { overflow-y: auto; padding: 6px; }
+.cmdk-item { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 8px; cursor: pointer; }
+.cmdk-item.active { background: var(--accent-bg); }
+.cmdk-item-ico { flex: none; width: 26px; height: 26px; border-radius: 7px; background: var(--elev); display: grid; place-items: center; font-size: 13px; }
+.cmdk-item-main { min-width: 0; flex: 1; }
+.cmdk-item-title { font-size: 13.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmdk-item-sub { font-size: 11.5px; color: var(--mut2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmdk-item-kind { flex: none; font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.4px; }
+.cmdk-empty { padding: 30px 16px; text-align: center; font-size: 13px; color: var(--faint); }

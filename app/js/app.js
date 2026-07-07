@@ -99,6 +99,87 @@
   });
   document.addEventListener('click', () => { if (settingsPop && !settingsPop.hidden) toggleSettings(false); });
 
+  /* ---------- Command Palette (⌘K) — saltar a cualquier capítulo/lección/übung ---------- */
+  const cmdkOverlay = $('#cmdkOverlay'), cmdkInput = $('#cmdkInput'), cmdkList = $('#cmdkList');
+  const CMDK_VIEWS = { dashboard: 'Dashboard', overview: 'Übersicht', lesson: 'Lektion', exercise: 'Übung', project: 'Projekt', playground: 'Konsole' };
+  let cmdkFiltered = [], cmdkActive = 0;
+
+  function buildCmdkIndex() {
+    const items = [];
+    Object.entries(CMDK_VIEWS).forEach(([view, label]) => {
+      if (view === 'overview' && LANG === 'python') return; // no existe en Python (Zertifikatskurs es solo Java)
+      items.push({ kind: 'Ansicht', icon: '🧭', title: label, sub: 'Zur Ansicht wechseln', action: () => setView(view) });
+    });
+    (CONTENT && CONTENT.chapters || []).forEach(ch => {
+      items.push({ kind: 'Kapitel', icon: '📘', title: ch.title, sub: `Kapitel ${ch.nr}`, action: () => openChapter(ch.id, ch.isProject ? 'project' : 'lesson') });
+      (ch.lessons || []).forEach((les, i) => {
+        items.push({ kind: 'Lektion', icon: '📄', title: les.title, sub: `${ch.title} · Lektion ${les.num || i + 1}`, action: () => openChapter(ch.id, 'lesson', i) });
+      });
+      (ch.exercises || []).forEach((ex, i) => {
+        items.push({ kind: 'Übung', icon: '📝', title: ex.title, sub: ch.title, action: () => { openChapter(ch.id, 'exercise'); selectExercise(activeChapter, i); } });
+      });
+    });
+    return items;
+  }
+
+  function cmdkRender(query) {
+    const q = query.trim().toLowerCase();
+    const all = buildCmdkIndex();
+    cmdkFiltered = !q ? all.slice(0, 40) : all.filter(it =>
+      it.title.toLowerCase().includes(q) || (it.sub || '').toLowerCase().includes(q)
+    ).slice(0, 40);
+    cmdkActive = 0;
+    if (!cmdkFiltered.length) {
+      cmdkList.innerHTML = `<div class="cmdk-empty">Keine Treffer für „${esc(query)}“</div>`;
+      return;
+    }
+    cmdkList.innerHTML = cmdkFiltered.map((it, i) =>
+      `<div class="cmdk-item${i === 0 ? ' active' : ''}" data-idx="${i}">
+         <span class="cmdk-item-ico">${it.icon}</span>
+         <span class="cmdk-item-main"><span class="cmdk-item-title">${esc(it.title)}</span><span class="cmdk-item-sub">${esc(it.sub || '')}</span></span>
+         <span class="cmdk-item-kind">${esc(it.kind)}</span>
+       </div>`
+    ).join('');
+  }
+
+  function cmdkMove(delta) {
+    const len = cmdkFiltered.length; if (!len) return;
+    cmdkActive = (cmdkActive + delta + len) % len;
+    $$('.cmdk-item').forEach((el, i) => el.classList.toggle('active', i === cmdkActive));
+    $(`.cmdk-item[data-idx="${cmdkActive}"]`)?.scrollIntoView({ block: 'nearest' });
+  }
+
+  function openCmdk() {
+    if (!cmdkOverlay) return;
+    cmdkOverlay.hidden = false;
+    cmdkInput.value = '';
+    cmdkRender('');
+    cmdkInput.focus();
+  }
+  function closeCmdk() { if (cmdkOverlay) cmdkOverlay.hidden = true; }
+
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmdk(); }
+  });
+  $('#cmdkBtn')?.addEventListener('click', openCmdk);
+  cmdkOverlay?.addEventListener('click', e => { if (e.target === cmdkOverlay) closeCmdk(); });
+  cmdkInput?.addEventListener('input', () => cmdkRender(cmdkInput.value));
+  cmdkInput?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeCmdk(); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); cmdkMove(1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); cmdkMove(-1); }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const it = cmdkFiltered[cmdkActive];
+      if (it) { closeCmdk(); it.action(); }
+    }
+  });
+  cmdkList?.addEventListener('click', e => {
+    const el = e.target.closest('.cmdk-item'); if (!el) return;
+    const it = cmdkFiltered[Number(el.dataset.idx)];
+    if (it) { closeCmdk(); it.action(); }
+  });
+
   /* ---------- Evaluación de código (mock hasta CheerpJ) ---------- */
   const runBtn = $('#runBtn'), feedback = $('#feedback'), code = $('#code');
   let EXPECTED = '7 ist ungerade'; // se actualiza al cargar cada ejercicio

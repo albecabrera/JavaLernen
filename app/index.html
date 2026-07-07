@@ -65,6 +65,9 @@
         <div class="topbar-right">
           <span class="chip hide-sm">🔥 <b id="topStreak">0</b> Tage</span>
           <span class="chip hide-sm"><b id="topXp">0</b> XP</span>
+          <button class="icon-btn" id="cmdkBtn" aria-label="Befehlspalette öffnen (⌘K)" title="Suchen (⌘K)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
           <div class="settings-wrap">
             <button class="icon-btn" id="settingsBtn" aria-label="Einstellungen" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 00-1.7-1l-.3-2.5H10l-.3 2.5a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.6a7 7 0 000 2l-2 1.6 2 3.4 2.3-1a7 7 0 001.7 1l.3 2.5h3.4l.3-2.5a7 7 0 001.7-1l2.3 1 2-3.4-2-1.6c.06-.32.1-.66.1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
             <div class="settings-pop" id="settingsPop" hidden>
@@ -283,6 +286,17 @@ public class Main {
         </section>
 
       </main>
+    </div>
+  </div>
+
+  <!-- ============ COMMAND PALETTE (⌘K) ============ -->
+  <div class="cmdk-overlay" id="cmdkOverlay" hidden>
+    <div class="cmdk-box" role="dialog" aria-modal="true" aria-label="Befehlspalette">
+      <div class="cmdk-input-row">
+        <span class="cmdk-kbd">⌘K</span>
+        <input type="text" id="cmdkInput" class="cmdk-input" placeholder="Kapitel, Lektion oder Übung suchen…" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="cmdk-list" id="cmdkList"></div>
     </div>
   </div>
 
