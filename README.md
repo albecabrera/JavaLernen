@@ -16,7 +16,18 @@ Dieses Repository enthält zwei Dinge:
 
 ## 1. Schnellstart
 
-Voraussetzungen: PHP ≥ 8.0 mit `javac`/`java` im `PATH` (JDK ≥ 17 empfohlen).
+Voraussetzungen: PHP ≥ 8.0. Für Java-Übungen zusätzlich `javac`/`java` im
+`PATH` (JDK ≥ 17 empfohlen), für Python-Übungen `python3`.
+
+**Empfohlen — Start-Skript** (prüft Voraussetzungen, gibt einen belegten Port
+frei und öffnet den Browser automatisch):
+
+```bash
+./start.sh          # Port 8100
+./start.sh 9000     # eigener Port
+```
+
+**Oder manuell:**
 
 ```bash
 cd app

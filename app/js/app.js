@@ -61,7 +61,7 @@
   const SETTINGS_KEY = 'javalernen_settings_v1';
   const SIZE_PX = { s: '12px', m: '13.5px', l: '15px' };
   const root = document.documentElement;
-  let SETTINGS = { theme: 'dark', size: 'm', anim: true };
+  let SETTINGS = { theme: 'dark', size: 'm', anim: true, sidebarCollapsed: false };
   try { const s = JSON.parse(localStorage.getItem(SETTINGS_KEY)); if (s) Object.assign(SETTINGS, s); } catch (e) {}
 
   function applySettings() {
@@ -71,9 +71,14 @@
     $$('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === SETTINGS.theme)));
     $$('[data-size-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sizeSet === SETTINGS.size)));
     const at = $('#animToggle'); if (at) at.checked = SETTINGS.anim;
+    shell.classList.toggle('sidebar-collapsed', !!SETTINGS.sidebarCollapsed);
   }
   function saveSettings() { try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS)); } catch (e) {} applySettings(); }
   applySettings();
+
+  // Sidebar ein-/ausklappen (escritorio) — persistente, independiente del drawer mobile.
+  $('#sidebarCollapseBtn')?.addEventListener('click', () => { SETTINGS.sidebarCollapsed = true; saveSettings(); });
+  $('#sidebarExpandBtn')?.addEventListener('click', () => { SETTINGS.sidebarCollapsed = false; saveSettings(); });
 
   const settingsBtn = $('#settingsBtn'), settingsPop = $('#settingsPop');
   function toggleSettings(open) {

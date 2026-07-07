@@ -56,8 +56,10 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .sidebar {
   width: 284px; flex: none; background: var(--sidebar);
   border-right: 1px solid var(--border); display: flex; flex-direction: column;
+  transition: width .2s ease, padding .2s ease, border-color .2s ease; overflow: hidden;
 }
 .brand { padding: 22px 20px 18px; display: flex; align-items: center; gap: 11px; }
+.sidebar-collapse-btn { margin-left: auto; flex: none; }
 .brand-logo { flex: none; display: flex; align-items: center; justify-content: center; }
 .brand-logo img { height: 30px; width: auto; display: block; }
 .brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
@@ -163,6 +165,17 @@ code, pre, .mono { font-family: var(--ff-mono); }
 }
 .icon-btn:hover { color: var(--text2); border-color: var(--border3); }
 .hamburger { display: none; }
+.sidebar-expand-btn { display: none; }
+@media (min-width: 901px) {
+  /* colapsar la sidebar en escritorio (independiente del drawer mobile de abajo) */
+  /* min-width:0 : un flex item no se achica bajo el ancho mínimo de su contenido
+     (min-width:auto implícito) salvo que se fije en 0. flex-basis:0 explícito:
+     .sidebar usa "flex:none" (flex-basis:auto) — Chromium no re-resuelve ese
+     auto contra el width de ESTA regla (distinta de la que declaró flex),
+     así que sin flex-basis explícito el ancho seguía calculado en 284px. */
+  .shell.sidebar-collapsed .sidebar { width: 0; min-width: 0; flex-basis: 0; padding: 0; border-right: none; }
+  .shell.sidebar-collapsed .sidebar-expand-btn { display: grid; }
+}
 
 /* ---- Settings popover ---- */
 .settings-wrap { position: relative; }
