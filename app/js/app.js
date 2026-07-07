@@ -494,6 +494,17 @@
       }
       return done();
     }
+    // Live-Template: "sout" + Tab → System.out.println(""); Cursor zwischen die Anführungszeichen
+    if (e.key === 'Tab' && !e.shiftKey && s === en) {
+      const before4 = v.slice(Math.max(0, s - 4), s);
+      const charBefore = v[s - 5];
+      if (before4 === 'sout' && !/[A-Za-z0-9_]/.test(charBefore || '')) {
+        e.preventDefault();
+        const snippet = 'System.out.println("")';
+        editReplace(ta, s - 4, s, snippet, s - 4 + snippet.indexOf('""') + 1);
+        return done();
+      }
+    }
     // Tab / ⇧Tab  Einrücken / Ausrücken (mehrzeilig bei Auswahl)
     if (e.key === 'Tab') {
       e.preventDefault();
