@@ -37,10 +37,12 @@
       <nav class="nav" id="chapterNav" aria-label="Kapitel"></nav>
 
       <div class="sidebar-foot">
-        <button class="net" id="netBtn" aria-pressed="false">
+        <button class="net" id="exportBtn" title="Lädt eine JSON-Datei mit deinem Fortschritt herunter">
           <span class="dot"></span>
-          <span><span class="t" id="netT">Synchronisiert</span><span class="s" id="netS" style="display:block">Alle Inhalte lokal · aktuell</span></span>
+          <span><span class="t">Fortschritt sichern</span><span class="s" style="display:block">Als Datei exportieren</span></span>
         </button>
+        <button class="net-import" id="importBtn">Aus Datei importieren</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
       </div>
     </aside>
 
@@ -67,6 +69,10 @@
             <button class="icon-btn" id="settingsBtn" aria-label="Einstellungen" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.3 1a7 7 0 00-1.7-1l-.3-2.5H10l-.3 2.5a7 7 0 00-1.7 1l-2.3-1-2 3.4 2 1.6a7 7 0 000 2l-2 1.6 2 3.4 2.3-1a7 7 0 001.7 1l.3 2.5h3.4l.3-2.5a7 7 0 001.7-1l2.3 1 2-3.4-2-1.6c.06-.32.1-.66.1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
             <div class="settings-pop" id="settingsPop" hidden>
               <div class="set-group">
+                <div class="set-label">Dein Name</div>
+                <input type="text" id="nameInput" class="name-input" placeholder="z. B. Alberto" maxlength="24" autocomplete="off">
+              </div>
+              <div class="set-group">
                 <div class="set-label">Darstellung</div>
                 <div class="seg" role="group" aria-label="Theme">
                   <button class="seg-btn" data-theme-set="dark">Dunkel</button>
@@ -86,7 +92,7 @@
               </div>
             </div>
           </div>
-          <span class="badge-ico" aria-hidden="true" style="width:34px;height:34px;border-radius:9px;font-size:12px;font-weight:600">AL</span>
+          <span class="badge-ico" id="userAvatar" aria-hidden="true" style="width:34px;height:34px;border-radius:9px;font-size:12px;font-weight:600"></span>
         </div>
       </header>
 

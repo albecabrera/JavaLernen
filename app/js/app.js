@@ -57,15 +57,6 @@
   scrim?.addEventListener('click', closeNav);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 
-  /* ---------- Toggle online/offline (indicador) ---------- */
-  const netBtn = $('#netBtn');
-  netBtn?.addEventListener('click', () => {
-    const off = netBtn.classList.toggle('offline');
-    netBtn.setAttribute('aria-pressed', String(off));
-    $('#netT').textContent = off ? 'Offline-Modus' : 'Synchronisiert';
-    $('#netS').textContent = off ? 'Lokal gespeichert · Sync ausstehend' : 'Alle Inhalte lokal · aktuell';
-  });
-
   /* ---------- Einstellungen: Theme, Editor-Größe, Animationen (persistente) ---------- */
   const SETTINGS_KEY = 'javalernen_settings_v1';
   const SIZE_PX = { s: '12px', m: '13.5px', l: '15px' };
@@ -89,6 +80,8 @@
     const show = open != null ? open : settingsPop.hidden;
     settingsPop.hidden = !show;
     settingsBtn.setAttribute('aria-expanded', String(show));
+    const nameInput = $('#nameInput');
+    if (show && nameInput) nameInput.value = PROGRESS.name || '';
   }
   settingsBtn?.addEventListener('click', e => { e.stopPropagation(); toggleSettings(); });
   settingsPop?.addEventListener('click', e => {
@@ -98,6 +91,12 @@
     if (s) { SETTINGS.size = s.dataset.sizeSet; saveSettings(); }
   });
   $('#animToggle')?.addEventListener('change', e => { SETTINGS.anim = e.target.checked; saveSettings(); });
+  // antes "Alberto"/"AL" fijos en todo el HTML sin importar quién usara la app
+  $('#nameInput')?.addEventListener('input', e => {
+    PROGRESS.name = e.target.value.trim();
+    saveProgress();
+    renderGreeting();
+  });
   document.addEventListener('click', () => { if (settingsPop && !settingsPop.hidden) toggleSettings(false); });
 
   /* ---------- Evaluación de código (mock hasta CheerpJ) ---------- */
@@ -763,11 +762,12 @@
         if (p && p.solved) {
           if (!p.lastLesson) p.lastLesson = {};       // por-alumno: última lección vista de cada capítulo
           if (!p.watchedVideos) p.watchedVideos = {}; // por-alumno: videos ya clickeados
+          if (p.name == null) p.name = '';            // antes hardcodeado "Alberto" en todo el HTML
           return p;
         }
       }
     } catch (e) {}
-    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [], lastLesson: {}, watchedVideos: {} };
+    return { solved: {}, xp: 0, streak: { count: 0, last: null }, badges: [], lastLesson: {}, watchedVideos: {}, name: '' };
   }
   function saveProgress() {
     try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); } catch (e) {}
@@ -826,6 +826,42 @@
       }, 3200);
     }));
   }
+
+  // Antes "Synchronisiert"/"Offline-Modus" era puro teatro: un toggle de texto sin ninguna
+  // sincronización real detrás (no hay backend). Ahora exporta/importa el progreso real —
+  // única forma de llevar el avance de una computadora a otra sin backend.
+  $('#exportBtn')?.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(PROGRESS, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `javalernen-fortschritt-${todayStr()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast({ icon: '💾', title: 'Fortschritt exportiert', desc: 'Datei heruntergeladen — auf einem anderen Rechner importierbar.' });
+  });
+  const importFile = $('#importFile');
+  $('#importBtn')?.addEventListener('click', () => importFile?.click());
+  importFile?.addEventListener('change', () => {
+    const file = importFile.files && importFile.files[0];
+    importFile.value = ''; // permite volver a elegir el mismo archivo después
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const p = JSON.parse(reader.result);
+        if (!p || typeof p !== 'object' || !p.solved) throw new Error('Ungültiges Format');
+        if (!p.lastLesson) p.lastLesson = {};
+        if (!p.watchedVideos) p.watchedVideos = {};
+        PROGRESS = p;
+        saveProgress();
+        renderSidebar(); renderDashboard(); renderOverview();
+        showToast({ icon: '📂', title: 'Fortschritt importiert', desc: 'Dein Stand wurde wiederhergestellt.' });
+      } catch (e) {
+        showToast({ icon: '⚠️', title: 'Import fehlgeschlagen', desc: 'Die Datei ist ungültig oder beschädigt.' });
+      }
+    };
+    reader.readAsText(file);
+  });
 
   // Se llama cuando un ejercicio compila+corre OK y la salida matchea EXPECTED.
   function onExerciseSolved(ex) {
@@ -944,7 +980,16 @@
     openChapter(ch.id, 'lesson', PROGRESS.lastLesson[ch.id] ?? 0);
   });
 
-  // Antes hardcodeado en el HTML ("Guten Abend" / "Samstag, 4. Juli" siempre) — ahora real.
+  // antes "AL" fijo en el HTML sin importar quién usara la app — ahora derivado del nombre real
+  function renderAvatar() {
+    const av = $('#userAvatar'); if (!av) return;
+    const name = (PROGRESS.name || '').trim();
+    av.textContent = name
+      ? name.split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join('')
+      : '🎓';
+  }
+
+  // Antes hardcodeado en el HTML ("Guten Abend, Alberto" / "Samstag, 4. Juli" siempre) — ahora real.
   function renderGreeting() {
     const eyebrow = $('.dash .eyebrow'), greet = $('.dash .h-greet');
     if (!eyebrow && !greet) return;
@@ -954,7 +999,9 @@
     const fecha = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
     const phase = CONTENT && CONTENT.chapters[0] && phaseLabel(CONTENT.chapters[0].phase);
     if (eyebrow) eyebrow.textContent = phase ? `${fecha} · ${phase}` : fecha;
-    if (greet) greet.textContent = `${saludo}, Alberto`;
+    renderAvatar();
+    const name = (PROGRESS.name || '').trim();
+    if (greet) greet.textContent = name ? `${saludo}, ${name}` : saludo;
   }
 
   function renderDashboard() {

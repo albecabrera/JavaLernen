@@ -123,12 +123,17 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .net {
   width: 100%; display: flex; align-items: center; gap: 9px; padding: 9px 11px;
   border-radius: 9px; background: var(--panel2); border: 1px solid var(--border2); text-align: left;
+  transition: border-color .15s, background .15s;
 }
+.net:hover { border-color: var(--accent-border); }
 .net .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent-shadow); flex: none; }
 .net .t { font-size: 12px; font-weight: 600; color: var(--text2); }
 .net .s { font-size: 10.5px; color: var(--faint); }
-.net.offline { background: var(--warn-bg2); border-color: var(--warn-border); }
-.net.offline .t { color: var(--warn-t); } .net.offline .s { color: var(--warn-b); }
+.net-import {
+  width: 100%; text-align: left; padding: 6px 11px; margin-top: 4px; background: transparent; border: none;
+  font-size: 11px; color: var(--mut2); font-family: inherit; text-decoration: underline; text-underline-offset: 2px;
+}
+.net-import:hover { color: var(--text2); }
 
 /* ---- main + topbar ---- */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
@@ -186,6 +191,11 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .seg-btn[aria-pressed="true"] { background: var(--accent-bg); color: var(--accent); }
 .set-toggle { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text2); cursor: pointer; }
 .set-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
+.name-input {
+  width: 100%; padding: 8px 11px; border-radius: 8px; font-size: 13px; font-family: inherit;
+  background: var(--inset); border: 1px solid var(--code-hd); color: var(--code-text);
+}
+.name-input:focus { outline: none; border-color: var(--accent); }
 
 .viewport { flex: 1; overflow-y: auto; min-height: 0; position: relative; }
 .view { display: none; position: relative; overflow: hidden; }
