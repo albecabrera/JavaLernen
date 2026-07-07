@@ -570,3 +570,12 @@ code, pre, .mono { font-family: var(--ff-mono); }
 .cmdk-item-sub { font-size: 11.5px; color: var(--mut2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cmdk-item-kind { flex: none; font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.4px; }
 .cmdk-empty { padding: 30px 16px; text-align: center; font-size: 13px; color: var(--faint); }
+
+/* overlay de ayuda de tastenkürzel (?) — reusa .cmdk-overlay/.cmdk-box */
+.shortcuts-box { max-width: 640px; }
+.shortcuts-grid { padding: 16px 18px 20px; overflow-y: auto; }
+.sc-group { margin-bottom: 16px; } .sc-group:last-child { margin-bottom: 0; }
+.sc-hd { font-size: 11px; font-weight: 600; color: var(--mut2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.sc-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 13px; color: var(--text2); }
+.sc-row span { color: var(--mut); }
+.sc-row kbd { font-family: var(--ff-mono); font-size: 11px; color: var(--text2); background: var(--elev); border: 1px solid var(--elev-border); border-radius: 6px; padding: 3px 6px; }

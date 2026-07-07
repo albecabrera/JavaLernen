@@ -180,6 +180,48 @@
     if (it) { closeCmdk(); it.action(); }
   });
 
+  /* ---------- Tastenkürzel-Hilfe (?) ---------- */
+  const shortcutsOverlay = $('#shortcutsOverlay');
+  function toggleShortcutsHelp(open) {
+    if (!shortcutsOverlay) return;
+    shortcutsOverlay.hidden = open != null ? !open : !shortcutsOverlay.hidden;
+  }
+  shortcutsOverlay?.addEventListener('click', e => { if (e.target === shortcutsOverlay) toggleShortcutsHelp(false); });
+  $('#shortcutsBtn')?.addEventListener('click', () => toggleShortcutsHelp(true));
+
+  /* ---------- Atajos de teclado globales ---------- */
+  const CMDK_VIEW_ORDER = ['dashboard', 'overview', 'lesson', 'exercise', 'project', 'playground'];
+  document.addEventListener('keydown', e => {
+    const mod = e.metaKey || e.ctrlKey;
+    const tag = document.activeElement && document.activeElement.tagName;
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
+
+    if (mod && e.key === ',') { e.preventDefault(); toggleSettings(true); return; }
+    if (mod && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); switchLang(LANG === 'java' ? 'python' : 'java'); return; }
+    if (mod && e.key >= '1' && e.key <= '6') {
+      e.preventDefault();
+      const view = CMDK_VIEW_ORDER[Number(e.key) - 1];
+      if (view && !(view === 'overview' && LANG === 'python')) setView(view);
+      return;
+    }
+    if (mod && e.key.toLowerCase() === 'j' && activeChapter) {
+      e.preventDefault();
+      const n = (activeChapter.lessons || []).length;
+      if (e.shiftKey) { if (activeLessonIndex > 0) selectLesson(activeLessonIndex - 1); }
+      else if (activeLessonIndex < n - 1) selectLesson(activeLessonIndex + 1);
+      return;
+    }
+    if (mod && e.key === '.' && activeExercise) {
+      e.preventDefault();
+      const hints = Array.isArray(activeExercise.hints) ? activeExercise.hints : [];
+      if (hintLevel < hints.length) { hintLevel++; renderHelpOnly(); }
+      else if (activeExercise.solution && !solutionShown) { solutionShown = true; renderHelpOnly(); }
+      return;
+    }
+    if (!mod && e.key === '?' && !typing) { e.preventDefault(); toggleShortcutsHelp(); return; }
+    if (e.key === 'Escape') toggleShortcutsHelp(false);
+  });
+
   /* ---------- Evaluación de código (mock hasta CheerpJ) ---------- */
   const runBtn = $('#runBtn'), feedback = $('#feedback'), code = $('#code');
   let EXPECTED = '7 ist ungerade'; // se actualiza al cargar cada ejercicio
@@ -214,14 +256,14 @@
         `<div class="fb-bar err"><span class="fb-x">✕</span> Keine Verbindung zum Compiler</div>
          <div class="fb-body"><pre class="mono fb-console err-t">${esc(r.__net)}</pre>
          <div class="fb-warn"><span>ℹ️</span><p>Code-Ausführung braucht eine Internetverbindung. Lektionen sind offline verfügbar.</p></div></div>`;
-      return;
+      return false;
     }
     // error de compilación (javac real)
     if (r.phase === 'compile' && !r.ok) {
       feedback.innerHTML =
         `<div class="fb-bar err"><span class="fb-x">✕</span> Kompilierfehler</div>
          <div class="fb-body"><pre class="mono fb-console err-t">${esc(r.stderr || r.stdout || 'Kompilierfehler.')}</pre></div>`;
-      return;
+      return false;
     }
     const stdout = (r.stdout || '').replace(/\s+$/, '');
     // timeout: mensaje propio en vez del genérico "Laufzeitfehler" — no es un bug del alumno
@@ -232,7 +274,7 @@
          <div class="fb-body">
            ${stdout ? `<div class="fb-label">Konsole (bis zum Abbruch)</div><pre class="mono fb-console">${esc(stdout)}</pre>` : ''}
            <div class="fb-warn"><span>⏱</span><p>Dein Programm hat zu lange gebraucht — vermutlich eine Endlosschleife. Prüfe, ob sich die Abbruchbedingung deiner Schleife wirklich ändert.</p></div></div>`;
-      return;
+      return false;
     }
     // error de ejecución (excepción en runtime)
     if (!r.ok && r.stderr) {
@@ -241,7 +283,7 @@
          <div class="fb-body">
            ${stdout ? `<div class="fb-label">Konsole</div><pre class="mono fb-console">${esc(stdout)}</pre>` : ''}
            <pre class="mono fb-console err-t">${esc(cleanStderr(r.stderr))}</pre></div>`;
-      return;
+      return false;
     }
     // ejecutó bien: comparar salida con lo esperado
     if (stdout === EXPECTED) {
@@ -250,7 +292,7 @@
       feedback.innerHTML =
         `<div class="fb-bar ok rise"><span class="fb-check">✓</span> Kompiliert · Alle Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
          <div class="fb-body"><pre class="mono fb-console">${esc(stdout)}</pre></div>`;
-      return;
+      return true;
     }
     // compiló y corrió, pero la salida difiere → diff pedagógico
     feedback.innerHTML =
@@ -264,13 +306,14 @@
            <div class="err-row"><span class="minus">－</span><span class="w">erhalten</span><span class="err-t">${esc(stdout || '(leer)')}</span></div>
          </div>
        </div>`;
+    return false;
   }
 
   // Modo multi-caso: corre el código contra varios test cases (stdin distintos).
   // El alumno solo pasa si TODOS los casos dan la salida esperada → no se puede hardcodear.
   function renderTests(ex, r) {
-    if (r.__net) { renderResult(r); return; }
-    if (r.phase === 'compile' && !r.ok) { renderResult(r); return; }
+    if (r.__net) { return renderResult(r); }
+    if (r.phase === 'compile' && !r.ok) { return renderResult(r); }
     const runs = r.runs || [];
     const results = ex.tests.map((t, i) => {
       const run = runs[i] || {};
@@ -287,7 +330,7 @@
       feedback.innerHTML =
         `<div class="fb-bar ok rise"><span class="fb-check">✓</span> Alle ${results.length} Tests bestanden${r.ms != null ? ` · ${r.ms} ms` : ''}${xpNote}</div>
          <div class="fb-body">${testRows(results)}</div>`;
-      return;
+      return true;
     }
     // al menos un caso falla → mostrar cuáles, con el primer diff pedagógico
     const firstFail = results.find(x => !x.pass);
@@ -306,6 +349,7 @@
                 <div class="err-row"><span class="minus">－</span><span class="w">erhalten</span><span class="err-t">${esc(firstFail.got || '(leer)')}</span></div>
               </div>`}
        </div>`;
+    return false;
   }
 
   function testRows(results) {
@@ -506,25 +550,33 @@
     return res.json();
   }
 
-  runBtn?.addEventListener('click', async () => {
+  // advanceOnSuccess: ⌘⇧↵ además de ejecutar, salta a la siguiente übung si esta se resolvió bien
+  async function doRun(advanceOnSuccess) {
     renderRunning();
     runBtn.disabled = true;
+    let passed = false;
     try {
       const ex = activeExercise;
       if (ex && Array.isArray(ex.tests) && ex.tests.length) {
-        renderTests(ex, await runTests(code.value, ex.tests));
+        passed = renderTests(ex, await runTests(code.value, ex.tests));
       } else {
-        renderResult(await runOnServer(code.value));  // retrocompat: 1 solo caso
+        passed = renderResult(await runOnServer(code.value));  // retrocompat: 1 solo caso
       }
     } catch (e) {
       renderResult({ __net: String(e && e.message || e) });
     } finally {
       runBtn.disabled = false;
     }
-  });
-  // ⌘↵ / Ctrl+↵ im Übungs-Editor → ausführen
+    if (advanceOnSuccess && passed && activeChapter) {
+      const n = (activeChapter.exercises || []).length;
+      if (activeExerciseIndex < n - 1) selectExercise(activeChapter, activeExerciseIndex + 1);
+    }
+  }
+  runBtn?.addEventListener('click', () => doRun(false));
+  // ⌘↵ ejecuta · ⌘⇧↵ ejecuta y avanza a la siguiente Übung si pasó · ⌘⇧R resetea al starter
   code?.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runBtn?.click(); }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); doRun(e.shiftKey); }
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'r') { e.preventDefault(); $('#resetBtn')?.click(); }
   });
   // Zurücksetzen: Editor auf den Startcode der aktuellen Übung zurücksetzen
   $('#resetBtn')?.addEventListener('click', () => {
