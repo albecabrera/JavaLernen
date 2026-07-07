@@ -93,6 +93,7 @@
           "prompt_html": "Gib mithilfe der Variable <code>name</code> den Gruß <code>\"Hallo, Alberto!\"</code> aus.",
           "expected": "Hallo, Alberto!",
           "tip_html": "Strings verbindest du mit <code>+</code>: <code>\"Hallo, \" + name + \"!\"</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        String name = \"Alberto\";\n        System.out.println(\"Hallo, \" + name + \"!\");\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        String name = \"Alberto\";\n        // TODO: \"Hallo, Alberto!\" ausgeben\n    }\n}"
         },
         {
@@ -100,6 +101,7 @@
           "prompt_html": "Der Code hat einen <strong>Compilerfehler</strong>. Lies die Fehlermeldung nach dem Ausführen genau — sie zeigt dir die Zeile und die Stelle.",
           "expected": "Du bist 16 Jahre alt",
           "tip_html": "Jede Anweisung muss mit einem Semikolon <code>;</code> enden.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        int alter = 16;\n        System.out.println(\"Du bist \" + alter + \" Jahre alt\");\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        int alter = 16\n        System.out.println(\"Du bist \" + alter + \" Jahre alt\");\n    }\n}"
         }
       ]
@@ -143,14 +145,19 @@
           "prompt_html": "Erzeuge in <code>main</code> ein Objekt der Klasse <code>Hund</code>, setze den Namen auf <code>\"Rex\"</code> und rufe <code>bellen()</code> auf.",
           "expected": "Rex sagt: Wuff!",
           "tip_html": "Ein Objekt erzeugst du mit <code>new Hund()</code>. Auf ein Attribut greifst du mit dem Punkt zu: <code>h.name = \"Rex\";</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Hund h = new Hund();\n        h.name = \"Rex\";\n        h.bellen();\n    }\n}\n\nclass Hund {\n    String name;\n    void bellen() {\n        System.out.println(name + \" sagt: Wuff!\");\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        // 1. Objekt erzeugen\n        // 2. Namen setzen\n        // 3. bellen() aufrufen\n    }\n}\n\nclass Hund {\n    String name;\n    void bellen() {\n        System.out.println(name + \" sagt: Wuff!\");\n    }\n}"
         },
         {
           "id": "ef-1-e2", "title": "Konstruktor verwenden", "difficulty": "leicht",
-          "prompt_html": "Vervollständige den <code>Konstruktor</code> von <code>Auto</code>, sodass er das Attribut <code>farbe</code> setzt. Erzeuge dann ein rotes Auto und rufe <code>hupen()</code> auf.",
-          "expected": "Tuut! Ich bin rot",
+          "prompt_html": "Vervollständige den <code>Konstruktor</code> von <code>Auto</code>, sodass er das Attribut <code>farbe</code> setzt, und rufe <code>hupen()</code> auf. Die Farbe wird eingelesen — dein Code wird mit mehreren Farben getestet.",
+          "tests": [
+            { "stdin": "rot", "expected": "Tuut! Ich bin rot" },
+            { "stdin": "blau", "expected": "Tuut! Ich bin blau" }
+          ],
           "tip_html": "Im Konstruktor unterscheidest du Attribut und Parameter mit <code>this</code>: <code>this.farbe = farbe;</code>",
-          "starter": "public class Main {\n    public static void main(String[] args) {\n        Auto meinAuto = new Auto(\"rot\");\n        meinAuto.hupen();\n    }\n}\n\nclass Auto {\n    String farbe;\n\n    Auto(String farbe) {\n        // TODO: das Attribut farbe setzen\n    }\n\n    void hupen() {\n        System.out.println(\"Tuut! Ich bin \" + farbe);\n    }\n}"
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        String farbe = new Scanner(System.in).nextLine();\n        Auto meinAuto = new Auto(farbe);\n        meinAuto.hupen();\n    }\n}\n\nclass Auto {\n    String farbe;\n\n    Auto(String farbe) {\n        this.farbe = farbe;\n    }\n\n    void hupen() {\n        System.out.println(\"Tuut! Ich bin \" + farbe);\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        String farbe = new Scanner(System.in).nextLine();   // Eingabe (gegeben)\n        Auto meinAuto = new Auto(farbe);\n        meinAuto.hupen();\n    }\n}\n\nclass Auto {\n    String farbe;\n\n    Auto(String farbe) {\n        // TODO: das Attribut farbe setzen\n    }\n\n    void hupen() {\n        System.out.println(\"Tuut! Ich bin \" + farbe);\n    }\n}"
         }
       ]
     },
@@ -192,14 +199,19 @@
           "prompt_html": "Zahle <code>50.0</code> auf das Konto ein und danach nochmal <code>30.0</code>. Jede Einzahlung gibt den neuen Stand aus.",
           "expected": "Stand: 50.0\nStand: 80.0",
           "tip_html": "Rufe <code>einzahlen(...)</code> zweimal auf. Die Methode addiert jeweils auf <code>stand</code>.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(50.0);\n        k.einzahlen(30.0);\n    }\n}\n\nclass Konto {\n    double stand;\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n        System.out.println(\"Stand: \" + stand);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        // zwei Einzahlungen\n    }\n}\n\nclass Konto {\n    double stand;\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n        System.out.println(\"Stand: \" + stand);\n    }\n}"
         },
         {
           "id": "ef-2-e2", "title": "Rückgabewert lesen", "difficulty": "leicht",
-          "prompt_html": "Vervollständige die Methode <code>kontostand()</code>, sodass sie den aktuellen Stand <strong>zurückgibt</strong>. Zahle <code>100.0</code> ein und gib den Stand aus.",
-          "expected": "Stand: 100.0",
+          "prompt_html": "Vervollständige die Methode <code>kontostand()</code>, sodass sie den aktuellen Stand <strong>zurückgibt</strong>. Der einzuzahlende Betrag wird eingelesen — dein Code wird mit mehreren Beträgen getestet.",
+          "tests": [
+            { "stdin": "100.0", "expected": "Stand: 100.0" },
+            { "stdin": "50.5", "expected": "Stand: 50.5" }
+          ],
           "tip_html": "Eine Methode mit Rückgabetyp <code>double</code> braucht ein <code>return</code>: <code>return stand;</code>",
-          "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        System.out.println(\"Stand: \" + k.kontostand());\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    double kontostand() {\n        // TODO: den aktuellen Stand zurückgeben\n        return 0;\n    }\n}"
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();\n        Konto k = new Konto();\n        k.einzahlen(betrag);\n        System.out.println(\"Stand: \" + k.kontostand());\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    double kontostand() {\n        return stand;\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();   // Eingabe (gegeben)\n        Konto k = new Konto();\n        k.einzahlen(betrag);\n        System.out.println(\"Stand: \" + k.kontostand());\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    double kontostand() {\n        // TODO: den aktuellen Stand zurückgeben\n        return 0;\n    }\n}"
         }
       ]
     },
@@ -281,6 +293,11 @@
             { "stdin": "0", "expected": "0 ist gerade" }
           ],
           "tip_html": "Mit dem Modulo-Operator <code>%</code> erhältst du den Rest. <code>zahl % 2 == 0</code> ist wahr, wenn <code>zahl</code> gerade ist.",
+          "hints": [
+            "Die Struktur ist ein einfaches <code>if / else</code>: <code>if (zahl % 2 == 0) { ... } else { ... }</code>",
+            "Innerhalb der Zweige gibst du mit <code>System.out.println(zahl + \" ist gerade\");</code> bzw. <code>\" ist ungerade\"</code> aus."
+          ],
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int zahl = new Scanner(System.in).nextInt();\n\n        if (zahl % 2 == 0) {\n            System.out.println(zahl + \" ist gerade\");\n        } else {\n            System.out.println(zahl + \" ist ungerade\");\n        }\n    }\n}",
           "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int zahl = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n\n        // TODO: gib aus, ob zahl gerade oder ungerade ist\n        //       Format:  <zahl> ist gerade   bzw.   <zahl> ist ungerade\n    }\n}"
         },
         {
@@ -292,6 +309,7 @@
             { "stdin": "1", "expected": "Summe: 1" }
           ],
           "tip_html": "Die Schleife läuft von <code>i = 1</code> bis <code>i &lt;= n</code>. In jedem Durchlauf: <code>summe += i;</code>",
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        int summe = 0;\n\n        for (int i = 1; i <= n; i++) {\n            summe += i;\n        }\n\n        System.out.println(\"Summe: \" + summe);\n    }\n}",
           "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n        int summe = 0;\n\n        for (int i = 1; i <= n; i++) {\n            // TODO: i zur summe addieren\n        }\n\n        System.out.println(\"Summe: \" + summe);\n    }\n}"
         },
         {
@@ -299,6 +317,7 @@
           "prompt_html": "<code>wert</code> wird bereits verdoppelt, solange er unter <code>100</code> ist. Ergänze das Zählen: erhöhe <code>schritte</code> bei jedem Durchlauf um 1.",
           "expected": "7 Schritte, Wert=128",
           "tip_html": "Im Schleifenkörper zählst du mit <code>schritte++;</code> mit. Ohne das bleibt der Zähler bei 0.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        int wert = 1;\n        int schritte = 0;\n\n        while (wert < 100) {\n            wert = wert * 2;\n            schritte++;\n        }\n\n        System.out.println(schritte + \" Schritte, Wert=\" + wert);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        int wert = 1;\n        int schritte = 0;\n\n        while (wert < 100) {\n            wert = wert * 2;\n            // TODO: schritte um 1 erhöhen\n        }\n\n        System.out.println(schritte + \" Schritte, Wert=\" + wert);\n    }\n}"
         }
       ]
@@ -336,6 +355,7 @@
           "prompt_html": "Erzeuge einen <code>Schueler</code> namens <code>\"Mara\"</code>, gib ihm eine <code>Adresse</code> mit Stadt <code>\"Bonn\"</code> und gib den Satz aus.",
           "expected": "Mara wohnt in Bonn",
           "tip_html": "Erst die Adresse erzeugen und die Stadt setzen, dann dem Schüler zuweisen: <code>s.adresse = a;</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Schueler s = new Schueler();\n        s.name = \"Mara\";\n        Adresse a = new Adresse();\n        a.stadt = \"Bonn\";\n        s.adresse = a;\n        System.out.println(s.name + \" wohnt in \" + s.adresse.stadt);\n    }\n}\n\nclass Schueler { String name; Adresse adresse; }\nclass Adresse { String stadt; }",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Schueler s = new Schueler();\n        s.name = \"Mara\";\n        // Adresse erzeugen, Stadt setzen, zuweisen\n        System.out.println(s.name + \" wohnt in \" + s.adresse.stadt);\n    }\n}\n\nclass Schueler { String name; Adresse adresse; }\nclass Adresse { String stadt; }"
         },
         {
@@ -343,6 +363,7 @@
           "prompt_html": "Nimm <code>\"Anna\"</code> und <code>\"Ben\"</code> in die <code>Klasse</code> auf und gib die Anzahl der Schüler aus. Vervollständige dazu die Methode <code>anzahl()</code>.",
           "expected": "Anzahl: 2",
           "tip_html": "Eine <code>ArrayList</code> kennt ihre Größe: <code>return namen.size();</code>",
+          "solution": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        Klasse k = new Klasse();\n        k.aufnehmen(\"Anna\");\n        k.aufnehmen(\"Ben\");\n        System.out.println(\"Anzahl: \" + k.anzahl());\n    }\n}\n\nclass Klasse {\n    ArrayList<String> namen = new ArrayList<>();\n\n    void aufnehmen(String name) {\n        namen.add(name);\n    }\n\n    int anzahl() {\n        return namen.size();\n    }\n}",
           "starter": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        Klasse k = new Klasse();\n        k.aufnehmen(\"Anna\");\n        k.aufnehmen(\"Ben\");\n        System.out.println(\"Anzahl: \" + k.anzahl());\n    }\n}\n\nclass Klasse {\n    ArrayList<String> namen = new ArrayList<>();\n\n    void aufnehmen(String name) {\n        namen.add(name);\n    }\n\n    int anzahl() {\n        // TODO: die Anzahl der Namen zurückgeben\n        return 0;\n    }\n}"
         }
       ]
@@ -398,6 +419,7 @@
           "prompt_html": "<code>Hund</code> erbt von <code>Tier</code> und überschreibt <code>lautGeben()</code>. Setze den Namen auf <code>\"Rex\"</code> und rufe die Methode auf.",
           "expected": "Rex bellt: Wuff!",
           "tip_html": "<code>name</code> wird geerbt — du kannst es direkt setzen. Die überschriebene Methode wird automatisch statt der geerbten aufgerufen.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Hund h = new Hund();\n        h.name = \"Rex\";\n        h.lautGeben();\n    }\n}\n\nclass Tier {\n    String name;\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}\n\nclass Hund extends Tier {\n    @Override\n    void lautGeben() { System.out.println(name + \" bellt: Wuff!\"); }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Hund h = new Hund();\n        h.name = \"Rex\";\n        h.lautGeben();\n    }\n}\n\nclass Tier {\n    String name;\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}\n\nclass Hund extends Tier {\n    @Override\n    void lautGeben() { System.out.println(name + \" macht ein Geräusch\"); }\n}"
         },
         {
@@ -405,6 +427,7 @@
           "prompt_html": "<code>Bus</code> soll das Interface <code>Fahrbar</code> implementieren. Vervollständige <code>fahren()</code>, sodass <code>\"Bus fährt\"</code> ausgegeben wird.",
           "expected": "Bus fährt",
           "tip_html": "Implementierende Methoden aus einem Interface müssen <code>public</code> sein: <code>public void fahren() { ... }</code>",
+          "solution": "interface Fahrbar {\n    void fahren();\n}\n\nclass Bus implements Fahrbar {\n    public void fahren() {\n        System.out.println(\"Bus fährt\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Fahrbar f = new Bus();\n        f.fahren();\n    }\n}",
           "starter": "interface Fahrbar {\n    void fahren();\n}\n\nclass Bus implements Fahrbar {\n    public void fahren() {\n        // TODO: \"Bus fährt\" ausgeben\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Fahrbar f = new Bus();\n        f.fahren();\n    }\n}"
         }
       ]
@@ -467,16 +490,21 @@
       "exercises": [
         {
           "id": "ef-6-e1", "title": "Kapselung: privates Attribut, öffentlicher Zugriff", "difficulty": "mittel",
-          "prompt_html": "<code>kontostand</code> soll <code>private</code> sein. Vervollständige <code>getKontostand()</code>, damit der Wert von außen lesbar ist — passend zur UML-Sichtbarkeit <code>+ getKontostand(): double</code>.",
-          "expected": "Kontostand: 100.0",
+          "prompt_html": "<code>kontostand</code> soll <code>private</code> sein. Vervollständige <code>getKontostand()</code>, damit der Wert von außen lesbar ist — passend zur UML-Sichtbarkeit <code>+ getKontostand(): double</code>. Der Betrag wird eingelesen und mit mehreren Werten getestet.",
+          "tests": [
+            { "stdin": "100.0", "expected": "Kontostand: 100.0" },
+            { "stdin": "250.0", "expected": "Kontostand: 250.0" }
+          ],
           "tip_html": "Ein Getter gibt einfach das private Attribut zurück: <code>return kontostand;</code>",
-          "starter": "public class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        System.out.println(\"Kontostand: \" + k.getKontostand());\n    }\n}\n\nclass Konto {\n    private double kontostand;\n\n    void einzahlen(double betrag) {\n        kontostand += betrag;\n    }\n\n    double getKontostand() {\n        // TODO: kontostand zurückgeben\n    }\n}"
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();\n        Konto k = new Konto();\n        k.einzahlen(betrag);\n        System.out.println(\"Kontostand: \" + k.getKontostand());\n    }\n}\n\nclass Konto {\n    private double kontostand;\n\n    void einzahlen(double betrag) {\n        kontostand += betrag;\n    }\n\n    double getKontostand() {\n        return kontostand;\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();   // Eingabe (gegeben)\n        Konto k = new Konto();\n        k.einzahlen(betrag);\n        System.out.println(\"Kontostand: \" + k.getKontostand());\n    }\n}\n\nclass Konto {\n    private double kontostand;\n\n    void einzahlen(double betrag) {\n        kontostand += betrag;\n    }\n\n    double getKontostand() {\n        // TODO: kontostand zurückgeben\n    }\n}"
         },
         {
           "id": "ef-6-e2", "title": "MVC: Controller verbindet Model und View", "difficulty": "mittel",
           "prompt_html": "<code>Main</code> darf nur mit dem <code>AufgabenController</code> sprechen — nie direkt mit Model oder View. Vervollständige <code>anzeigen()</code>, sodass es die View mit den aktuellen Daten des Models aufruft.",
           "expected": "- Hausaufgaben\n- Java lernen",
           "tip_html": "Der Controller kennt <code>model</code> und <code>view</code> als eigene Attribute: <code>view.render(model.getAufgaben());</code>",
+          "solution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        AufgabenController controller = new AufgabenController();\n        controller.neueAufgabe(\"Hausaufgaben\");\n        controller.neueAufgabe(\"Java lernen\");\n        controller.anzeigen();\n    }\n}\n\nclass AufgabenModel {\n    private List<String> aufgaben = new ArrayList<>();\n    void hinzufuegen(String titel) { aufgaben.add(titel); }\n    List<String> getAufgaben() { return aufgaben; }\n}\n\nclass AufgabenView {\n    void render(List<String> aufgaben) {\n        for (String a : aufgaben) System.out.println(\"- \" + a);\n    }\n}\n\nclass AufgabenController {\n    private AufgabenModel model = new AufgabenModel();\n    private AufgabenView view = new AufgabenView();\n\n    void neueAufgabe(String titel) {\n        model.hinzufuegen(titel);\n    }\n\n    void anzeigen() {\n        view.render(model.getAufgaben());\n    }\n}",
           "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        AufgabenController controller = new AufgabenController();\n        controller.neueAufgabe(\"Hausaufgaben\");\n        controller.neueAufgabe(\"Java lernen\");\n        controller.anzeigen();\n    }\n}\n\nclass AufgabenModel {\n    private List<String> aufgaben = new ArrayList<>();\n    void hinzufuegen(String titel) { aufgaben.add(titel); }\n    List<String> getAufgaben() { return aufgaben; }\n}\n\nclass AufgabenView {\n    void render(List<String> aufgaben) {\n        for (String a : aufgaben) System.out.println(\"- \" + a);\n    }\n}\n\nclass AufgabenController {\n    private AufgabenModel model = new AufgabenModel();\n    private AufgabenView view = new AufgabenView();\n\n    void neueAufgabe(String titel) {\n        model.hinzufuegen(titel);\n    }\n\n    void anzeigen() {\n        // TODO: view soll die aktuelle Aufgabenliste aus dem model rendern\n    }\n}"
         }
       ]
@@ -488,17 +516,72 @@
       "project": {
         "tag": "Kapitel-Projekt",
         "title": "Kontoauszug-Generator",
-        "intro": "Du beherrschst jetzt Klassen, Attribute, Methoden, Verzweigungen und Vererbung. Zeit, alles in einem echten Projekt zu verbinden.",
-        "description_html": "Baue eine Klasse <code>Konto</code> mit <code>einzahlen</code>, <code>abheben</code> (mit <code>if</code>-Prüfung auf Deckung) und einer Methode <code>auszug()</code>, die den aktuellen Stand ausgibt. Erzeuge ein Sparkonto, das von <code>Konto</code> erbt und Zinsen berechnet.",
-        "duration": "≈ 40 Min.",
-        "reward_xp": 180,
-        "stats": [
-          { "value": "+180", "label": "XP verdient" },
-          { "value": "5 / 5", "label": "Lektionen" },
-          { "value": "—", "label": "Genauigkeit" }
-        ]
+        "intro": "Du beherrschst jetzt Klassen, Attribute, Methoden, Verzweigungen und Vererbung. Zeit, alles in einem echten Projekt zu verbinden — in drei Meilensteinen.",
+        "description_html": "Baue eine Klasse <code>Konto</code> mit <code>einzahlen</code> und <code>abheben</code> (mit <code>if</code>-Prüfung auf Deckung). Erzeuge dann ein <code>Sparkonto</code>, das von <code>Konto</code> <strong>erbt</strong> und Zinsen berechnet. Jeder Meilenstein baut auf dem vorigen auf — wie in einem echten Projekt.",
+        "duration": "≈ 30 Min.",
+        "reward_xp": 60
       },
-      "lessons": [], "exercises": []
+      "lessons": [
+        {
+          "id": "ef-proj-1", "num": "P.1", "title": "Meilenstein 1: Die Konto-Klasse", "readTime": "≈ 6 Min.",
+          "blocks": [
+            { "type": "p", "html": "Jedes Bankkonto braucht mindestens einen <strong>Kontostand</strong> und die Möglichkeit, Geld <strong>einzuzahlen</strong>. Das ist der Grundbaustein für alles, was danach kommt." },
+            { "type": "code", "file": "Konto.java", "code": "public class Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n}" },
+            { "type": "callout", "variant": "info", "title": "Warum ein Projekt?", "html": "Eine einzelne Übung testet ein Konzept. Ein Projekt verbindet mehrere — hier: Klassen (Kapitel 1), Attribute/Methoden (Kapitel 2) und gleich Vererbung (Kapitel 5). Genau das simuliert echte Softwareentwicklung." }
+          ]
+        },
+        {
+          "id": "ef-proj-2", "num": "P.2", "title": "Meilenstein 2: Abheben mit Prüfung", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein echtes Konto darf nicht ins Minus rutschen (kein Dispo hier). <code>abheben</code> muss also <strong>prüfen</strong>, ob genug Guthaben da ist, bevor es abzieht." },
+            { "type": "code", "file": "Konto.java", "code": "void abheben(double betrag) {\n    if (betrag <= stand) {\n        stand = stand - betrag;\n        System.out.println(\"Abgehoben: \" + betrag + \", Stand: \" + stand);\n    } else {\n        System.out.println(\"Nicht genug Guthaben\");\n    }\n}" },
+            { "type": "callout", "variant": "warn", "title": "Zwei Fälle testen", "html": "Diese Methode hat <strong>zwei</strong> mögliche Wege (genug Guthaben / nicht genug). Ein guter Test prüft beide — genau das macht der Meilenstein-Check gleich." }
+          ]
+        },
+        {
+          "id": "ef-proj-3", "num": "P.3", "title": "Meilenstein 3: Sparkonto erbt", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein <strong>Sparkonto</strong> ist ein Konto — plus Zinsen. Statt alles neu zu schreiben, lässt du es von <code>Konto</code> <strong>erben</strong> (Kapitel 5) und ergänzt nur, was neu ist." },
+            { "type": "code", "file": "Sparkonto.java", "code": "class Sparkonto extends Konto {\n    void verzinsen(double satz) {\n        stand = stand + stand * satz / 100;\n    }\n}" },
+            { "type": "callout", "variant": "info", "title": "Geerbt, nicht neu geschrieben", "html": "<code>Sparkonto</code> bekommt <code>stand</code> und <code>einzahlen</code> automatisch von <code>Konto</code> — du musst nur die neue Fähigkeit (<code>verzinsen</code>) hinzufügen. Genau das ist der Sinn von Vererbung." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "ef-proj-e1", "title": "Meilenstein 1: Konto führen", "difficulty": "leicht",
+          "prompt_html": "Zahle den eingelesenen Betrag auf ein neues Konto ein und gib den Stand im Format <code>Stand: 100.0</code> aus. Wird mit mehreren Beträgen getestet.",
+          "tests": [
+            { "stdin": "100.0", "expected": "Stand: 100.0" },
+            { "stdin": "75.0", "expected": "Stand: 75.0" }
+          ],
+          "tip_html": "Erzeuge ein <code>Konto</code>, rufe <code>einzahlen(betrag)</code> auf, dann <code>System.out.println(\"Stand: \" + k.stand);</code>",
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();\n        Konto k = new Konto();\n        k.einzahlen(betrag);\n        System.out.println(\"Stand: \" + k.stand);\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double betrag = new Scanner(System.in).nextDouble();   // Eingabe (gegeben)\n        Konto k = new Konto();\n        // TODO: betrag einzahlen und den Stand ausgeben\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n}"
+        },
+        {
+          "id": "ef-proj-e2", "title": "Meilenstein 2: Abheben mit Prüfung", "difficulty": "mittel",
+          "prompt_html": "Vervollständige <code>abheben</code>: nur abheben, wenn genug Guthaben da ist — sonst <code>\"Nicht genug Guthaben\"</code> ausgeben. Wird mit zwei Beträgen getestet (Konto hat 100.0).",
+          "tests": [
+            { "stdin": "50", "expected": "Abgehoben: 50.0, Stand: 50.0" },
+            { "stdin": "150", "expected": "Nicht genug Guthaben" }
+          ],
+          "tip_html": "<code>if (betrag <= stand) { ... } else { System.out.println(\"Nicht genug Guthaben\"); }</code>",
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        double betrag = new Scanner(System.in).nextDouble();\n        k.abheben(betrag);\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    void abheben(double betrag) {\n        if (betrag <= stand) {\n            stand = stand - betrag;\n            System.out.println(\"Abgehoben: \" + betrag + \", Stand: \" + stand);\n        } else {\n            System.out.println(\"Nicht genug Guthaben\");\n        }\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Konto k = new Konto();\n        k.einzahlen(100.0);\n        double betrag = new Scanner(System.in).nextDouble();\n        k.abheben(betrag);\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n\n    void abheben(double betrag) {\n        // TODO: nur abheben wenn betrag <= stand, sonst \"Nicht genug Guthaben\"\n    }\n}"
+        },
+        {
+          "id": "ef-proj-e3", "title": "Meilenstein 3: Sparkonto verzinsen", "difficulty": "mittel",
+          "prompt_html": "Vervollständige <code>verzinsen</code> in <code>Sparkonto</code>: berechne den neuen Stand mit <code>satz</code> Prozent Zinsen auf <code>1000.0</code> Startguthaben. Der Zinssatz wird eingelesen und mit mehreren Werten getestet.",
+          "tests": [
+            { "stdin": "5.0", "expected": "Stand: 1050.0" },
+            { "stdin": "10.0", "expected": "Stand: 1100.0" }
+          ],
+          "tip_html": "Zinsen berechnen: <code>stand = stand + stand * satz / 100;</code>",
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double satz = new Scanner(System.in).nextDouble();\n        Sparkonto s = new Sparkonto();\n        s.einzahlen(1000.0);\n        s.verzinsen(satz);\n        System.out.println(\"Stand: \" + s.stand);\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n}\n\nclass Sparkonto extends Konto {\n    void verzinsen(double satz) {\n        stand = stand + stand * satz / 100;\n    }\n}",
+          "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        double satz = new Scanner(System.in).nextDouble();   // Eingabe (gegeben)\n        Sparkonto s = new Sparkonto();\n        s.einzahlen(1000.0);\n        s.verzinsen(satz);\n        System.out.println(\"Stand: \" + s.stand);\n    }\n}\n\nclass Konto {\n    double stand;\n\n    void einzahlen(double betrag) {\n        stand = stand + betrag;\n    }\n}\n\nclass Sparkonto extends Konto {\n    void verzinsen(double satz) {\n        // TODO: stand um satz Prozent erhöhen\n    }\n}"
+        }
+      ]
     },
 
     {
@@ -630,6 +713,7 @@
           "prompt_html": "Berechne die Summe aller Zahlen im Array und gib sie aus.",
           "expected": "Summe: 108",
           "tip_html": "Initialisiere <code>summe = 0</code> und addiere in einer <code>for</code>-Schleife jedes Element hinzu.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 4, 8, 15, 16, 23, 42 };\n        int summe = 0;\n        for (int z : zahlen) {\n            summe += z;\n        }\n        System.out.println(\"Summe: \" + summe);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 4, 8, 15, 16, 23, 42 };\n        int summe = 0;\n        // Schleife über alle Elemente\n        System.out.println(\"Summe: \" + summe);\n    }\n}"
         },
         {
@@ -637,6 +721,7 @@
           "prompt_html": "Vervollständige <code>akt</code>: das ist der Wert, der in jedem Durchlauf an die richtige Stelle im bereits sortierten Teil einsortiert wird.",
           "expected": "1 2 5 5 6 9",
           "tip_html": "<code>akt</code> ist einfach das aktuell zu betrachtende Element: <code>zahlen[i]</code>.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 5, 2, 9, 1, 5, 6 };\n\n        for (int i = 1; i < zahlen.length; i++) {\n            int akt = zahlen[i];\n            int j = i - 1;\n            while (j >= 0 && zahlen[j] > akt) {\n                zahlen[j + 1] = zahlen[j];\n                j--;\n            }\n            zahlen[j + 1] = akt;\n        }\n\n        for (int x : zahlen) System.out.print(x + \" \");\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        int[] zahlen = { 5, 2, 9, 1, 5, 6 };\n\n        for (int i = 1; i < zahlen.length; i++) {\n            int akt;   // TODO: akt = zahlen[i]; setzen\n            int j = i - 1;\n            while (j >= 0 && zahlen[j] > akt) {\n                zahlen[j + 1] = zahlen[j];\n                j--;\n            }\n            zahlen[j + 1] = akt;\n        }\n\n        for (int x : zahlen) System.out.print(x + \" \");\n    }\n}"
         },
         {
@@ -644,6 +729,7 @@
           "prompt_html": "Vervollständige <code>groesse()</code>: laufe vom <code>kopf</code> über die <code>next</code>-Referenzen bis <code>null</code> und zähle die Knoten. Erwartet: <code>3</code>.",
           "expected": "3",
           "tip_html": "Starte mit <code>Knoten k = kopf;</code> und <code>int n = 0;</code>. Solange <code>k != null</code>: <code>n++</code> und <code>k = k.next;</code>.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Liste l = new Liste();\n        l.anhaengen(10);\n        l.anhaengen(20);\n        l.anhaengen(30);\n        System.out.println(l.groesse());\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Liste {\n    Knoten kopf;\n\n    void anhaengen(int wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) { kopf = neu; return; }\n        Knoten k = kopf;\n        while (k.next != null) { k = k.next; }\n        k.next = neu;\n    }\n\n    int groesse() {\n        int n = 0;\n        Knoten k = kopf;\n        while (k != null) {\n            n++;\n            k = k.next;\n        }\n        return n;\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Liste l = new Liste();\n        l.anhaengen(10);\n        l.anhaengen(20);\n        l.anhaengen(30);\n        System.out.println(l.groesse());\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Liste {\n    Knoten kopf;\n\n    void anhaengen(int wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) { kopf = neu; return; }\n        Knoten k = kopf;\n        while (k.next != null) { k = k.next; }\n        k.next = neu;\n    }\n\n    int groesse() {\n        int n = 0;\n        // TODO: von kopf über next bis null laufen und zählen\n        return n;\n    }\n}"
         },
         {
@@ -651,6 +737,7 @@
           "prompt_html": "Prüfe mit deinem <strong>eigenen</strong> <code>Stapel</code> (keine Bibliothek!), ob die Klammern in <code>text</code> ausgeglichen sind: jede öffnende <code>(</code> braucht eine passende schließende <code>)</code>.",
           "expected": "Ausgeglichen",
           "tip_html": "Bei <code>(</code>: <code>stapel.push(1)</code>. Bei <code>)</code>: wenn <code>istLeer()</code>, ist es nicht ausgeglichen — sonst <code>stapel.pop()</code>.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        String text = \"(()())\";\n        Stapel stapel = new Stapel();\n        boolean ok = true;\n\n        for (char c : text.toCharArray()) {\n            if (c == '(') {\n                stapel.push(1);\n            } else if (c == ')') {\n                if (stapel.istLeer()) {\n                    ok = false;\n                } else {\n                    stapel.pop();\n                }\n            }\n        }\n        if (!stapel.istLeer()) ok = false;\n\n        System.out.println(ok ? \"Ausgeglichen\" : \"Nicht ausgeglichen\");\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Stapel {\n    private Knoten oben;\n    void push(int wert) {\n        Knoten neu = new Knoten(wert);\n        neu.next = oben;\n        oben = neu;\n    }\n    int pop() {\n        int wert = oben.wert;\n        oben = oben.next;\n        return wert;\n    }\n    boolean istLeer() { return oben == null; }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        String text = \"(()())\";\n        Stapel stapel = new Stapel();\n        boolean ok = true;\n\n        for (char c : text.toCharArray()) {\n            if (c == '(') {\n                stapel.push(1);\n            } else if (c == ')') {\n                // TODO: Stapel leer? -> nicht ausgeglichen. Sonst: pop()\n            }\n        }\n        if (!stapel.istLeer()) ok = false;\n\n        System.out.println(ok ? \"Ausgeglichen\" : \"Nicht ausgeglichen\");\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten next;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Stapel {\n    private Knoten oben;\n    void push(int wert) {\n        Knoten neu = new Knoten(wert);\n        neu.next = oben;\n        oben = neu;\n    }\n    int pop() {\n        int wert = oben.wert;\n        oben = oben.next;\n        return wert;\n    }\n    boolean istLeer() { return oben == null; }\n}"
         },
         {
@@ -658,6 +745,7 @@
           "prompt_html": "Vervollständige den Sonderfall in <code>einreihen()</code>: wenn die Schlange noch leer ist, müssen <code>kopf</code> <em>und</em> <code>ende</code> auf das neue Element zeigen. Gib danach alle Namen in FIFO-Reihenfolge aus.",
           "expected": "Anna\nBen\nCem",
           "tip_html": "Ist die Schlange leer (<code>kopf == null</code>), ist das neue Element gleichzeitig Anfang <em>und</em> Ende: <code>kopf = neu; ende = neu;</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Schlange s = new Schlange();\n        s.einreihen(\"Anna\");\n        s.einreihen(\"Ben\");\n        s.einreihen(\"Cem\");\n        while (!s.istLeer()) {\n            System.out.println(s.entfernen());\n        }\n    }\n}\n\nclass Knoten {\n    String wert;\n    Knoten next;\n    Knoten(String wert) { this.wert = wert; }\n}\n\nclass Schlange {\n    private Knoten kopf, ende;\n\n    void einreihen(String wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) {\n            kopf = neu;\n            ende = neu;\n        } else {\n            ende.next = neu;\n            ende = neu;\n        }\n    }\n\n    String entfernen() {\n        String wert = kopf.wert;\n        kopf = kopf.next;\n        if (kopf == null) ende = null;\n        return wert;\n    }\n\n    boolean istLeer() { return kopf == null; }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Schlange s = new Schlange();\n        s.einreihen(\"Anna\");\n        s.einreihen(\"Ben\");\n        s.einreihen(\"Cem\");\n        while (!s.istLeer()) {\n            System.out.println(s.entfernen());\n        }\n    }\n}\n\nclass Knoten {\n    String wert;\n    Knoten next;\n    Knoten(String wert) { this.wert = wert; }\n}\n\nclass Schlange {\n    private Knoten kopf, ende;\n\n    void einreihen(String wert) {\n        Knoten neu = new Knoten(wert);\n        if (kopf == null) {\n            // TODO: Schlange war leer -> kopf UND ende auf 'neu' setzen\n        } else {\n            ende.next = neu;\n            ende = neu;\n        }\n    }\n\n    String entfernen() {\n        String wert = kopf.wert;\n        kopf = kopf.next;\n        if (kopf == null) ende = null;\n        return wert;\n    }\n\n    boolean istLeer() { return kopf == null; }\n}"
         },
         {
@@ -665,6 +753,7 @@
           "prompt_html": "Vervollständige <code>einfuegenRek</code>, sodass die Werte als binärer Suchbaum eingefügt werden. Der <code>inorder</code>-Durchlauf gibt sie dann sortiert aus.",
           "expected": "1 3 4 5 8",
           "tip_html": "Ist <code>wert</code> kleiner als <code>k.wert</code>, geht es links weiter: <code>k.links = einfuegenRek(k.links, wert);</code> — sonst rechts.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        b.inorder(b.wurzel);\n        System.out.println();\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) {\n        wurzel = einfuegenRek(wurzel, wert);\n    }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        if (wert < k.wert) k.links = einfuegenRek(k.links, wert);\n        else k.rechts = einfuegenRek(k.rechts, wert);\n        return k;\n    }\n    void inorder(Knoten k) {\n        if (k == null) return;\n        inorder(k.links);\n        System.out.print(k.wert + \" \");\n        inorder(k.rechts);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        b.inorder(b.wurzel);\n        System.out.println();\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) {\n        wurzel = einfuegenRek(wurzel, wert);\n    }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        // TODO: wert < k.wert -> links einfügen, sonst -> rechts einfügen\n        return k;\n    }\n    void inorder(Knoten k) {\n        if (k == null) return;\n        inorder(k.links);\n        System.out.print(k.wert + \" \");\n        inorder(k.rechts);\n    }\n}"
         },
         {
@@ -672,6 +761,7 @@
           "prompt_html": "Vervollständige <code>suchenRek</code> für den Fall, dass <code>wert</code> größer als <code>k.wert</code> ist. Prüfe, ob <code>4</code> und <code>7</code> im Baum enthalten sind.",
           "expected": "true\nfalse",
           "tip_html": "Genau wie beim Einfügen: ist <code>wert</code> größer, geht die Suche rechts weiter — <code>return suchenRek(k.rechts, wert);</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        System.out.println(b.suchen(4));\n        System.out.println(b.suchen(7));\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) { wurzel = einfuegenRek(wurzel, wert); }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        if (wert < k.wert) k.links = einfuegenRek(k.links, wert);\n        else k.rechts = einfuegenRek(k.rechts, wert);\n        return k;\n    }\n    boolean suchen(int wert) { return suchenRek(wurzel, wert); }\n    boolean suchenRek(Knoten k, int wert) {\n        if (k == null) return false;\n        if (wert == k.wert) return true;\n        if (wert < k.wert) return suchenRek(k.links, wert);\n        return suchenRek(k.rechts, wert);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        Baum b = new Baum();\n        int[] werte = {5, 3, 8, 1, 4};\n        for (int w : werte) b.einfuegen(w);\n        System.out.println(b.suchen(4));\n        System.out.println(b.suchen(7));\n    }\n}\n\nclass Knoten {\n    int wert;\n    Knoten links, rechts;\n    Knoten(int wert) { this.wert = wert; }\n}\n\nclass Baum {\n    Knoten wurzel;\n    void einfuegen(int wert) { wurzel = einfuegenRek(wurzel, wert); }\n    Knoten einfuegenRek(Knoten k, int wert) {\n        if (k == null) return new Knoten(wert);\n        if (wert < k.wert) k.links = einfuegenRek(k.links, wert);\n        else k.rechts = einfuegenRek(k.rechts, wert);\n        return k;\n    }\n    boolean suchen(int wert) { return suchenRek(wurzel, wert); }\n    boolean suchenRek(Knoten k, int wert) {\n        if (k == null) return false;\n        if (wert == k.wert) return true;\n        if (wert < k.wert) return suchenRek(k.links, wert);\n        // TODO: sonst -> rechts weitersuchen\n        return false;\n    }\n}"
         },
         {
@@ -679,6 +769,7 @@
           "prompt_html": "Gib die Nachbarn des Knotens in <code>start</code> aus, getrennt durch <code>\", \"</code>.",
           "expected": "B, C",
           "tip_html": "<code>graph.get(start)</code> liefert die Liste der Nachbarn. Mit <code>String.join(\", \", liste)</code> verbindest du sie zu einem String.",
+          "solution": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, List<String>> graph = new HashMap<>();\n        graph.put(\"A\", Arrays.asList(\"B\", \"C\"));\n        graph.put(\"B\", Arrays.asList(\"A\", \"D\"));\n        graph.put(\"C\", Arrays.asList(\"A\"));\n        graph.put(\"D\", Arrays.asList(\"B\"));\n\n        String start = \"A\";\n        System.out.println(String.join(\", \", graph.get(start)));\n    }\n}",
           "starter": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Map<String, List<String>> graph = new HashMap<>();\n        graph.put(\"A\", Arrays.asList(\"B\", \"C\"));\n        graph.put(\"B\", Arrays.asList(\"A\", \"D\"));\n        graph.put(\"C\", Arrays.asList(\"A\"));\n        graph.put(\"D\", Arrays.asList(\"B\"));\n\n        String start = \"A\";\n        // TODO: Nachbarn von 'start' ausgeben, getrennt durch \", \"\n    }\n}"
         }
       ]
@@ -733,6 +824,7 @@
             { "stdin": "1", "expected": "1" }
           ],
           "tip_html": "Basisfall: <code>n <= 1</code> liefert <code>1</code>. Sonst: <code>n * fakultaet(n - 1)</code>.",
+          "solution": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();\n        System.out.println(fakultaet(n));\n    }\n\n    static int fakultaet(int n) {\n        if (n <= 1) return 1;\n        return n * fakultaet(n - 1);\n    }\n}",
           "starter": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        int n = new Scanner(System.in).nextInt();   // Eingabe (gegeben)\n        System.out.println(fakultaet(n));\n    }\n\n    static int fakultaet(int n) {\n        // TODO: Basisfall (n <= 1 -> 1) + rekursiver Aufruf (n * fakultaet(n-1))\n        return 0;\n    }\n}"
         },
         {
@@ -740,6 +832,7 @@
           "prompt_html": "Vervollständige <code>zugAnzahl</code> rekursiv: die Anzahl der Züge für <code>n</code> Scheiben ist <code>2 · zugAnzahl(n-1) + 1</code>. Gib die Anzahl für <code>n = 3</code> aus.",
           "expected": "7",
           "tip_html": "Basisfall <code>n == 0</code> liefert <code>0</code> Züge. Sonst: <code>return 2 * zugAnzahl(n - 1) + 1;</code>",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(zugAnzahl(3));\n    }\n\n    static int zugAnzahl(int n) {\n        if (n == 0) return 0;\n        return 2 * zugAnzahl(n - 1) + 1;\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(zugAnzahl(3));\n    }\n\n    static int zugAnzahl(int n) {\n        if (n == 0) return 0;\n        // TODO: 2 * zugAnzahl(n - 1) + 1 zurückgeben\n        return 0;\n    }\n}"
         }
       ]
@@ -813,6 +906,7 @@
           "prompt_html": "Vervollständige den regulären Ausdruck: eine gültige deutsche Postleitzahl besteht aus <strong>genau 5 Ziffern</strong>.",
           "expected": "53111: true\n5311: false\nBonn5: false",
           "tip_html": "Ziffer: <code>[0-9]</code>. Genau 5-mal: <code>{5}</code>. Zusammen: <code>\"[0-9]{5}\"</code>.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        String[] eingaben = { \"53111\", \"5311\", \"Bonn5\" };\n\n        for (String e : eingaben) {\n            boolean gueltig = e.matches(\"[0-9]{5}\");\n            System.out.println(e + \": \" + gueltig);\n        }\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        String[] eingaben = { \"53111\", \"5311\", \"Bonn5\" };\n\n        for (String e : eingaben) {\n            boolean gueltig = e.matches(\"\");   // TODO: Regex für genau 5 Ziffern\n            System.out.println(e + \": \" + gueltig);\n        }\n    }\n}"
         },
         {
@@ -820,6 +914,7 @@
           "prompt_html": "Verschlüssle <code>text</code> mit einer Caesar-Verschiebung um <code>shift</code> Stellen (nur Großbuchstaben A–Z, mit Umbruch von Z zu A).",
           "expected": "KDOOR",
           "tip_html": "Die Formel: <code>(c - 'A' + shift) % 26</code> liefert die neue Position im Alphabet, <code>(char)('A' + verschoben)</code> den neuen Buchstaben.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        String text = \"HALLO\";\n        int shift = 3;\n        StringBuilder result = new StringBuilder();\n\n        for (char c : text.toCharArray()) {\n            int verschoben = (c - 'A' + shift) % 26;\n            result.append((char) ('A' + verschoben));\n        }\n        System.out.println(result);\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        String text = \"HALLO\";\n        int shift = 3;\n        StringBuilder result = new StringBuilder();\n\n        for (char c : text.toCharArray()) {\n            // TODO: verschoben berechnen und neuen Buchstaben anhängen\n        }\n        System.out.println(result);\n    }\n}"
         },
         {
@@ -827,6 +922,7 @@
           "prompt_html": "Simuliere das Drehkreuz: für jedes Ereignis in <code>ereignisse</code> wird <code>zustand</code> aktualisiert und ausgegeben.",
           "expected": "Frei\nGesperrt\nGesperrt\nFrei\nFrei\nGesperrt",
           "tip_html": "Zwei Übergänge zählen: Gesperrt+Muenze → Frei, und Frei+Durchgehen → Gesperrt. Alles andere lässt den Zustand unverändert.",
+          "solution": "public class Main {\n    public static void main(String[] args) {\n        String zustand = \"Gesperrt\";\n        String[] ereignisse = {\"Muenze\", \"Durchgehen\", \"Durchgehen\", \"Muenze\", \"Muenze\", \"Durchgehen\"};\n\n        for (String ereignis : ereignisse) {\n            if (zustand.equals(\"Gesperrt\") && ereignis.equals(\"Muenze\")) {\n                zustand = \"Frei\";\n            } else if (zustand.equals(\"Frei\") && ereignis.equals(\"Durchgehen\")) {\n                zustand = \"Gesperrt\";\n            }\n            System.out.println(zustand);\n        }\n    }\n}",
           "starter": "public class Main {\n    public static void main(String[] args) {\n        String zustand = \"Gesperrt\";\n        String[] ereignisse = {\"Muenze\", \"Durchgehen\", \"Durchgehen\", \"Muenze\", \"Muenze\", \"Durchgehen\"};\n\n        for (String ereignis : ereignisse) {\n            if (zustand.equals(\"Gesperrt\") && ereignis.equals(\"Muenze\")) {\n                // TODO: zustand auf \"Frei\" setzen\n            } else if (zustand.equals(\"Frei\") && ereignis.equals(\"Durchgehen\")) {\n                // TODO: zustand auf \"Gesperrt\" setzen\n            }\n            System.out.println(zustand);\n        }\n    }\n}"
         }
       ]

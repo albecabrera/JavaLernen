@@ -157,7 +157,10 @@ if ($lang === 'python') {
         out(['ok' => false, 'phase' => 'compile',
              'stdout' => $c['stdout'], 'stderr' => trim($c['stderr']) ?: 'Kompilierfehler.']);
     }
-    $runCmd = ['java', '-XX:+UseSerialGC', '-Xss8m', '-Xmx128m', '-cp', '.', 'Main'];
+    /* -Duser.language/country=US: ohne das nutzt Scanner.nextDouble() das
+       Locale des Host-OS (hier de -> Komma statt Punkt als Dezimaltrenner),
+       was "100.0" als Eingabe zum Absturz bringt (InputMismatchException). */
+    $runCmd = ['java', '-Duser.language=en', '-Duser.country=US', '-XX:+UseSerialGC', '-Xss8m', '-Xmx128m', '-cp', '.', 'Main'];
 }
 $javaCmd = $runCmd; // nombre histórico, ya usado abajo
 

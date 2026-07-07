@@ -48,14 +48,19 @@
           "prompt_html": "Gib mit einem <strong>f-String</strong> und der Variable <code>name</code> den Gruß <code>Hallo, Alberto!</code> aus.",
           "expected": "Hallo, Alberto!",
           "tip_html": "Ein f-String: <code>print(f\"Hallo, {name}!\")</code>",
+          "solution": "name = \"Alberto\"\nprint(f\"Hallo, {name}!\")\n",
           "starter": "name = \"Alberto\"\n# TODO: gib \"Hallo, Alberto!\" mit einem f-String aus\n"
         },
         {
           "id": "py-0-e2", "title": "Rechnen und ausgeben", "difficulty": "leicht",
-          "prompt_html": "Berechne <code>7 * 6</code> und gib das Ergebnis im Format <code>Ergebnis: 42</code> aus.",
-          "expected": "Ergebnis: 42",
-          "tip_html": "<code>print(f\"Ergebnis: {7 * 6}\")</code>",
-          "starter": "# TODO: gib \"Ergebnis: 42\" aus (7 * 6 berechnen)\n"
+          "prompt_html": "Lies zwei Zahlen <code>a</code> und <code>b</code> ein, multipliziere sie und gib das Ergebnis im Format <code>Ergebnis: 42</code> aus. Wird mit mehreren Zahlenpaaren getestet.",
+          "tests": [
+            { "stdin": "7\n6", "expected": "Ergebnis: 42" },
+            { "stdin": "3\n5", "expected": "Ergebnis: 15" }
+          ],
+          "tip_html": "<code>print(f\"Ergebnis: {a * b}\")</code>",
+          "solution": "a = int(input())\nb = int(input())\nprint(f\"Ergebnis: {a * b}\")\n",
+          "starter": "a = int(input())   # Eingabe (gegeben)\nb = int(input())   # Eingabe (gegeben)\n# TODO: a * b berechnen und als \"Ergebnis: <zahl>\" ausgeben\n"
         }
       ]
     },
@@ -108,6 +113,7 @@
             { "stdin": "0", "expected": "0" }
           ],
           "tip_html": "Erst umwandeln, dann rechnen: <code>n = int(input())</code>, dann <code>print(n * 2)</code>.",
+          "solution": "n = int(input())\nprint(n * 2)\n",
           "starter": "n = int(input())   # Eingabe als Zahl (gegeben)\n# TODO: gib das Doppelte von n aus\n"
         }
       ]
@@ -175,6 +181,7 @@
             { "stdin": "0", "expected": "0 ist gerade" }
           ],
           "tip_html": "<code>z % 2 == 0</code> ist wahr, wenn <code>z</code> gerade ist. Ausgabe z. B. mit f-String: <code>print(f\"{z} ist gerade\")</code>.",
+          "solution": "z = int(input())\n\nif z % 2 == 0:\n    print(f\"{z} ist gerade\")\nelse:\n    print(f\"{z} ist ungerade\")\n",
           "starter": "z = int(input())   # Eingabe (gegeben)\n\n# TODO: gib aus, ob z gerade oder ungerade ist\n#       Format:  <z> ist gerade   bzw.   <z> ist ungerade\n"
         },
         {
@@ -186,6 +193,7 @@
             { "stdin": "1", "expected": "Summe: 1" }
           ],
           "tip_html": "<code>for i in range(1, n + 1):</code> läuft von 1 bis n. In der Schleife: <code>summe += i</code>.",
+          "solution": "n = int(input())\nsumme = 0\n\nfor i in range(1, n + 1):\n    summe += i\n\nprint(f\"Summe: {summe}\")\n",
           "starter": "n = int(input())   # Eingabe (gegeben)\nsumme = 0\n\nfor i in range(1, n + 1):\n    # TODO: i zur summe addieren\n    pass\n\nprint(f\"Summe: {summe}\")\n"
         }
       ]
@@ -220,6 +228,7 @@
           "prompt_html": "Berechne die Summe aller Zahlen in der Liste <code>zahlen</code> und gib sie im Format <code>Summe: 108</code> aus.",
           "expected": "Summe: 108",
           "tip_html": "Durchlaufe die Liste mit <code>for z in zahlen:</code> und addiere jedes <code>z</code>. (Oder direkt <code>sum(zahlen)</code>.)",
+          "solution": "zahlen = [4, 8, 15, 16, 23, 42]\nsumme = 0\n\nfor z in zahlen:\n    summe += z\n\nprint(f\"Summe: {summe}\")\n",
           "starter": "zahlen = [4, 8, 15, 16, 23, 42]\nsumme = 0\n\n# TODO: alle Elemente aufaddieren\n\nprint(f\"Summe: {summe}\")\n"
         }
       ]
@@ -258,6 +267,7 @@
             { "stdin": "1", "expected": "1" }
           ],
           "tip_html": "<code>return n * n</code> im Funktionskörper.",
+          "solution": "def quadrat(n):\n    return n * n\n\nprint(quadrat(int(input())))\n",
           "starter": "def quadrat(n):\n    # TODO: das Quadrat von n zurückgeben\n    pass\n\nprint(quadrat(int(input())))\n"
         }
       ]
@@ -289,10 +299,14 @@
       "exercises": [
         {
           "id": "py-5-e1", "title": "Klasse Hund", "difficulty": "mittel",
-          "prompt_html": "Vervollständige die Methode <code>bellen()</code>, sodass sie <code>Rex sagt: Wuff!</code> ausgibt (mit dem Namen des Objekts).",
-          "expected": "Rex sagt: Wuff!",
+          "prompt_html": "Vervollständige die Methode <code>bellen()</code>, sodass sie <code>&lt;name&gt; sagt: Wuff!</code> ausgibt. Der Name wird eingelesen und mit mehreren Namen getestet.",
+          "tests": [
+            { "stdin": "Rex", "expected": "Rex sagt: Wuff!" },
+            { "stdin": "Bello", "expected": "Bello sagt: Wuff!" }
+          ],
           "tip_html": "Greife über <code>self.name</code> auf den Namen zu: <code>print(f\"{self.name} sagt: Wuff!\")</code>",
-          "starter": "class Hund:\n    def __init__(self, name):\n        self.name = name\n\n    def bellen(self):\n        # TODO: \"<name> sagt: Wuff!\" ausgeben\n        pass\n\nh = Hund(\"Rex\")\nh.bellen()\n"
+          "solution": "class Hund:\n    def __init__(self, name):\n        self.name = name\n\n    def bellen(self):\n        print(f\"{self.name} sagt: Wuff!\")\n\nname = input()\nh = Hund(name)\nh.bellen()\n",
+          "starter": "class Hund:\n    def __init__(self, name):\n        self.name = name\n\n    def bellen(self):\n        # TODO: \"<name> sagt: Wuff!\" ausgeben\n        pass\n\nname = input()   # Eingabe (gegeben)\nh = Hund(name)\nh.bellen()\n"
         }
       ]
     },
@@ -303,17 +317,68 @@
       "project": {
         "tag": "Kapitel-Projekt",
         "title": "Zahlenraten-Spiel",
-        "intro": "Du beherrschst jetzt Ein-/Ausgabe, Verzweigungen, Schleifen, Funktionen und Klassen. Zeit, alles in einem kleinen Spiel zu verbinden.",
-        "description_html": "Baue ein Ratespiel: das Programm denkt sich eine Zahl (z. B. <code>42</code>), der Spieler rät per <code>input()</code>. Nach jedem Versuch gibt das Programm <code>zu hoch</code> / <code>zu niedrig</code> aus (mit <code>if</code>), bis die Zahl stimmt — gezählt mit einer <code>while</code>-Schleife. Erweiterung: als Klasse <code>Spiel</code> mit Methoden kapseln.",
-        "duration": "≈ 30 Min.",
-        "reward_xp": 150,
-        "stats": [
-          { "value": "+150", "label": "XP verdient" },
-          { "value": "6 / 6", "label": "Kapitel" },
-          { "value": "—", "label": "Genauigkeit" }
-        ]
+        "intro": "Du beherrschst jetzt Ein-/Ausgabe, Verzweigungen, Schleifen, Funktionen und Klassen. Zeit, alles in einem kleinen Spiel zu verbinden — in drei Meilensteinen.",
+        "description_html": "Baue ein Ratespiel: das Programm denkt sich eine Zahl aus (hier fest <code>42</code>, damit sie testbar bleibt), der Spieler rät per <code>input()</code>. Nach jedem Versuch: <code>zu hoch</code> / <code>zu niedrig</code>, bis die Zahl stimmt. Am Ende kapselst du alles in einer Klasse <code>Spiel</code>.",
+        "duration": "≈ 25 Min.",
+        "reward_xp": 60
       },
-      "lessons": [], "exercises": []
+      "lessons": [
+        {
+          "id": "py-proj-1", "num": "P.1", "title": "Meilenstein 1: Die Rateschleife", "readTime": "≈ 6 Min.",
+          "blocks": [
+            { "type": "p", "html": "Der Kern jedes Ratespiels: eine <code>while</code>-Schleife, die läuft, <strong>solange</strong> der Versuch nicht der geheimen Zahl entspricht." },
+            { "type": "code", "file": "main.py", "code": "geheim = 42\nversuch = int(input())\n\nwhile versuch != geheim:\n    if versuch < geheim:\n        print(\"zu niedrig\")\n    else:\n        print(\"zu hoch\")\n    versuch = int(input())\n\nprint(\"Richtig!\")" },
+            { "type": "callout", "variant": "warn", "title": "Warum fest statt zufällig?", "html": "Ein echtes Spiel würde <code>random.randint(1, 100)</code> nutzen. Hier ist die Zahl bewusst <strong>fest</strong> (<code>42</code>) — damit dein Code automatisch mit festen Eingaben geprüft werden kann." }
+          ]
+        },
+        {
+          "id": "py-proj-2", "num": "P.2", "title": "Meilenstein 2: Versuche zählen", "readTime": "≈ 5 Min.",
+          "blocks": [
+            { "type": "p", "html": "Ein gutes Ratespiel sagt dir am Ende, wie viele Versuche du gebraucht hast — ein einfacher <strong>Zähler</strong>, der bei jedem Versuch um 1 steigt." },
+            { "type": "code", "file": "main.py", "code": "versuche = 0\n\nversuch = int(input())\nversuche += 1\nwhile versuch != geheim:\n    # ... zu hoch/zu niedrig ...\n    versuch = int(input())\n    versuche += 1\n\nprint(f\"Richtig! Versuche: {versuche}\")" }
+          ]
+        },
+        {
+          "id": "py-proj-3", "num": "P.3", "title": "Meilenstein 3: Spiel als Klasse", "readTime": "≈ 7 Min.",
+          "blocks": [
+            { "type": "p", "html": "Zum Schluss kapselst du die Logik in einer Klasse — die geheime Zahl wird zum <strong>Attribut</strong>, das Prüfen zu einer <strong>Methode</strong>, die einen Text zurückgibt." },
+            { "type": "code", "file": "main.py", "code": "class Spiel:\n    def __init__(self, geheim):\n        self.geheim = geheim\n\n    def raten(self, versuch):\n        if versuch == self.geheim:\n            return \"richtig\"\n        elif versuch < self.geheim:\n            return \"zu niedrig\"\n        else:\n            return \"zu hoch\"\n\nspiel = Spiel(42)\nprint(spiel.raten(30))   # zu niedrig" },
+            { "type": "callout", "variant": "info", "title": "Warum eine Klasse?", "html": "Als Klasse könntest du mehrere <code>Spiel</code>-Objekte gleichzeitig laufen lassen (z. B. für mehrere Spieler) — jedes mit seiner eigenen geheimen Zahl. Das geht mit einzelnen Variablen nicht." }
+          ]
+        }
+      ],
+      "exercises": [
+        {
+          "id": "py-proj-e1", "title": "Meilenstein 1: Rateschleife vervollständigen", "difficulty": "mittel",
+          "prompt_html": "Vervollständige die Ausgabe in der Schleife: <code>\"zu niedrig\"</code> wenn der Versuch kleiner als <code>geheim</code> ist, sonst <code>\"zu hoch\"</code>. Wird mit verschiedenen Rate-Folgen getestet.",
+          "tests": [
+            { "stdin": "42", "expected": "Richtig!" },
+            { "stdin": "30\n42", "expected": "zu niedrig\nRichtig!" },
+            { "stdin": "30\n50\n42", "expected": "zu niedrig\nzu hoch\nRichtig!" }
+          ],
+          "tip_html": "<code>if versuch < geheim: print(\"zu niedrig\")</code>, sonst <code>print(\"zu hoch\")</code>.",
+          "solution": "geheim = 42\nversuch = int(input())\n\nwhile versuch != geheim:\n    if versuch < geheim:\n        print(\"zu niedrig\")\n    else:\n        print(\"zu hoch\")\n    versuch = int(input())\n\nprint(\"Richtig!\")\n",
+          "starter": "geheim = 42\nversuch = int(input())\n\nwhile versuch != geheim:\n    # TODO: \"zu niedrig\" ausgeben wenn versuch < geheim, sonst \"zu hoch\"\n    versuch = int(input())\n\nprint(\"Richtig!\")\n"
+        },
+        {
+          "id": "py-proj-e2", "title": "Meilenstein 2: Versuche zählen", "difficulty": "leicht",
+          "prompt_html": "Vervollständige den Zähler <code>versuche</code>: er soll bei jedem Rateversuch um 1 steigen.",
+          "tests": [
+            { "stdin": "30\n50\n42", "expected": "zu niedrig\nzu hoch\nRichtig! Versuche: 3" }
+          ],
+          "tip_html": "Nach jedem <code>input()</code>-Aufruf: <code>versuche += 1</code> — einmal vor der Schleife, einmal am Ende des Schleifenkörpers.",
+          "solution": "geheim = 42\nversuche = 0\n\nversuch = int(input())\nversuche += 1\n\nwhile versuch != geheim:\n    if versuch < geheim:\n        print(\"zu niedrig\")\n    else:\n        print(\"zu hoch\")\n    versuch = int(input())\n    versuche += 1\n\nprint(f\"Richtig! Versuche: {versuche}\")\n",
+          "starter": "geheim = 42\nversuche = 0\n\nversuch = int(input())\n# TODO: versuche erhöhen\n\nwhile versuch != geheim:\n    if versuch < geheim:\n        print(\"zu niedrig\")\n    else:\n        print(\"zu hoch\")\n    versuch = int(input())\n    # TODO: versuche erhöhen\n\nprint(f\"Richtig! Versuche: {versuche}\")\n"
+        },
+        {
+          "id": "py-proj-e3", "title": "Meilenstein 3: Spiel-Klasse", "difficulty": "mittel",
+          "prompt_html": "Vervollständige die Methode <code>raten</code>: sie soll <code>\"richtig\"</code>, <code>\"zu niedrig\"</code> oder <code>\"zu hoch\"</code> zurückgeben.",
+          "expected": "zu niedrig\nzu hoch\nrichtig",
+          "tip_html": "Wie ein Vergleich, nur mit <code>return</code> statt <code>print</code>: <code>return \"zu niedrig\"</code> usw.",
+          "solution": "class Spiel:\n    def __init__(self, geheim):\n        self.geheim = geheim\n\n    def raten(self, versuch):\n        if versuch == self.geheim:\n            return \"richtig\"\n        elif versuch < self.geheim:\n            return \"zu niedrig\"\n        else:\n            return \"zu hoch\"\n\nspiel = Spiel(42)\nprint(spiel.raten(30))\nprint(spiel.raten(50))\nprint(spiel.raten(42))\n",
+          "starter": "class Spiel:\n    def __init__(self, geheim):\n        self.geheim = geheim\n\n    def raten(self, versuch):\n        # TODO: \"richtig\"/\"zu niedrig\"/\"zu hoch\" zurückgeben\n        pass\n\nspiel = Spiel(42)\nprint(spiel.raten(30))\nprint(spiel.raten(50))\nprint(spiel.raten(42))\n"
+        }
+      ]
     }
   ]
 }

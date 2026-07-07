@@ -26,6 +26,8 @@
     if (active) active.focus({ preventScroll: true });
     closeNav();
     location.hash = view;
+    // la pantalla Projekt muestra stats reales — refrescar cada vez que se entra
+    if (view === 'project' && activeChapter && activeChapter.isProject) renderProject(activeChapter);
   }
 
   // tabs de la topbar
@@ -613,12 +615,34 @@
     if (btn && activeChapter) selectExercise(activeChapter, Number(btn.dataset.exIdx));
   });
 
+  let hintLevel = 0, solutionShown = false;
+
+  function helpBlockHTML(ex) {
+    const hints = Array.isArray(ex.hints) ? ex.hints : [];
+    let html = '';
+    if (ex.tip_html) html += `<div class="prompt-tip"><span>💡</span><div><div class="c-title">Tipp</div><div class="c-body">${ex.tip_html}</div></div></div>`;
+    if (hints.length) {
+      const shown = hints.slice(0, hintLevel);
+      html += shown.map((h, i) => `<div class="prompt-tip hint"><span>💡</span><div><div class="c-title">Tipp ${i + 2}</div><div class="c-body">${h}</div></div></div>`).join('');
+      if (hintLevel < hints.length) {
+        html += `<button class="btn btn-ghost hint-btn" id="moreHintBtn">Weiteren Tipp zeigen (${hintLevel + 1}/${hints.length + 1})</button>`;
+      }
+    }
+    if (ex.solution) {
+      html += solutionShown
+        ? `<div class="solution-box"><div class="solution-hd">🔓 Lösung</div><pre class="mono">${highlight(ex.solution)}</pre></div>`
+        : `<button class="btn btn-ghost solution-btn" id="showSolutionBtn">🔒 Lösung anzeigen</button>`;
+    }
+    return html;
+  }
+
   function renderExercise(ch) {
     const p = $('#exPrompt');
     const n = (ch.exercises || []).length;
     activeExerciseIndex = Math.max(0, Math.min(activeExerciseIndex, n - 1));
     const ex = ch.exercises && ch.exercises[activeExerciseIndex];
     if (!ex) { activeExercise = null; if (p) p.innerHTML = '<p class="prompt-p">Keine Übung in diesem Kapitel.</p>'; return; }
+    if (activeExercise !== ex) { hintLevel = 0; solutionShown = false; } // reset al cambiar de ejercicio
     activeExercise = ex; EXPECTED = ex.expected;
     const pills = n > 1 ? `<div class="les-pills">` + ch.exercises.map((e, i) =>
       `<button class="les-pill${i === activeExerciseIndex ? ' active' : ''}" data-ex-idx="${i}">${i + 1}</button>`).join('') + `</div>` : '';
@@ -630,10 +654,18 @@
       `<div><span class="prompt-tag">${esc(ch.nr)} · Übung</span><span class="prompt-diff">${esc(DIFF[ex.difficulty] || '')}</span></div>
        <h1 class="prompt-title">${esc(ex.title)}</h1>
        <p class="prompt-p">${ex.prompt_html}</p>
-       ${expectedBox}` +
-      (ex.tip_html ? `<div class="prompt-tip"><span>💡</span><div><div class="c-title">Tipp</div><div class="c-body">${ex.tip_html}</div></div></div>` : '');
+       ${expectedBox}
+       <div id="helpBlock">${helpBlockHTML(ex)}</div>`;
     if (code) { code.value = ex.starter || ''; paint(); }
     if (feedback) feedback.innerHTML = '';
+  }
+
+  $('#exPrompt')?.addEventListener('click', e => {
+    if (e.target.closest('#moreHintBtn')) { hintLevel++; renderHelpOnly(); }
+    if (e.target.closest('#showSolutionBtn')) { solutionShown = true; renderHelpOnly(); }
+  });
+  function renderHelpOnly() {
+    const hb = $('#helpBlock'); if (hb && activeExercise) hb.innerHTML = helpBlockHTML(activeExercise);
   }
 
   function openChapter(id, view, lessonIndex) {
@@ -642,7 +674,7 @@
     activeLessonIndex = lessonIndex != null ? lessonIndex : (ch.resumeLessonIndex || 0);
     activeExerciseIndex = 0;
     $$('#chapterNav [data-chapter]').forEach(b => b.setAttribute('aria-current', String(b.dataset.chapter === id)));
-    if (ch.isProject) { renderProject(ch); if (view) setView('project'); return; }
+    if (ch.isProject) renderProject(ch);
     renderLesson(ch); renderExercise(ch);
     if (view) setView(view);
   }
@@ -654,14 +686,25 @@
 
   function renderProject(ch) {
     const p = ch.project; if (!p) return;
-    $('#prTag').textContent = p.tag || 'Kapitel abgeschlossen';
+    const total = (ch.exercises || []).length;
+    const solved = (ch.exercises || []).filter(e => PROGRESS.solved[e.id]).length;
+    const done = total > 0 && solved === total;
+    $('#prTag').textContent = done ? '✓ Projekt abgeschlossen' : `Projekt · ${solved} / ${total} Meilensteine`;
     $('#prTitle').textContent = p.title;
     $('#prIntro').textContent = p.intro || '';
     $('#prDesc').innerHTML = p.description_html || '';
-    $('#prStats').innerHTML = (p.stats || []).map(s =>
+    // Stats REALES (era: números fijos del JSON, mostrados sin importar el progreso real)
+    const xpEarned = solved * XP_PER_EXERCISE;
+    $('#prStats').innerHTML = [
+      { value: `+${xpEarned}`, label: 'XP verdient' },
+      { value: `${solved} / ${total}`, label: 'Meilensteine' },
+    ].map(s =>
       `<div class="card" style="padding:16px 22px;min-width:110px"><div style="font-size:24px;font-weight:700;color:var(--accent)">${esc(s.value)}</div><div style="font-size:11.5px;color:var(--mut2)">${esc(s.label)}</div></div>`
     ).join('');
+    const btn = $('#prStartBtn');
+    if (btn) btn.textContent = done ? 'Nochmal ansehen ►' : (solved > 0 ? 'Weiter ►' : 'Projekt starten ►');
   }
+  $('#prStartBtn')?.addEventListener('click', () => { if (activeChapter) openChapter(activeChapter.id, 'lesson', 0); });
 
   /* ============================================================
      PROGRESO REAL (localStorage) — sin esto, streak/XP/badges eran
