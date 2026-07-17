@@ -38,18 +38,26 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $body   = file_get_contents('php://input');
 $json   = json_decode($body, true);
 $source = is_array($json) ? ($json['source'] ?? '') : '';
+$stdin  = is_array($json) ? (string) ($json['stdin'] ?? '') : '';
+if (strlen($stdin) > MAX_SOURCE_BYTES) $stdin = substr($stdin, 0, MAX_SOURCE_BYTES);
+// stdins[] = varios casos de prueba: compila 1 vez, ejecuta 1 vez por entrada.
+$stdins = (is_array($json) && isset($json['stdins']) && is_array($json['stdins']))
+    ? array_map(fn($s) => substr((string) $s, 0, MAX_SOURCE_BYTES), array_slice($json['stdins'], 0, 10))
+    : null;
+
+$lang = (is_array($json) && ($json['lang'] ?? '') === 'python') ? 'python' : 'java';
 
 if (!is_string($source) || $source === '') {
     http_response_code(400);
-    out(['ok' => false, 'phase' => 'request', 'stderr' => 'Kein Java-Quelltext übermittelt.']);
+    out(['ok' => false, 'phase' => 'request', 'stderr' => 'Kein Quelltext übermittelt.']);
 }
 if (strlen($source) > MAX_SOURCE_BYTES) {
     http_response_code(413);
     out(['ok' => false, 'phase' => 'request', 'stderr' => 'Quelltext zu groß.']);
 }
 
-/* javac exige que el archivo se llame como la clase public. El ejercicio usa Main. */
-if (!preg_match('/\bpublic\s+class\s+Main\b/', $source)) {
+/* Java: javac exige que el archivo se llame como la clase public (Main). */
+if ($lang === 'java' && !preg_match('/\bpublic\s+class\s+Main\b/', $source)) {
     out(['ok' => false, 'phase' => 'compile',
          'stderr' => "Die öffentliche Klasse muss 'Main' heißen (public class Main)."]);
 }
@@ -58,7 +66,7 @@ if (!preg_match('/\bpublic\s+class\s+Main\b/', $source)) {
 $work = sys_get_temp_dir() . '/jl_' . bin2hex(random_bytes(8));
 mkdir($work, 0700, true);
 register_shutdown_function(fn() => rrmdir($work));
-file_put_contents("$work/Main.java", $source);
+file_put_contents($lang === 'python' ? "$work/main.py" : "$work/Main.java", $source);
 
 const SANDBOX = __DIR__ . '/sandbox.sh';
 
@@ -67,18 +75,21 @@ const SANDBOX = __DIR__ . '/sandbox.sh';
  * mata el árbol de procesos al vencer.
  * @return array{code:int|null, stdout:string, stderr:string, timedOut:bool}
  */
-function run_cmd(array $argv, string $cwd, int $timeout): array {
+function run_cmd(array $argv, string $cwd, int $timeout, string $stdin = ''): array {
     // envolver en el sandbox: bash sandbox.sh WORKDIR CPU -- CMD...
     // el límite de CPU del rlimit = timeout wall (segunda línea; la primaria es el kill de abajo)
     $wrapped = array_merge(['bash', SANDBOX, $cwd, (string) $timeout, '--'], $argv);
 
-    $desc = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+    $desc = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
     $proc = proc_open($wrapped, $desc, $pipes, $cwd, [
         'PATH' => getenv('PATH') ?: '/usr/bin:/bin',
     ]);
     if (!is_resource($proc)) {
         return ['code' => null, 'stdout' => '', 'stderr' => 'Prozess-Start fehlgeschlagen.', 'timedOut' => false];
     }
+    // stdin: alimentar la entrada y cerrar → el programa recibe EOF (Scanner bloquea nicht ewig)
+    if ($stdin !== '') fwrite($pipes[0], $stdin);
+    fclose($pipes[0]);
     stream_set_blocking($pipes[1], false);
     stream_set_blocking($pipes[2], false);
 
@@ -108,6 +119,8 @@ function run_cmd(array $argv, string $cwd, int $timeout): array {
             fclose($pipes[1]); fclose($pipes[2]); proc_close($proc);
             // quitar el aviso del wrapper de sandbox (fallback dev) del stderr visible
             $stderr = preg_replace('/^WARN\[sandbox\]:.*\R?/m', '', $stderr);
+            // no filtrar la ruta temporal absoluta en tracebacks (python) / mensajes
+            $stderr = str_replace($cwd . '/', '', str_replace($cwd, '', $stderr));
             return [
                 'code' => $code,
                 'stdout' => substr($stdout, 0, RUN_MAX_OUTPUT),
@@ -131,25 +144,52 @@ function rrmdir(string $dir): void {
 
 $t0 = microtime(true);
 
-/* --- 1) COMPILAR --- */
-$c = run_cmd(['javac', '-encoding', 'UTF-8', 'Main.java'], $work, COMPILE_TIMEOUT);
-if ($c['timedOut']) {
-    out(['ok' => false, 'phase' => 'compile', 'stderr' => 'Kompilierung hat das Zeitlimit überschritten.']);
+if ($lang === 'python') {
+    /* Python: no hay paso de compilación separado, se ejecuta directo. */
+    $runCmd = ['python3', '-I', '-B', 'main.py']; // -I aislado, -B sin .pyc
+} else {
+    /* --- 1) COMPILAR (Java) --- */
+    $c = run_cmd(['javac', '-encoding', 'UTF-8', 'Main.java'], $work, COMPILE_TIMEOUT);
+    if ($c['timedOut']) {
+        out(['ok' => false, 'phase' => 'compile', 'stderr' => 'Kompilierung hat das Zeitlimit überschritten.']);
+    }
+    if (($c['code'] ?? 1) !== 0) {
+        out(['ok' => false, 'phase' => 'compile',
+             'stdout' => $c['stdout'], 'stderr' => trim($c['stderr']) ?: 'Kompilierfehler.']);
+    }
+    /* -Duser.language/country=US: ohne das nutzt Scanner.nextDouble() das
+       Locale des Host-OS (hier de -> Komma statt Punkt als Dezimaltrenner),
+       was "100.0" als Eingabe zum Absturz bringt (InputMismatchException). */
+    $runCmd = ['java', '-Duser.language=en', '-Duser.country=US', '-XX:+UseSerialGC', '-Xss8m', '-Xmx128m', '-cp', '.', 'Main'];
 }
-if (($c['code'] ?? 1) !== 0) {
-    out(['ok' => false, 'phase' => 'compile',
-         'stdout' => $c['stdout'], 'stderr' => trim($c['stderr']) ?: 'Kompilierfehler.']);
+$javaCmd = $runCmd; // nombre histórico, ya usado abajo
+
+/* --- 2) EJECUTAR — modo multi-caso (tests) --- */
+if ($stdins !== null) {
+    $runs = [];
+    foreach ($stdins as $in) {
+        $r = run_cmd($javaCmd, $work, RUN_TIMEOUT, $in);
+        $runs[] = [
+            'ok'       => ($r['code'] === 0 && !$r['timedOut']),
+            'stdout'   => $r['stdout'],
+            'stderr'   => $r['timedOut'] ? 'Zeitlimit überschritten — vermutlich eine Endlosschleife.' : $r['stderr'],
+            'timedOut' => $r['timedOut'],
+        ];
+    }
+    out([
+        'ok'    => true,           // compiló; el resultado por-caso está en runs[]
+        'phase' => 'run',
+        'ms'    => (int) round((microtime(true) - $t0) * 1000),
+        'runs'  => $runs,
+    ]);
 }
 
-/* --- 2) EJECUTAR --- */
-$r = run_cmd(
-    ['java', '-XX:+UseSerialGC', '-Xss8m', '-Xmx128m', '-cp', '.', 'Main'],
-    $work, RUN_TIMEOUT
-);
+/* --- 2b) EJECUTAR — modo simple (playground / retrocompat) --- */
+$r = run_cmd($javaCmd, $work, RUN_TIMEOUT, $stdin);
 $ms = (int) round((microtime(true) - $t0) * 1000);
 
 if ($r['timedOut']) {
-    out(['ok' => false, 'phase' => 'run', 'ms' => $ms,
+    out(['ok' => false, 'phase' => 'run', 'ms' => $ms, 'timedOut' => true,
          'stdout' => $r['stdout'],
          'stderr' => 'Zeitlimit überschritten — vermutlich eine Endlosschleife.']);
 }
